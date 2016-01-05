@@ -2,6 +2,7 @@
 **A kickass dashboard for devshops**
 
 [![Build Status](https://travis-ci.com/neo/spotlight.svg?token=32PipsqvKVziGaUwVvvT)](https://travis-ci.com/neo/spotlight)
+[![Code Climate](https://codeclimate.com/repos/568b75839848c5568e002bc6/badges/fa755cbb5f59a5f15936/gpa.svg)](https://codeclimate.com/repos/568b75839848c5568e002bc6/feed)
 
 ## Synopsis
 

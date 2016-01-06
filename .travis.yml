@@ -9,3 +9,12 @@ before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - cp config/database-travis.yml config/database.yml
   - bundle exec rake db:schema:load RAILS_ENV=test
+deploy:
+  provider: heroku
+  api_key:
+    secure: kTHW8B1e2B6DPAOU7HE3hkZcnBIflxTBHaVG5ojRj4IUwjz/oYqfFmHEPQS5zrd3xVgrb7Pd8qhJl/t8GzAWTJAIFlec+XGN+KN+sD498D7fecvn1InMw4Xa0EbJN4S7/L1SQ4GioFKMqITmIyLS2EC7hhrdqcmmUUa0ckmKOkQhHMGsXbkJyIfL7GAahm38WlxG59EHhV+NPPlUUHBViWpigIN+ZPU7Z/5LOyBb8xtWZeQBft89GGi5XAmv5LkodBJix/ijbNkjDWIzTJtuhe53Mp9XZBXOFJkr4kjFZZc+h7xdqXVQ7pPo1WdJjty9HYkGdngaKbSXLjd1xY/SJvOnbguRlhtUwxi8F0T28gqu2rMUO8VNoh3E9rDXQTu/u+V067uWLPYNImUBh0HjlmDzY4YsOABtcgcflwWsqmdVkFkhYqzJfoVmUR/MHWvNodnfqNWJoUmWF2Xqd44D5aKQYD/zuJw6PWPoE/bQSlmQILbCmJzK/1ozdXQ4n86jwUxk3duduqdP9DyJbkIL0xyKgYJrcul1bPjOyIou5ZqfComtZ2oeTaXU6A2Tj0/UjQ9om7lyK7YrI37UJ93+z8T07QS8/NHODi1k3b8ve4i4XEWMTcjLrzfbjgCO4+m59z6tpD9ggvXoRORsh3RA0GAyu1uExECcXu5ynaPSRYI=
+  app:
+    master: spotlight
+  on:
+    repo: neo/spotlight
+  run: rake db:migrate

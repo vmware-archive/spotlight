@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe DashboardController, type: :controller do
+  let!(:dashboard) { FactoryGirl.create :dashboard, title:'Default Dashboard' }
 
   describe "GET #index" do
     it "returns http success" do
@@ -11,7 +12,7 @@ RSpec.describe DashboardController, type: :controller do
     it "assigns default dashboard" do
       get :index
       expect(assigns(:dashboard)).to be
-      expect(assigns(:dashboard).title).to eq 'Default Dashboard'
+      expect(assigns(:dashboard).title).to eq dashboard.title
     end
   end
 end

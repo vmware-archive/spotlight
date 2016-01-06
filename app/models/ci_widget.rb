@@ -1,0 +1,2 @@
+class CiWidget < Widget
+end

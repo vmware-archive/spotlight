@@ -26,6 +26,12 @@ group :development, :test do
   gem 'pry-rails'
   gem 'better_errors'
   gem 'spring-commands-rspec'
+  gem 'factory_girl_rails'
+  gem 'faker'
+end
+
+group :test do
+  gem 'shoulda-matchers'
 end
 
 group :production do

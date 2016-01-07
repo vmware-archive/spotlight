@@ -46,7 +46,7 @@ RSpec.describe WidgetsController, type: :controller do
   end
 
   describe "POST #create" do
-
+    let!(:dashboard) { FactoryGirl.create :dashboard  }
     let(:valid_attributes) { {title: 'test'} }
 
     context "with valid params" do

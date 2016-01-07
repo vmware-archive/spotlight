@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe DashboardController, type: :controller do
+RSpec.describe DashboardsController, type: :controller do
   let!(:dashboard) { FactoryGirl.create :dashboard, title:'Default Dashboard' }
 
   describe "GET #index" do

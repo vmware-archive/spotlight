@@ -1,0 +1,25 @@
+h1 Listing widgets
+
+table
+  thead
+    tr
+      th Title
+      th Type
+      th Active
+      th
+      th
+      th
+
+  tbody
+    - @widgets.each do |widget|
+      tr
+        td = widget.title
+        td = widget.type
+        td = widget.active
+        td = link_to 'Show', widget_path(widget)
+        td = link_to 'Edit', edit_widget_path(widget)
+        td = link_to 'Destroy', widget_path(widget), data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Widget', new_widget_path

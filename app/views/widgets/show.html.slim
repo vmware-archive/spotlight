@@ -1,0 +1,13 @@
+p#notice = notice
+
+p
+  strong Title:
+  = @widget.title
+p
+  strong Type:
+  = @widget.type
+p
+  strong Active:
+  = @widget.active
+
+= link_to 'Back', dashboards_path

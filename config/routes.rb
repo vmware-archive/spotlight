@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
-  root to: 'dashboard#index'
-  get 'dashboard/index'
+  resources :widgets, only: [:index, :new, :show, :create]
+  resources :ci_widgets, controller: 'widgets', only: [:index, :new, :show, :create]
+
+  root to: 'dashboards#index'
+  resources :dashboards, only: [:index]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

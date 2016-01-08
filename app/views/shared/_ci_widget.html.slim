@@ -1,2 +1,16 @@
-.widget
-  p = "Widget name: #{widget.title}"
+.widget data-uuid=widget.id data-travis-slug =widget.title
+  h3 = "Widget name: #{widget.title}"
+  h3 = "Ci details:"
+  table
+    tr
+      td Repository Name:
+      td.value.repository_name -
+    tr
+      td Repository Description:
+      td.value.description -
+    tr
+      td Last Build Status:
+      td.value.status -
+    tr
+      td Last Build Time:
+      td.value.last-build-at -

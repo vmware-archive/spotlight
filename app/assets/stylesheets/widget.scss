@@ -1,0 +1,9 @@
+.widget {
+  border: 1px black solid;
+  table {
+    padding-left: 20px;
+    .value {
+      font-weight: bold;
+    }
+  }
+}

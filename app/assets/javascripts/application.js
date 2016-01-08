@@ -12,4 +12,5 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require widgets/ci_widget/travis
 //= require_tree .

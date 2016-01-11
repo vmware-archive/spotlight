@@ -21,6 +21,9 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'database_cleaner'
   gem 'byebug'
   gem 'pry'
   gem 'pry-byebug'

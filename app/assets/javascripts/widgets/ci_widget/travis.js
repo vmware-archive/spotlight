@@ -33,8 +33,8 @@ var getTravisStatus = function(widgetUuid, travis_url) {
   });
 };
 
-$(function() {
-  console.log('window loaded');
+var timerTick = function() {
+  console.log('tick');
   $("#ci-widgets").children().each(function() { 
     var widget =  this.children[0];
     var travisSlug = widget.dataset.travisSlug;
@@ -42,4 +42,10 @@ $(function() {
     console.log( travisSlug);
     getTravisStatus( widgetUuid, travisSlug );
   })
+};
+
+$(function() {
+  console.log('window loaded');
+  timerTick();
+  setInterval(timerTick, 60000);
 });

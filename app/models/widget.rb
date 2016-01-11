@@ -5,4 +5,12 @@ class Widget < ActiveRecord::Base
   validates_length_of :title, maximum: 60
 
   scope :active, ->{ where(active: true) }
+
+  before_save :setup_uuid
+
+  private
+
+  def setup_uuid
+    self.uuid = SecureRandom.uuid
+  end
 end

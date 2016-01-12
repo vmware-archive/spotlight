@@ -1,15 +1,9 @@
 class WidgetsController < ApplicationController
-  before_action :set_widget, only: [:show, :edit, :update, :destroy]
-
-  # GET /widgets
-  # GET /widgets.json
-  def index
-    @widgets = Widget.all
-  end
+  before_action :set_widget, only: [:show, :update, :destroy]
 
   # GET /widgets/1
-  # GET /widgets/1.json
   def show
+    return render 'ci_widget'
   end
 
   # GET /widgets/new
@@ -18,20 +12,15 @@ class WidgetsController < ApplicationController
   end
 
   # POST /widgets
-  # POST /widgets.json
   def create
     @widget = Widget.new(widget_params)
 
     @widget.dashboard = default_dashboard
 
-    respond_to do |format|
-      if @widget.save
-        format.html { redirect_to @widget, notice: 'Widget was successfully created.' }
-        format.json { render :show, status: :created, location: @widget }
-      else
-        format.html { render :new }
-        format.json { render json: @widget.errors, status: :unprocessable_entity }
-      end
+    if @widget.save
+      return redirect_to @widget, notice: 'Widget was successfully created.'
+    else
+      return render :new
     end
   end
 

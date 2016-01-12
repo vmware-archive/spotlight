@@ -30,11 +30,16 @@ RSpec.describe WidgetsController, type: :controller do
   let(:valid_session) { {} }
 
   describe "GET #show" do
+    let(:widget) { FactoryGirl.create :ci_widget, :with_default_dashboard }
+    let(:make_request) { get :show, {:id => widget.id}}
+
     it "assigns the requested widget as @widget" do
-      # widget = Widget.create! valid_attributes
-      widget = FactoryGirl.create :ci_widget, :with_default_dashboard
-      get :show, {:id => widget.id}, valid_session
+      make_request
       expect(assigns(:widget)).to eq(widget)
+    end
+
+    it "shows the widget specific page" do
+      expect(make_request).to render_template "ci_widget"
     end
   end
 

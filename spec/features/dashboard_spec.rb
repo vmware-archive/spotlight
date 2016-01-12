@@ -13,6 +13,8 @@ describe "the dashboard widget creation", :type => :feature do
     expect(page).to have_css '#qa-new-widget-form'
     fill_in 'Title', :with => widget_title
     click_button 'Submit'
+    expect(page).to have_css '#qa-travis-ci-widget-form'
+    click_button 'Submit'
     visit '/'
     expect(page).to have_content widget_title
     expect(page).to have_selector('.widget', count: 1)

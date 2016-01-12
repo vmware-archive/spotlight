@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :widgets, only: [:index, :new, :show, :create]
+  resources :widgets, only: [:index, :new, :edit, :create, :update]
   resources :ci_widgets, controller: 'widgets', only: [:index, :new, :show, :create]
 
   root to: 'dashboards#index'

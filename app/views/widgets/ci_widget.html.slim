@@ -9,11 +9,13 @@
         - @widget.errors.full_messages.each do |message|
           li = message
 
-  .field
-    = f.label :travis_url
-    = f.text_field :travis_url, value: "https://api.travis-ci.com/repos/neo/spotlight"
-  .field
-    = f.label :travis_auth_key
-    = f.text_field :travis_auth_key, value: "5V_zKW9KmdYMpyBR12rtug"
+  - @widget.class.config_keys.each do |key|
+    .field
+      = f.label key
+      = f.text_field key
 
   .actions = f.submit 'Submit'
+
+h5 HINTS
+p https://api.travis-ci.com/repos/neo/spotlight
+p 5V_zKW9KmdYMpyBR12rtug

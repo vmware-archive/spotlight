@@ -29,20 +29,6 @@ RSpec.describe WidgetsController, type: :controller do
   # WidgetsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET #show" do
-    let(:widget) { FactoryGirl.create :ci_widget, :with_default_dashboard }
-    let(:make_request) { get :show, {:id => widget.id}}
-
-    it "assigns the requested widget as @widget" do
-      make_request
-      expect(assigns(:widget)).to eq(widget)
-    end
-
-    it "shows the widget specific page" do
-      expect(make_request).to render_template "ci_widget"
-    end
-  end
-
   describe "GET #new" do
     it "assigns a new widget as @widget" do
       get :new, {}, valid_session
@@ -69,7 +55,7 @@ RSpec.describe WidgetsController, type: :controller do
 
       it "redirects to the created widget" do
         post :create, {:widget => valid_attributes}, valid_session
-        expect(response).to redirect_to(widget_path(Widget.last))
+        expect(response).to redirect_to(edit_widget_path(Widget.last))
       end
     end
 
@@ -99,6 +85,40 @@ RSpec.describe WidgetsController, type: :controller do
         it "re-renders the 'new' template" do
           post :create, {:widget => invalid_attributes}, valid_session
           expect(response).to render_template("new")
+        end
+      end
+    end
+  end
+
+  describe "GET #edit" do
+    let(:widget) { FactoryGirl.create :ci_widget, :with_default_dashboard }
+    it "assigns the widget as @widget" do
+      get :edit, {:id => widget.id}
+      expect(assigns(:widget)).to eq widget
+    end
+  end
+
+  describe "GET #update" do
+    let!(:widget) { FactoryGirl.create :ci_widget, :with_default_dashboard }
+
+    context 'for travis CI widget' do
+      context 'valid attributes' do
+        let(:params) { {id: widget.id, ci_widget: { travis_url: 'url', travis_auth_key: 'auth_key'}}}
+
+        it "updates the widget" do
+          expect {
+            patch :update, params
+          }.to change{Widget.last.travis_url}.from(nil).to('url')
+        end
+
+        it "assigns a newly created widget as @widget" do
+          patch :update, params
+          expect(assigns(:widget)).to eq widget
+        end
+
+        it "redirects to dashboard" do
+          patch :update, params
+          expect(response).to redirect_to(dashboards_path)
         end
       end
     end

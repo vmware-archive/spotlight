@@ -4,7 +4,7 @@ RSpec.describe Widget, type: :model do
   let(:dashboard) { FactoryGirl.create :dashboard }
 
   before :each do
-    allow_any_instance_of(Widget).to receive(:config_keys).and_return([:foo, :bar])
+    allow(Widget).to receive(:config_keys).and_return([:foo, :bar])
   end
 
   describe 'associations' do

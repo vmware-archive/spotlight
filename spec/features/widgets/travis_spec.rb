@@ -12,7 +12,6 @@ describe "travis widget spec", :type => :feature do
   it "must create a widget", js: true do
     visit '/'
     expect(page).to have_content 'neo/spotlight'
-    # checking the contents of the ajax request
-    expect(page).to have_content(repo_description, wait: 5)
+    expect(page).to have_content('Last Build Committer', wait: 5)
   end
 end

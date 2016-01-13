@@ -13,13 +13,14 @@ RSpec.describe Widget, type: :model do
 
   describe 'validations' do
     it { should validate_presence_of(:title) }
+    it { should validate_presence_of(:category) }
     it { should validate_length_of(:title).is_at_most(60) }
   end
 
   describe 'scope' do
     describe 'active' do
-      let!(:active) { FactoryGirl.create :ci_widget, active: true, dashboard: dashboard }
-      let!(:inactive) { FactoryGirl.create :ci_widget, active: false, dashboard: dashboard }
+      let!(:active) { FactoryGirl.create :widget, active: true, dashboard: dashboard }
+      let!(:inactive) { FactoryGirl.create :widget, active: false, dashboard: dashboard }
 
       it 'shows active widgets' do
         expect(Widget.active).to contain_exactly active
@@ -27,9 +28,9 @@ RSpec.describe Widget, type: :model do
     end
   end
 
-  describe 'before_save' do
-    let(:widget) { FactoryGirl.build :ci_widget, dashboard: dashboard }
-    it 'sets a uuid' do
+  context 'after creation' do
+    let(:widget) { FactoryGirl.build :widget, dashboard: dashboard }
+    it 'has a generated uuid' do
       expect(widget.uuid).to be_nil
       widget.save!
       expect(widget.uuid).to be
@@ -37,7 +38,7 @@ RSpec.describe Widget, type: :model do
   end
 
   describe 'configuration' do
-    let!(:widget) { FactoryGirl.create :widget, type: 'Widget', dashboard: dashboard}
+    let!(:widget) { FactoryGirl.create :widget, dashboard: dashboard}
 
     it 'can access value of config' do
       widget.update(foo: 'bar')

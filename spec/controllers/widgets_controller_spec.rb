@@ -38,7 +38,7 @@ RSpec.describe WidgetsController, type: :controller do
 
   describe "POST #create" do
     let!(:dashboard) { FactoryGirl.create :dashboard  }
-    let(:valid_attributes) { {title: 'test'} }
+    let(:valid_attributes) { {title: 'test', category: 'CI Widget'} }
 
     context "with valid params" do
       it "creates a new Widget" do
@@ -91,7 +91,7 @@ RSpec.describe WidgetsController, type: :controller do
   end
 
   describe "GET #edit" do
-    let(:widget) { FactoryGirl.create :ci_widget, :with_default_dashboard }
+    let(:widget) { FactoryGirl.create :widget, :with_default_dashboard }
     it "assigns the widget as @widget" do
       get :edit, {:id => widget.id}
       expect(assigns(:widget)).to eq widget
@@ -99,11 +99,11 @@ RSpec.describe WidgetsController, type: :controller do
   end
 
   describe "GET #update" do
-    let!(:widget) { FactoryGirl.create :ci_widget, :with_default_dashboard }
+    let!(:widget) { FactoryGirl.create :widget, :with_default_dashboard }
 
     context 'for travis CI widget' do
       context 'valid attributes' do
-        let(:params) { {id: widget.id, ci_widget: { travis_url: 'url', travis_auth_key: 'auth_key'}}}
+        let(:params) { {id: widget.id, widget: { travis_url: 'url', travis_auth_key: 'auth_key'}}}
 
         it "updates the widget" do
           expect {
@@ -125,7 +125,7 @@ RSpec.describe WidgetsController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    let!(:widget) { FactoryGirl.create :ci_widget, :with_default_dashboard }
+    let!(:widget) { FactoryGirl.create :widget, :with_default_dashboard }
 
     it "deletes the widget" do
       expect {

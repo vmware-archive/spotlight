@@ -7,4 +7,4 @@ h1 Welcome to Spotlight!
 ul#ci-widgets
   - @dashboard.widgets.active.each do |widget|
     li
-      =render partial: 'shared/ci_widget', locals: {widget: widget}
+      =render partial: 'shared/widget', locals: {widget: widget}

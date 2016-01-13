@@ -21,12 +21,12 @@ class WidgetsController < ApplicationController
 
   # GET /widgets/1/edit
   def edit
-    return render 'ci_widget'
+    return render 'widget'
   end
 
   #PATCH update
   def update
-    if @widget.update!(config_params(@widget.type))
+    if @widget.update!(config_params)
       return redirect_to dashboards_path, notice: 'Widget configuration was successfully updated.'
     else
       return render :show
@@ -52,11 +52,11 @@ class WidgetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def widget_params
-      params.require(:widget).permit(:title)
+      params.require(:widget).permit(:title, :category)
     end
 
-    def config_params(widget_type)
-      params.require(:ci_widget).permit(*widget_type.constantize.config_keys)
+    def config_params()
+      params.require(:widget).permit(*Widget.config_keys)
       #TODO: make this generic by wrapping widget configuration in a form helper
     end
 

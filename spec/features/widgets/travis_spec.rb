@@ -5,7 +5,7 @@ describe "travis widget spec", :type => :feature do
 
   before :each do
     d = Dashboard.create(title: 'Default Dashboard')
-    w = CiWidget.create(title: 'neo/spotlight', dashboard: d)
+    w = Widget.create(title: 'neo/spotlight', dashboard: d, category: 'ci_widget')
     w.update(travis_url: 'https://api.travis-ci.com/repos/neo/spotlight', travis_auth_key: '5V_zKW9KmdYMpyBR12rtug')
   end
 

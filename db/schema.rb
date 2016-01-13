@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160112041626) do
+ActiveRecord::Schema.define(version: 20160113072031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,14 +24,14 @@ ActiveRecord::Schema.define(version: 20160112041626) do
   end
 
   create_table "widgets", force: :cascade do |t|
-    t.string   "title",                              null: false
-    t.string   "type",          default: "CiWidget", null: false
+    t.string   "title",                        null: false
+    t.string   "category",                     null: false
     t.boolean  "active",        default: true
-    t.integer  "dashboard_id",                       null: false
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.string   "uuid",                               null: false
-    t.string   "configuration", default: "{}",       null: false
+    t.integer  "dashboard_id",                 null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "uuid",                         null: false
+    t.string   "configuration", default: "{}", null: false
   end
 
   add_index "widgets", ["dashboard_id"], name: "index_widgets_on_dashboard_id", using: :btree

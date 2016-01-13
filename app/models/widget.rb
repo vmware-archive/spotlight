@@ -3,16 +3,17 @@ class Widget < ActiveRecord::Base
 
   validates_presence_of :title
   validates_length_of :title, maximum: 60
+  validates_presence_of :category
 
   scope :active, ->{ where(active: true) }
 
   before_save :setup_uuid
-  before_save :persist_configuration
+  before_save :update_configuration
 
   after_initialize :setup_config_variables
 
   def self.config_keys
-    []
+    [:travis_url, :travis_auth_key]
     # these need to come from a settings file somewhere.
   end
 
@@ -31,7 +32,7 @@ class Widget < ActiveRecord::Base
     Hash[self.class.config_keys.map{|key| [key, send(key)]}]
   end
 
-  def persist_configuration
+  def update_configuration
     self.configuration = config_hash.to_json
   end
 

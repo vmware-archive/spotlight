@@ -33,6 +33,16 @@ class WidgetsController < ApplicationController
     end
   end
 
+  #DELETE destroy
+  def destroy
+    if @widget.destroy!
+      notice = 'Widget was successfully deleted.'
+    else
+      notice = 'Widget could not be deleted.'
+    end
+
+    redirect_to dashboards_path, notice: notice
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

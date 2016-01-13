@@ -13,3 +13,5 @@
     tr
       td Last Build Time:
       td.value.last-build-at -
+
+  = link_to 'X', widget_path(id: widget.id), method: 'delete', data: {confirm: "Are you sure you want to delete #{widget.title}?"}

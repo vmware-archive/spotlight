@@ -123,4 +123,19 @@ RSpec.describe WidgetsController, type: :controller do
       end
     end
   end
+
+  describe "DELETE #destroy" do
+    let!(:widget) { FactoryGirl.create :ci_widget, :with_default_dashboard }
+
+    it "deletes the widget" do
+      expect {
+        delete :destroy, id: widget.id
+      }.to change{Widget.count}.from(1).to(0)
+    end
+
+    it "redirects to dashboard" do
+      delete :destroy, id: widget.id
+      expect(response).to redirect_to(dashboards_path)
+    end
+  end
 end

@@ -15,6 +15,29 @@
   .field
     = f.label :category
     = f.select :category, widget_category_choices
+
+  h3 Widget Configuration
+  - @widget.category.fields.each do |key, defaults|
+    .field
+      = f.label key
+      - if defaults.nil?
+        = f.text_field key
+      - elsif defaults.is_a? Array
+        = f.select key, defaults
+
   .actions = f.submit 'Submit'
+
+  hr
+
+  h4 HINTS (This is for dev convenience)
+  p
+    strong Sample server url (just the base path):
+    | https://api.travis-ci.com
+  p
+    strong Sample project name:
+    | neo/spotlight
+  p
+    strong Valid authentication key:
+    | 5V_zKW9KmdYMpyBR12rtug
 
 = link_to 'Back', dashboards_path

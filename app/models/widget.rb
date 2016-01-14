@@ -7,7 +7,7 @@ class Widget < ActiveRecord::Base
 
   scope :active, ->{ where(active: true) }
 
-  before_save :setup_uuid
+  before_create :setup_uuid
   before_save :update_configuration
 
   after_initialize :setup_config_variables

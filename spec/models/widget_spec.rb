@@ -31,9 +31,13 @@ RSpec.describe Widget, type: :model do
   context 'after creation' do
     let(:widget) { FactoryGirl.build :widget, dashboard: dashboard }
     it 'has a generated uuid' do
-      expect(widget.uuid).to be_nil
+      expect{ widget.save }.to change{ widget.uuid }
+      expect(widget.uuid).to be_present
+    end
+
+    it 'remains the same when we save details' do
       widget.save!
-      expect(widget.uuid).to be
+      expect{ widget.update(title: 'Something') }.to_not change{ widget.uuid }
     end
   end
 
@@ -42,7 +46,7 @@ RSpec.describe Widget, type: :model do
 
     it 'can access value of config' do
       widget.update(foo: 'bar')
-      expect(widget.foo).to eq 'bar'
+      expect(widget.reload.foo).to eq 'bar'
     end
 
     it 'can load value of config from json' do

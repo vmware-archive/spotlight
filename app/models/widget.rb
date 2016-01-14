@@ -1,4 +1,7 @@
 class Widget < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
+  classy_enum_attr :category
+
   belongs_to :dashboard
 
   validates_presence_of :title

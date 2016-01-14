@@ -3,10 +3,6 @@ require 'rails_helper'
 RSpec.describe Widget, type: :model do
   let(:dashboard) { FactoryGirl.create :dashboard }
 
-  before :each do
-    allow(Widget).to receive(:config_keys).and_return([:foo, :bar])
-  end
-
   describe 'associations' do
     it { should belong_to(:dashboard) }
   end
@@ -41,17 +37,38 @@ RSpec.describe Widget, type: :model do
     end
   end
 
-  describe 'configuration' do
-    let!(:widget) { FactoryGirl.create :widget, dashboard: dashboard}
+  describe '#configurations' do
+    let(:project_name) { 'Example Project' }
+    let(:configuration) do { project_name:project_name } end
+    let!(:widget) { FactoryGirl.create :widget, dashboard: dashboard, configuration: configuration.to_json }
 
-    it 'can access value of config' do
-      widget.update(foo: 'bar')
-      expect(widget.reload.foo).to eq 'bar'
+    it 'returns fields' do
+      expect(widget.configurations[:project_name]).to eq project_name
     end
 
-    it 'can load value of config from json' do
-      widget.update!(foo: 'bar')
-      expect(Widget.last.foo).to eq 'bar'
+    it 'allows reading valid fields' do
+      expect(widget.server_url).to be_nil
+    end
+
+    it 'disallow invalid fields' do
+      expect{ widget.garbage }.to raise_error 'Unknown field'
+    end
+
+    it 'allows writing valid fields' do
+      expect{ widget.project_name = 'Other project' }.to change{ widget.project_name }
+    end
+
+    it 'disallow writing valid fields' do
+      expect{ widget.garbage = 'Other project' }.to raise_error 'Unknown field'
+    end
+  end
+
+  describe 'configuration' do
+    let!(:widget) { FactoryGirl.create :widget, dashboard: dashboard }
+
+    it 'can access value of config' do
+      widget.update(project_name: 'bar')
+      expect(widget.reload.project_name).to eq 'bar'
     end
   end
 

@@ -13,30 +13,28 @@ class Widget < ActiveRecord::Base
   before_create :setup_uuid
   before_save :update_configuration
 
-  after_initialize :setup_config_variables
+  def configurations
+    @configurations ||= JSON.parse(self.configuration).with_indifferent_access
+  end
 
-  def self.config_keys
-    [:travis_url, :travis_auth_key]
-    # these need to come from a settings file somewhere.
+  def method_missing(method, *args, &block)
+    return configurations[method] if category.fields.keys.include?(method)
+
+    if setter_field = category.fields.keys.find{|k| "#{k}=".to_sym == method }
+      return configurations[setter_field] = args[0]
+    end
+
+    raise 'Unknown field'
+  end
+
+  def travis_url
+    server_url + '/repos/' + project_name
   end
 
   private
 
-  def setup_config_variables
-    current_config = JSON.parse(self.configuration).with_indifferent_access
-
-    self.class.config_keys.each do |config_key|
-      self.class.send(:attr_accessor, config_key)
-      val = instance_variable_set("@#{config_key}".to_sym, current_config.fetch(config_key, nil))
-    end
-  end
-
-  def config_hash
-    Hash[self.class.config_keys.map{|key| [key, send(key)]}]
-  end
-
   def update_configuration
-    self.configuration = config_hash.to_json
+    self.configuration = configurations.to_json
   end
 
   def setup_uuid

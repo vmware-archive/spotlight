@@ -1,39 +1,23 @@
 class WidgetsController < ApplicationController
-  before_action :set_widget, only: [:edit, :update, :destroy]
+  before_action :set_widget, only: [:destroy]
 
-  # GET /widgets/new
   def new
-    @widget = Widget.new
+    redirect_to(action: :new, category: 'ci_widget') unless params[:category]
+    @widget = Widget.new(category: params[:category])
   end
 
-  # POST /widgets
   def create
     @widget = Widget.new(widget_params)
-
     @widget.dashboard = default_dashboard
+    @widget.assign_attributes(config_params_for(@widget))
 
     if @widget.save
-      return redirect_to edit_widget_path(@widget), notice: 'Widget was successfully created.'
+      return redirect_to dashboards_path, notice: 'Widget was successfully created.'
     else
       return render :new
     end
   end
 
-  # GET /widgets/1/edit
-  def edit
-    return render 'widget'
-  end
-
-  #PATCH update
-  def update
-    if @widget.update!(config_params)
-      return redirect_to dashboards_path, notice: 'Widget configuration was successfully updated.'
-    else
-      return render :show
-    end
-  end
-
-  #DELETE destroy
   def destroy
     if @widget.destroy!
       notice = 'Widget was successfully deleted.'
@@ -45,22 +29,20 @@ class WidgetsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_widget
-      @widget = Widget.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def widget_params
-      params.require(:widget).permit(:title, :category)
-    end
+  def set_widget
+    @widget = Widget.find(params[:id])
+  end
 
-    def config_params()
-      params.require(:widget).permit(*Widget.config_keys)
-      #TODO: make this generic by wrapping widget configuration in a form helper
-    end
+  def widget_params
+    params.require(:widget).permit(:title, :category)
+  end
 
-    def default_dashboard
-      Dashboard.first
-    end
+  def config_params_for(widget)
+    params.require(:widget).permit(*widget.category.fields.keys)
+  end
+
+  def default_dashboard
+    Dashboard.first
+  end
 end

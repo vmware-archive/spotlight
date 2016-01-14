@@ -54,4 +54,16 @@ RSpec.describe Widget, type: :model do
       expect(Widget.last.foo).to eq 'bar'
     end
   end
+
+  describe '#category' do
+    let!(:widget) { FactoryGirl.create :widget, category: 'ci_widget', dashboard: dashboard}
+
+    it 'returns a classy enum' do
+      expect(widget.category).to be_a Category::CiWidget
+    end
+
+    it 'has knowledge of fields' do
+      expect(widget.category.fields).to be_a Hash
+    end
+  end
 end

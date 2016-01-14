@@ -8,7 +8,7 @@ describe Category::CiWidget do
 
     it 'has keys' do
       expect(subject.fields.keys).to eq %i{server_type server_url project_name auth_key}
-      expect(subject.fields[:server_type]).to eq %i{travis_ci jenkins circle_ci}
+      expect(subject.fields[:server_type]).to be_present
     end
   end
 end

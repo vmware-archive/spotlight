@@ -24,7 +24,7 @@ class JenkinsCiService
     connection.get do |req|
       req.url '/job/' + repository + '/api/json'
       req.headers['Accept'] = 'application/json'
-      req.headers['Authorization'] = 'Token "' + @auth_key + '"'
+      req.headers['Authorization'] = 'Token "' + @auth_key + '"' if @auth_key.present?
     end
   end
 
@@ -32,7 +32,7 @@ class JenkinsCiService
     connection.get do |req|
       req.url '/job/' + repository + '/' + build_id.to_s + '/api/json'
       req.headers['Accept'] = 'application/json'
-      req.headers['Authorization'] = 'Token "' + @auth_key + '"'
+      req.headers['Authorization'] = 'Token "' + @auth_key + '"' if @auth_key.present?
     end
   end
 

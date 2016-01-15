@@ -41,6 +41,10 @@ class Widget < ActiveRecord::Base
     self.configuration = @local_configuration
   end
 
+  def valid_config_fields
+    category.fields
+  end
+
   def setup_uuid
     self.uuid = SecureRandom.uuid
   end

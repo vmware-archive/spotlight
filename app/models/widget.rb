@@ -14,7 +14,7 @@ class Widget < ActiveRecord::Base
   before_save :update_configuration
 
   def configurations
-    @configurations ||= JSON.parse(self.configuration).with_indifferent_access
+    @configurations ||= self.configuration.with_indifferent_access
   end
 
   def method_missing(method, *args, &block)
@@ -34,7 +34,7 @@ class Widget < ActiveRecord::Base
   private
 
   def update_configuration
-    self.configuration = configurations.to_json
+    self.configuration = configurations
   end
 
   def setup_uuid

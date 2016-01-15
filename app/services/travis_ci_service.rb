@@ -1,5 +1,5 @@
 class TravisCiService
-  attr_reader :connection
+  attr_reader :connection, :server_url, :auth_key, :project_name
 
   def initialize(options={})
     @server_url = options[:server_url]

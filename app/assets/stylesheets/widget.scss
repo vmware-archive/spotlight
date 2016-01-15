@@ -1,7 +1,11 @@
 .widget {
   border: 1px black solid;
+  float: left;
+  margin: 10px;
+  width: 300px;
+  height: 300px;
+  padding: 5px 10px;
   table {
-    padding-left: 20px;
     .value {
       font-weight: bold;
     }

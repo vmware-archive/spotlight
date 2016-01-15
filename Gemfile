@@ -12,6 +12,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'slim-rails'
 gem 'puma'
 gem 'classy_enum'
+gem 'faraday'
+gem 'faraday_middleware'
 
 group :development do
   gem 'web-console', '~> 2.0'

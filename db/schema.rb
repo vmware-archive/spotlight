@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20160114082857) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.string   "uuid",                         null: false
-    t.string   "configuration", default: "{}", null: false
+    t.json     "configuration", default: {},   null: false
   end
 
   add_index "widgets", ["dashboard_id"], name: "index_widgets_on_dashboard_id", using: :btree

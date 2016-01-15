@@ -72,4 +72,42 @@ RSpec.describe Widget, type: :model do
       expect(widget.category.fields).to be_a Hash
     end
   end
+
+  describe '#size' do
+    let(:widget) { FactoryGirl.create :widget, :with_default_dashboard, height: height, width: width}
+    let(:height) { 400 }
+    let(:width) { 500 }
+
+    context 'when widget has both height and width' do
+      it 'returns the size as a touple' do
+        expect(widget.size[:height]).to eq(height)
+        expect(widget.size[:width]).to eq(width)
+      end
+    end
+
+    context 'when widget has only height' do
+      let(:width) { nil }
+      it 'returns default width' do
+        expect(widget.size[:height]).to eq(height)
+        expect(widget.size[:width]).to eq(DashboardConfig::DEFAULT_WIDGET_WIDTH)
+      end
+    end
+
+    context 'when widget has only width' do
+      let(:height) { nil }
+      it 'returns default height' do
+        expect(widget.size[:height]).to eq(DashboardConfig::DEFAULT_WIDGET_HEIGHT)
+        expect(widget.size[:width]).to eq(width)
+      end
+    end
+
+    context 'when the widget has neither height or width' do
+      let(:height) { nil }
+      let(:width) { nil }
+      it 'returns default size' do
+        expect(widget.size[:height]).to eq(DashboardConfig::DEFAULT_WIDGET_HEIGHT)
+        expect(widget.size[:width]).to eq(DashboardConfig::DEFAULT_WIDGET_WIDTH)
+      end
+    end
+  end
 end

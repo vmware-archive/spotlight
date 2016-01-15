@@ -41,6 +41,12 @@ class Widget < ActiveRecord::Base
     server_url + '/repos/' + project_name
   end
 
+  def size
+    valid_width = width || DashboardConfig::DEFAULT_WIDGET_WIDTH
+    valid_height = height || DashboardConfig::DEFAULT_WIDGET_HEIGHT
+    {width: valid_width, height: valid_height}
+  end
+
   private
   def setup_local_configurations
     @local_configuration = self.configuration.try(:with_indifferent_access) || {}

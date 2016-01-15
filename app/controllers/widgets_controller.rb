@@ -35,7 +35,7 @@ class WidgetsController < ApplicationController
   end
 
   def widget_params
-    params.require(:widget).permit(:title, :category)
+    params.require(:widget).permit(:title, :category, :height, :width)
   end
 
   def config_params_for(widget)

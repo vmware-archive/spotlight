@@ -8,6 +8,16 @@ class Widget < ActiveRecord::Base
   validates_presence_of :title
   validates_length_of :title, maximum: 60
 
+  validates_numericality_of :height,
+    only_integer: true,
+    greater_than_or_equal_to: DashboardConfig::MIN_WIDGET_HEIGHT,
+    allow_nil: true
+
+  validates_numericality_of :width,
+    only_integer: true,
+    greater_than_or_equal_to: DashboardConfig::MIN_WIDGET_WIDTH,
+    allow_nil: true
+
   scope :active, ->{ where(active: true) }
 
   before_create :setup_uuid

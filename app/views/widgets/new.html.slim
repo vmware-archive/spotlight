@@ -13,6 +13,12 @@
     = f.label :title
     = f.text_field :title
   .field
+    = f.label :width
+    = f.select :width, widget_size_choices
+  .field
+    = f.label :height
+    = f.select :height, widget_size_choices
+  .field
     = f.label :category
     = f.select :category, widget_category_choices
 

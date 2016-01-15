@@ -1,4 +1,4 @@
-class TravisCiService
+class JenkinsCiService
   attr_reader :connection, :server_url, :auth_key, :project_name
 
   def initialize(options={})
@@ -22,16 +22,16 @@ class TravisCiService
 
   def repo_info(repository=@project_name)
     connection.get do |req|
-      req.url '/repos/' + repository
-      req.headers['Accept'] = 'application/vnd.travis-ci.2+json'
+      req.url '/job/' + repository + '/api/json'
+      req.headers['Accept'] = 'application/json'
       req.headers['Authorization'] = 'Token "' + @auth_key + '"'
     end
   end
 
   def build_info(build_id, repository=@project_name)
     connection.get do |req|
-      req.url '/repos/' + repository + '/builds/' + build_id.to_s
-      req.headers['Accept'] = 'application/vnd.travis-ci.2+json'
+      req.url '/job/' + repository + '/' + build_id.to_s + '/api/json'
+      req.headers['Accept'] = 'application/json'
       req.headers['Authorization'] = 'Token "' + @auth_key + '"'
     end
   end
@@ -44,19 +44,15 @@ class TravisCiService
       last_build_time:    nil
     }
 
-    repo_response = repo_info(repository)
+    build_response = build_info('lastBuild', repository)
+    last_build = build_response.body
+    last_commit = last_build['changeSet']['items'][0]
 
-    if last_build_id = repo_response.body['repo']['last_build_id']
-      build_response = build_info(last_build_id, repository)
-
-      last_build = build_response.body['build']
-      last_commit = build_response.body['commit']
-
-      payload[:last_build_status] = last_build['state']
-      payload[:last_build_time] = Time.parse(last_build['finished_at']).localtime.to_datetime
-      payload[:last_committer] = last_commit['author_name']
-    end
+    payload[:last_build_status] = last_build['building'] ? 'building' : last_build['result']
+    payload[:last_build_time] = Time.at(last_build['timestamp'] / 1000).to_datetime
+    payload[:last_committer] = last_commit['author']['fullName']
 
     payload
   end
+
 end

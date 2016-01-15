@@ -35,11 +35,11 @@ group :development, :test do
   gem 'spring-commands-rspec'
   gem 'factory_girl_rails'
   gem 'faker'
-  gem 'webmock'
 end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'webmock'
 end
 
 group :production do

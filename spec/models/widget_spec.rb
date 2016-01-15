@@ -37,14 +37,10 @@ RSpec.describe Widget, type: :model do
     end
   end
 
-  describe '#configurations' do
+  describe '#configuration' do
     let(:project_name) { 'Example Project' }
-    let(:configuration) do { project_name:project_name } end
-    let!(:widget) { FactoryGirl.create :widget, dashboard: dashboard, configuration: configuration.to_json }
-
-    it 'returns fields' do
-      expect(widget.configurations[:project_name]).to eq project_name
-    end
+    let(:configuration) {{ project_name: project_name }}
+    let!(:widget) { FactoryGirl.create :widget, dashboard: dashboard, configuration: configuration }
 
     it 'allows reading valid fields' do
       expect(widget.server_url).to be_nil
@@ -60,15 +56,6 @@ RSpec.describe Widget, type: :model do
 
     it 'disallow writing valid fields' do
       expect{ widget.garbage = 'Other project' }.to raise_error 'Unknown field'
-    end
-  end
-
-  describe 'configuration' do
-    let!(:widget) { FactoryGirl.create :widget, dashboard: dashboard }
-
-    it 'can access value of config' do
-      widget.update(project_name: 'bar')
-      expect(widget.reload.project_name).to eq 'bar'
     end
   end
 

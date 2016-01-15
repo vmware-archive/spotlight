@@ -4,7 +4,6 @@ h1 Welcome to Spotlight!
 
 = link_to 'New Widget', new_widget_path
 
-ul#ci-widgets
+#ci-widgets
   - @dashboard.widgets.active.each do |widget|
-    li
-      =render partial: 'shared/widget', locals: {widget: widget}
+    =render partial: 'shared/widget', locals: {widget: widget}

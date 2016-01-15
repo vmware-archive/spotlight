@@ -13,7 +13,7 @@ require 'selenium-webdriver'
 require 'shoulda/matchers'
 require 'database_cleaner'
 require 'webmock/rspec'
-WebMock.disable_net_connect!
+WebMock.disable_net_connect!(:allow_localhost => true)
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 

@@ -78,7 +78,7 @@ RSpec.describe TravisCiService do
   describe '#last_build_info' do
     let(:build_id) { 12345 }
     let(:last_build_status) { 'success' }
-    let(:last_build_time) { '2016-01-15 11:00:00 +08:00' }
+    let(:last_build_time) { '2016-01-15T17:42:34.000+08:00' }
     let(:last_committer) { 'Rahul Rajeev' }
 
     it 'makes request to repo' do
@@ -89,7 +89,7 @@ RSpec.describe TravisCiService do
                     headers: {'Content-Type' => 'application/json'})
 
       build_response_body = {"build" => { "state" => last_build_status,
-                                          "finished_at" => last_build_time },
+                                          "finished_at" => '2016-01-15T09:42:34Z' },
                              "commit" => { "author_name" => last_committer }}.to_json
       build_request = stub_request(:get, "#{server_url}/repos/#{project_name}/builds/#{build_id}").
           with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',

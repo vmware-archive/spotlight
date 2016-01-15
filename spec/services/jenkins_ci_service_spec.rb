@@ -79,12 +79,12 @@ RSpec.describe JenkinsCiService do
     let(:build_id) { 12345 }
     let(:is_building) { false }
     let(:last_build_status) { 'success' }
-    let(:last_build_time) { '2016-01-15 11:00:00 +08:00' }
+    let(:last_build_time) { '2016-01-15T16:20:20.000+08:00' }
     let(:last_committer) { 'Rahul Rajeev' }
 
     it 'makes request to repo' do
       build_response_body = {"building" => is_building, "result" => last_build_status,
-                             "timestamp" => last_build_time,
+                             "timestamp" => 1452846020564,
                              "changeSet" => { "items" => [
                                               { "author" => { "fullName" => last_committer } }
                                             ]

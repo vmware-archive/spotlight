@@ -2,7 +2,6 @@ class WidgetsController < ApplicationController
   before_action :set_widget, only: [:destroy]
 
   def new
-    redirect_to(action: :new, category: 'ci_widget') unless params[:category]
     @widget = Widget.new(category: params[:category])
   end
 

@@ -10,40 +10,46 @@
           li = message
 
   .field
-    = f.label :title
-    = f.text_field :title
-  .field
-    = f.label :width
-    = f.select :width, widget_size_choices
-  .field
-    = f.label :height
-    = f.select :height, widget_size_choices
-  .field
     = f.label :category
-    = f.select :category, widget_category_choices
+    = f.select :category, widget_category_choices, {prompt: 'Select one...'}, {onchange: 'javascript:location.href = "/widgets/new?category=" + this.value;'}
 
-  h3 Widget Configuration
-  - @widget.category.fields.each do |key, defaults|
+  - if @widget.category.present?
+
+    hr
+
     .field
-      = f.label key
-      - if defaults.nil?
-        = f.text_field key
-      - elsif defaults.is_a? Array
-        = f.select key, defaults
+      = f.label :title
+      = f.text_field :title
+    .field
+      = f.label :width
+      = f.select :width, widget_size_choices
+    .field
+      = f.label :height
+      = f.select :height, widget_size_choices
 
-  .actions = f.submit 'Submit'
+    h3 Widget Configuration
+    - @widget.category.fields.each do |key, defaults|
+      .field
+        = f.label key
+        - if defaults.nil?
+          = f.text_field key
+        - elsif defaults.is_a? Array
+          = f.select key, defaults
 
-  hr
+    .actions = f.submit 'Submit'
 
-  h4 HINTS (This is for dev convenience)
-  p
-    strong Sample server url (just the base path):
-    | https://api.travis-ci.com
-  p
-    strong Sample project name:
-    | neo/spotlight
-  p
-    strong Valid authentication key:
-    | 5V_zKW9KmdYMpyBR12rtug
+    - if Rails.env.development?
+      hr
+
+      h4 HINTS (This is for dev convenience)
+      p
+        strong Sample server url (just the base path):
+        | https://api.travis-ci.com
+      p
+        strong Sample project name:
+        | neo/spotlight
+      p
+        strong Valid authentication key:
+        | 5V_zKW9KmdYMpyBR12rtug
 
 = link_to 'Back', dashboards_path

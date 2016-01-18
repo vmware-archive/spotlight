@@ -81,22 +81,27 @@ RSpec.describe TravisCiService do
     let(:last_build_time) { '2016-01-15T17:42:34.000+08:00' }
     let(:last_committer) { 'Rahul Rajeev' }
 
+    let!(:repo_request) do
+      stub_request(:get, "#{server_url}/repos/#{project_name}").
+        with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
+                        'Authorization' => 'Token "' + auth_key + '"' }).
+        to_return(body: {"repo" => {"last_build_id" => build_id}}.to_json,
+                  headers: {'Content-Type' => 'application/json'})
+    end
+    let!(:build_response_body) do
+      {"build" => { "state" => last_build_status,
+                    "finished_at" => '2016-01-15T09:42:34Z' },
+       "commit" => { "author_name" => last_committer }}.to_json
+    end
+    let!(:build_request) do
+      stub_request(:get, "#{server_url}/repos/#{project_name}/builds/#{build_id}").
+        with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
+                        'Authorization' => 'Token "' + auth_key + '"' }).
+        to_return(body: build_response_body,
+                  headers: {'Content-Type' => 'application/json'})
+    end
+
     it 'makes request to repo' do
-      repo_request = stub_request(:get, "#{server_url}/repos/#{project_name}").
-          with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
-                          'Authorization' => 'Token "' + auth_key + '"' }).
-          to_return(body: {"repo" => {"last_build_id" => build_id}}.to_json,
-                    headers: {'Content-Type' => 'application/json'})
-
-      build_response_body = {"build" => { "state" => last_build_status,
-                                          "finished_at" => '2016-01-15T09:42:34Z' },
-                             "commit" => { "author_name" => last_committer }}.to_json
-      build_request = stub_request(:get, "#{server_url}/repos/#{project_name}/builds/#{build_id}").
-          with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
-                          'Authorization' => 'Token "' + auth_key + '"' }).
-          to_return(body: build_response_body,
-                    headers: {'Content-Type' => 'application/json'})
-
       result = subject.last_build_info
 
       expect(repo_request).to have_been_made
@@ -106,6 +111,21 @@ RSpec.describe TravisCiService do
       expect(result[:last_build_time]).to eq last_build_time
       expect(result[:last_build_status]).to eq last_build_status
       expect(result[:last_committer]).to eq last_committer
+    end
+
+    context 'build just started' do
+      let!(:build_response_body) do
+        {"build" => { "state" => last_build_status,
+                      "started_at" => '2016-01-15T09:42:34Z',
+                      "finished_at" => nil },
+         "commit" => { "author_name" => last_committer }}.to_json
+      end
+
+      it 'displays the started_at timing' do
+        result = subject.last_build_info
+
+        expect(result[:last_build_time]).to eq last_build_time
+      end
     end
 
   end

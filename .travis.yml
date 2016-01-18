@@ -21,3 +21,4 @@ deploy:
   on:
     repo: neo/spotlight
   run: rake db:migrate
+script: bundle exec rspec spec && bundle exec rspec spec -t slow

@@ -43,7 +43,7 @@ var timerTick = function() {
 
 $(document).ready(function(){
   if ($('.widget').length > 0) {
-    setInterval(timerTick, 60000);
+    setInterval(timerTick, 30000);
     timerTick();
   }
 });

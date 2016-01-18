@@ -46,7 +46,6 @@ describe "travis widget spec", :type => :feature do
     visit '/'
     expect(page).to have_content project_name
     expect(page).to have_content last_build_status
-    expect(page).to have_content last_build_time
     expect(page).to have_content last_committer
   end
 

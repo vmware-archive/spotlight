@@ -4,11 +4,6 @@ RSpec.describe WidgetsController, type: :controller do
   let(:valid_session) { {} }
 
   describe "GET #new" do
-    it 'redirects to ensure category is set as argument' do
-      get :new
-      expect(response).to redirect_to '/widgets/new?category=ci_widget'
-    end
-
     it "assigns a new widget as @widget" do
       get :new, {category: 'ci_widget'}
       expect(assigns(:widget)).to be_a_new(Widget)

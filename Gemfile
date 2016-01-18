@@ -14,6 +14,7 @@ gem 'puma'
 gem 'classy_enum'
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'react-rails', '~> 1.4.0'
 
 group :development do
   gem 'web-console', '~> 2.0'

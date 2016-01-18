@@ -53,7 +53,8 @@ class TravisCiService
       last_commit = build_response.body['commit']
 
       payload[:last_build_status] = last_build['state']
-      payload[:last_build_time] = Time.parse(last_build['finished_at']).localtime.to_datetime
+      build_time = last_build['finished_at'].present? ? last_build['finished_at'] : last_build['started_at']
+      payload[:last_build_time] = Time.parse(build_time).localtime.to_datetime
       payload[:last_committer] = last_commit['author_name']
     end
 

@@ -1,4 +1,4 @@
-class CiStatusController < ApplicationController
+class Api::CiStatusController < ApplicationController
   def show
     service_class = (widget.server_type + '_service').camelize.constantize
 

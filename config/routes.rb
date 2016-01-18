@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root to: 'dashboards#index'
   resources :dashboards, only: [:index]
-  resources :widgets, except: [:show]
+  resources :widgets, only: [:new, :create, :destroy]
   resources :ci_status, only: [:show], defaults: { format: :json }
 
   # The priority is based upon order of creation: first created -> highest priority.

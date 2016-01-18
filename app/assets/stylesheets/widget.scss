@@ -5,9 +5,18 @@
   width: 300px;
   height: 300px;
   padding: 5px 10px;
+  position: relative;
   table {
     .value {
       font-weight: bold;
+    }
+  }
+  .bottom-row {
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+    a {
+      margin: 0 5px;
     }
   }
 }

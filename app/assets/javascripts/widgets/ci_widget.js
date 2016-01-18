@@ -6,7 +6,7 @@ var widgetInfo = function(widget) {
 
 var requestSettings = function(projectInfo) {
   return {
-    "url": '/ci_status/' + projectInfo.uuid,
+    "url": '/api/ci_status/' + projectInfo.uuid,
     "async": true,
     "method": "GET",
     "headers": {

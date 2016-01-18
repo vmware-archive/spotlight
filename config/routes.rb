@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   root to: 'dashboards#index'
   resources :dashboards, only: [:index]
   resources :widgets, only: [:new, :create, :destroy]
-  resources :ci_status, only: [:show], defaults: { format: :json }
+  namespace :api do
+    resources :ci_status, only: [:show], defaults: { format: :json }
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

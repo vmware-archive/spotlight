@@ -16,7 +16,7 @@ var requestSettings = function(projectInfo) {
 }
 
 var setCiStatus = function(widgetUuid, last_build) {
-  var widget = $(".widget[data-uuid=" + widgetUuid + "]");
+  var widget = $(".ci-widget[data-uuid=" + widgetUuid + "]");
   var build_status = last_build.status
   widget.find(".repository_name").text(build_status.repo_name);
   widget.find(".last-build-at").text(build_status.last_build_time);
@@ -35,14 +35,14 @@ var updateCIStatus = function(widget) {
 }
 
 var timerTick = function() {
-  $(".widget").each(function() {
+  $(".ci-widget").each(function() {
     var widget =  $(this);
     updateCIStatus(widget);
   })
 };
 
 $(document).ready(function(){
-  if ($('.widget').length > 0) {
+  if ($('.ci-widget').length > 0) {
     setInterval(timerTick, 30000);
     timerTick();
   }

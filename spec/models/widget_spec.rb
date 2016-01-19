@@ -11,8 +11,18 @@ RSpec.describe Widget, type: :model do
     it { should validate_presence_of(:title) }
     it { should validate_presence_of(:category) }
     it { should validate_length_of(:title).is_at_most(60) }
-    it { should validate_numericality_of(:height).is_greater_than_or_equal_to(DashboardConfig::MIN_WIDGET_HEIGHT).allow_nil }
-    it { should validate_numericality_of(:width).is_greater_than_or_equal_to(DashboardConfig::MIN_WIDGET_WIDTH).allow_nil }
+    it do
+      should validate_numericality_of(:height)
+        .is_greater_than_or_equal_to(DashboardConfig::MIN_WIDGET_HEIGHT)
+        .is_less_than_or_equal_to(DashboardConfig::MAX_WIDGET_HEIGHT)
+        .allow_nil
+    end
+    it do
+      should validate_numericality_of(:width)
+        .is_greater_than_or_equal_to(DashboardConfig::MIN_WIDGET_WIDTH)
+        .is_less_than_or_equal_to(DashboardConfig::MAX_WIDGET_WIDTH)
+        .allow_nil
+    end
   end
 
   describe 'scope' do
@@ -75,8 +85,8 @@ RSpec.describe Widget, type: :model do
 
   describe '#size' do
     let(:widget) { FactoryGirl.create :widget, :with_default_dashboard, height: height, width: width}
-    let(:height) { 400 }
-    let(:width) { 500 }
+    let(:height) { 4 }
+    let(:width) { 5 }
 
     context 'when widget has both height and width' do
       it 'returns the size as a touple' do

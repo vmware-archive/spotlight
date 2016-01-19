@@ -4,6 +4,6 @@ h1 Welcome to Spotlight!
 
 = link_to 'New Widget', new_widget_path
 
+
 #ci-widgets
-  - @dashboard.widgets.active.each do |widget|
-    =render partial: 'shared/widget', locals: {widget: widget}
+  = react_component 'DashboardGrid', widgets: widgets_hash(@dashboard.widgets.active)

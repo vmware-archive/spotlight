@@ -21,8 +21,8 @@ RSpec.describe WidgetsController, type: :controller do
         server_url: 'https://api.travis-ci.com',
         auth_key: 'access_token',
         project_name: 'neo/spotlight',
-        height: '200',
-        width: '200'
+        height: '2',
+        width: '2'
       }
     end
 
@@ -48,8 +48,8 @@ RSpec.describe WidgetsController, type: :controller do
         post :create, {:widget => valid_attributes}
         new_widget = Widget.last
         expect(new_widget.title).to eq 'test'
-        expect(new_widget.height).to eq 200
-        expect(new_widget.width).to eq 200
+        expect(new_widget.height).to eq 2
+        expect(new_widget.width).to eq 2
       end
     end
 

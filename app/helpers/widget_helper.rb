@@ -5,15 +5,18 @@ module WidgetHelper
   end
 
   def widget_size_choices
-    [
-      ['200 px', '200'],
-      ['300 px', '300'],
-      ['400 px', '400'],
-      ['500 px', '500'],
-      ['600 px', '600'],
-      ['700 px', '700'],
-      ['800 px', '700']
-    ]
+    (DashboardConfig::MIN_WIDGET_WIDTH..DashboardConfig::MAX_WIDGET_WIDTH).map(&:to_s)
+  end
+
+  def widgets_hash(widgets)
+    widgets.map do |widget|
+      {
+        uuid: widget.uuid,
+        title: widget.title,
+        size: widget.size,
+        widget_path: widget_path(id: widget.id)
+      }
+    end
   end
 
 end

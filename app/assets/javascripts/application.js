@@ -15,4 +15,6 @@
 //= require react
 //= require react_ujs
 //= require components
+//= require react_grid_layout
+//= require lodash
 //= require_tree .

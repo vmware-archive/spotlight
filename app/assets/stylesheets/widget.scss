@@ -1,11 +1,4 @@
 .widget {
-  border: 1px black solid;
-  float: left;
-  margin: 10px;
-  width: 300px;
-  height: 300px;
-  padding: 5px 10px;
-  position: relative;
   table {
     .value {
       font-weight: bold;
@@ -19,4 +12,7 @@
       margin: 0 5px;
     }
   }
+}
+.ci-widget {
+  padding: 5px 10px;
 }

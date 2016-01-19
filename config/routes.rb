@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   root to: 'dashboards#index'
   resources :dashboards, only: [:index]
   resources :widgets, only: [:new, :create, :destroy]

@@ -14,7 +14,7 @@ gem 'puma'
 gem 'classy_enum'
 gem 'faraday'
 gem 'faraday_middleware'
-gem 'react-rails', '~> 1.4.0'
+gem 'react-rails', '1.4.1'
 
 group :development do
   gem 'web-console', '~> 2.0'
@@ -36,6 +36,7 @@ group :development, :test do
   gem 'spring-commands-rspec'
   gem 'factory_girl_rails'
   gem 'faker'
+  gem 'jasmine-rails'
 end
 
 group :test do

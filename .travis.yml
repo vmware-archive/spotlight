@@ -11,7 +11,7 @@ before_script:
   - bundle exec rake db:schema:load RAILS_ENV=test
 before_install:
   - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+  - sh -e /etc/init.d/xvfb stare
 deploy:
   provider: heroku
   api_key:
@@ -21,4 +21,7 @@ deploy:
   on:
     repo: neo/spotlight
   run: rake db:migrate
-script: bundle exec rspec spec && bundle exec rspec spec -t slow
+script:
+  - bundle exec rspec spec
+  - bundle exec rspec spec -t slow
+  - bundle exec rake spec:javascript

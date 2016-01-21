@@ -37,7 +37,7 @@ describe "the dashboard widget creation", :type => :feature do
       visit '/'
       expect(page).to have_selector('.widget', count: 1)
       click_link 'X'
-      sleep(0.5)
+      sleep(3)
       page.driver.browser.switch_to.alert.accept
       expect(page).to have_selector('.widget', count: 0)
       expect(page).to have_content('successfully deleted.')

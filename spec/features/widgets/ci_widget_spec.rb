@@ -55,7 +55,7 @@ describe "travis widget spec", :type => :feature do
       .with(headers: {'Accept' => 'application/vnd.travis-ci.2+json', 'Authorization' => 'Token "' + auth_key + '"' })
       .to_return(body: new_build_details, headers: {'Content-Type' => 'application/json'})
 
-    expect(page).to have_content 'failed', wait: 35
+    expect(page).to have_content 'failed', wait: 60
     expect(page).to have_content 'Ray'
 
   end

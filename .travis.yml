@@ -24,3 +24,4 @@ deploy:
 script:
   - bundle exec rspec spec
   - bundle exec rspec spec -t slow
+  - bundle exec rake spec:javascript

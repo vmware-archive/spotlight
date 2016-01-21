@@ -15,13 +15,11 @@ RSpec.describe Widget, type: :model do
       should validate_numericality_of(:height)
         .is_greater_than_or_equal_to(DashboardConfig::MIN_WIDGET_HEIGHT)
         .is_less_than_or_equal_to(DashboardConfig::MAX_WIDGET_HEIGHT)
-        .allow_nil
     end
     it do
       should validate_numericality_of(:width)
         .is_greater_than_or_equal_to(DashboardConfig::MIN_WIDGET_WIDTH)
         .is_less_than_or_equal_to(DashboardConfig::MAX_WIDGET_WIDTH)
-        .allow_nil
     end
   end
 
@@ -80,44 +78,6 @@ RSpec.describe Widget, type: :model do
 
     it 'has knowledge of fields' do
       expect(widget.category.fields).to be_a Hash
-    end
-  end
-
-  describe '#size' do
-    let(:widget) { FactoryGirl.create :widget, :with_default_dashboard, height: height, width: width}
-    let(:height) { 4 }
-    let(:width) { 5 }
-
-    context 'when widget has both height and width' do
-      it 'returns the size as a touple' do
-        expect(widget.size[:height]).to eq(height)
-        expect(widget.size[:width]).to eq(width)
-      end
-    end
-
-    context 'when widget has only height' do
-      let(:width) { nil }
-      it 'returns default width' do
-        expect(widget.size[:height]).to eq(height)
-        expect(widget.size[:width]).to eq(DashboardConfig::DEFAULT_WIDGET_WIDTH)
-      end
-    end
-
-    context 'when widget has only width' do
-      let(:height) { nil }
-      it 'returns default height' do
-        expect(widget.size[:height]).to eq(DashboardConfig::DEFAULT_WIDGET_HEIGHT)
-        expect(widget.size[:width]).to eq(width)
-      end
-    end
-
-    context 'when the widget has neither height or width' do
-      let(:height) { nil }
-      let(:width) { nil }
-      it 'returns default size' do
-        expect(widget.size[:height]).to eq(DashboardConfig::DEFAULT_WIDGET_HEIGHT)
-        expect(widget.size[:width]).to eq(DashboardConfig::DEFAULT_WIDGET_WIDTH)
-      end
     end
   end
 end

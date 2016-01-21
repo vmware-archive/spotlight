@@ -6,4 +6,4 @@ h1 Welcome to Spotlight!
 
 
 #ci-widgets
-  = react_component 'DashboardGrid', widgets: widgets_hash(@dashboard.widgets.active)
+  = react_component 'DashboardGrid', dashboardId: @dashboard.id, widgets: widgets_hash(@dashboard.widgets.active)

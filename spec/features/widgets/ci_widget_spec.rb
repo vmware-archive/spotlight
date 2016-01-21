@@ -4,14 +4,6 @@ describe "travis widget spec", :type => :feature do
   let(:server_url) { 'https://api.travis-ci.com' }
   let(:auth_key) { 'auth_key' }
   let(:project_name) { 'the_resistance/x_wing' }
-  let(:opts) do
-    {
-      server_url: server_url,
-      auth_key: auth_key,
-      project_name: project_name,
-      server_type: 'travis_ci'
-    }
-  end
 
   let(:build_id) { 12345 }
   let(:last_build_status) { 'success' }
@@ -29,9 +21,8 @@ describe "travis widget spec", :type => :feature do
   end
 
   before do
-    d = Dashboard.create(title: 'Default Dashboard')
-    w = Widget.create(title: 'Title', dashboard: d, category: 'ci_widget')
-    w.update(opts)
+    d = FactoryGirl.create :dashboard, title: 'Default Dashboard'
+    w = FactoryGirl.create :widget, dashboard: d, server_url: server_url, auth_key: auth_key, project_name: project_name, server_type: 'travis_ci'
 
     stub_request(:get, "#{server_url}/repos/#{project_name}")
       .with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json', 'Authorization' => 'Token "' + auth_key + '"' })
@@ -44,7 +35,7 @@ describe "travis widget spec", :type => :feature do
 
   it "must create a widget", js: true do
     visit '/'
-    expect(page).to have_content project_name
+    expect(page).to have_content project_name, wait: 5
     expect(page).to have_content last_build_status
     expect(page).to have_content last_committer
   end

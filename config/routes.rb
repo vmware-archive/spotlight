@@ -3,8 +3,11 @@ Rails.application.routes.draw do
   root to: 'dashboards#index'
   resources :dashboards, only: [:index]
   resources :widgets, only: [:new, :create, :destroy]
-  namespace :api do
-    resources :ci_status, only: [:show], defaults: { format: :json }
+  namespace :api, defaults: { format: :json } do
+    resources :ci_status, only: [:show]
+    resources :dashboards, only: [:layout] do
+      put '/layout', to: 'dashboards#layout'
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

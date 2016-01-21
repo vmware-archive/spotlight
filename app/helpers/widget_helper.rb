@@ -13,7 +13,12 @@ module WidgetHelper
       {
         uuid: widget.uuid,
         title: widget.title,
-        size: widget.size,
+        layout: {
+          w: widget.width,
+          h: widget.height,
+          x: widget.position_x,
+          y: widget.position_y
+        },
         widget_path: widget_path(id: widget.id)
       }
     end

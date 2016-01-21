@@ -1,7 +1,22 @@
 var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
 
-  onLayoutChange: function(layout) {
-    this.props.onLayoutChange(layout);
+  persistLayout: function(layout) {
+    var settings = {
+      "url": '/api/dashboards/' + this.props.dashboardId + '/layout',
+      "async": true,
+      "method": "PUT",
+      "data": JSON.stringify({"layout":layout}),
+      "dataType": "json",
+      "headers": {
+        "accept": "application/json",
+        "content_type":"application/json"
+      }
+    };
+
+    $.ajax(settings)
+      .done(function(data){
+        console.log(data)
+      });
   },
 
   getDefaultProps: function() {
@@ -25,9 +40,8 @@ var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
   },
 
   renderWidgets: function() {
-    console.log('hello');
     return _.map(this.props.widgets, function(widget) {
-      return (<div className='widget' key={widget.uuid} _grid={{w: widget.size.width, h: widget.size.height, x: 0, y: 0}}>
+      return (<div className='widget' key={widget.uuid} _grid={widget.layout}>
                 <CiWidget {...widget}/>
               </div>);
     });
@@ -35,7 +49,9 @@ var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
 
   render: function() {
     return (
-      <ReactGridLayout {...this.props}>
+      <ReactGridLayout
+        {...this.props}
+        onLayoutChange={this.persistLayout}>
         {this.renderWidgets()}
       </ReactGridLayout>
     )

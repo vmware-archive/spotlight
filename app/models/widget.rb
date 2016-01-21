@@ -11,14 +11,12 @@ class Widget < ActiveRecord::Base
   validates_numericality_of :height,
     only_integer: true,
     greater_than_or_equal_to: DashboardConfig::MIN_WIDGET_HEIGHT,
-    less_than_or_equal_to: DashboardConfig::MAX_WIDGET_HEIGHT,
-    allow_nil: true
+    less_than_or_equal_to: DashboardConfig::MAX_WIDGET_HEIGHT
 
   validates_numericality_of :width,
     only_integer: true,
     greater_than_or_equal_to: DashboardConfig::MIN_WIDGET_WIDTH,
-    less_than_or_equal_to: DashboardConfig::MAX_WIDGET_WIDTH,
-    allow_nil: true
+    less_than_or_equal_to: DashboardConfig::MAX_WIDGET_WIDTH
 
   scope :active, ->{ where(active: true) }
 
@@ -41,12 +39,6 @@ class Widget < ActiveRecord::Base
 
   def travis_url
     server_url + '/repos/' + project_name
-  end
-
-  def size
-    valid_width = width || DashboardConfig::DEFAULT_WIDGET_WIDTH
-    valid_height = height || DashboardConfig::DEFAULT_WIDGET_HEIGHT
-    {width: valid_width, height: valid_height}
   end
 
   private

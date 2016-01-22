@@ -41,7 +41,7 @@ var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
 
   renderWidgets: function() {
     return _.map(this.props.widgets, function(widget) {
-      return (<div className='widget' key={widget.uuid} _grid={widget.layout}>
+      return (<div className='widget card' key={widget.uuid} _grid={widget.layout}>
                 <CiWidget {...widget}/>
               </div>);
     });

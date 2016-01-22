@@ -1,9 +1,14 @@
-h1 Welcome to Spotlight!
+.fixed-action-btn style="bottom: 24px; right: 24px;"
+  a.btn-floating.btn-large.waves-effect.waves-light.red.tooltipped data-position="left" data-delay="20" data-tooltip="New Widget" href=new_widget_path
+    i.material-icons add
 
-.notice = flash[:notice]
+- if notice || alert
+  .row
+    .col.s12
+      .card.notice
+        .card-content
+          = flash[:notice]
 
-= link_to 'New Widget', new_widget_path
-
-
-#ci-widgets
-  = react_component 'DashboardGrid', dashboardId: @dashboard.id, widgets: widgets_hash(@dashboard.widgets.active)
+#ci-widgets.row
+  .col.s12
+    = react_component 'DashboardGrid', dashboardId: @dashboard.id, widgets: widgets_hash(@dashboard.widgets.active)

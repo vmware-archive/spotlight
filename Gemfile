@@ -15,6 +15,7 @@ gem 'classy_enum'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'react-rails', '1.4.1'
+gem 'materialize-sass'
 
 group :development do
   gem 'web-console', '~> 2.0'

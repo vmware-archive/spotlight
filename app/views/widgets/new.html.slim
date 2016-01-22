@@ -1,55 +1,68 @@
-#qa-new-widget-form
-  h1 New widget
+#qa-new-widget-form.container
+  .row
+    .col.s12
+      h3 New widget
 
-= form_for @widget do |f|
-  - if @widget.errors.any?
-    #error_explanation
-      h2 = "#{pluralize(@widget.errors.count, "error")} prohibited this widget from being saved:"
-      ul
-        - @widget.errors.full_messages.each do |message|
-          li = message
+  = form_for @widget do |f|
+    - if @widget.errors.any?
+      .row
+        .col.s12
+          #error_explanation.flash-message.card.pink.lighten-4
+            .flash-notice.card-content.valign-wrapper
+              i.left.material-icons.small warning
+              - @widget.errors.full_messages.each do |message|
+                span.valign
+                  = message
 
-  .field
-    = f.label :category
-    = f.select :category, widget_category_choices, {prompt: 'Select one...'}, {onchange: 'javascript:location.href = "/widgets/new?category=" + this.value;'}
+    .row
+      .col.s12
+        = f.label :category
+        = f.select :category, widget_category_choices, {prompt: 'Select one...'}, {onchange: 'javascript:location.href = "/widgets/new?category=" + this.value;', class: 'browser-default'}
 
-  - if @widget.category.present?
+    - if @widget.category.present?
+      .row
+        .input-field.col.s12
+          = f.text_field :title, placeholder: "Key in title of widget"
+          = f.label :title
+        .col.s6
+          = f.label :width
+          = f.select :width, widget_size_choices, {},  class: 'browser-default'
+        .col.s6
+          = f.label :height
+          = f.select :height, widget_size_choices, {}, class: 'browser-default'
 
-    hr
+      .row
+        .col.s12
+          h4 Widget Configuration
 
-    .field
-      = f.label :title
-      = f.text_field :title
-    .field
-      = f.label :width
-      = f.select :width, widget_size_choices
-    .field
-      = f.label :height
-      = f.select :height, widget_size_choices
+        - @widget.category.fields.each do |key, defaults|
+          - if defaults.nil?
+            .input-field.col.s12
+              = f.text_field key
+              = f.label key
+          - elsif defaults.is_a? Array
+            .col.s12
+              = f.label key
+              = f.select key, defaults, {}, class: 'browser-default'
 
-    h3 Widget Configuration
-    - @widget.category.fields.each do |key, defaults|
-      .field
-        = f.label key
-        - if defaults.nil?
-          = f.text_field key
-        - elsif defaults.is_a? Array
-          = f.select key, defaults
+      .row
+        .actions.col.s12
+          = f.submit 'Submit', class: 'waves-effect waves-light btn'
 
-    .actions = f.submit 'Submit'
+      - if Rails.env.development?
+        .row
+          .col.s12
+            .card
+              .card-content
+                h5 HINTS (This is for dev convenience)
+                dl
+                  dt Sample server url (just the base path):
+                  dd https://api.travis-ci.com
+                  dt Sample project name:
+                  dd neo/spotlight
+                  dt Valid authentication key:
+                  dd 5V_zKW9KmdYMpyBR12rtug
 
-    - if Rails.env.development?
-      hr
-
-      h4 HINTS (This is for dev convenience)
-      p
-        strong Sample server url (just the base path):
-        | https://api.travis-ci.com
-      p
-        strong Sample project name:
-        | neo/spotlight
-      p
-        strong Valid authentication key:
-        | 5V_zKW9KmdYMpyBR12rtug
-
-= link_to 'Back', dashboards_path
+  .row
+    .col.s12
+      = link_to '<< Back', dashboards_path

@@ -7,7 +7,7 @@ describe('CiWidget', function () {
 
     var titleNode = window.TestUtils.findRenderedDOMComponentWithTag(
       ciWidget,
-      'h3'
+      'h4'
     )
 
     expect(titleNode.textContent).toEqual(testTitle);

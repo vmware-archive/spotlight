@@ -9,7 +9,7 @@ describe "the dashboard widget creation", :type => :feature do
 
   it "must create a widget", js: true do
     visit '/'
-    click_link 'New Widget'
+    click_link 'add'
     expect(page).to have_css '#qa-new-widget-form'
 
     select 'Continuous Integration Status', from: 'Category'
@@ -36,7 +36,7 @@ describe "the dashboard widget creation", :type => :feature do
     it "must be able to delete a widget", js: true do
       visit '/'
       expect(page).to have_selector('.widget', count: 1)
-      click_link 'X'
+      click_link 'delete'
       sleep(3)
       page.driver.browser.switch_to.alert.accept
       expect(page).to have_selector('.widget', count: 0)

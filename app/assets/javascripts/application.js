@@ -12,9 +12,15 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require materialize-sprockets
 //= require react
 //= require react_ujs
 //= require components
 //= require react_grid_layout
 //= require lodash
 //= require_tree .
+
+$(document).ready(function(){
+  $('.tooltipped').tooltip({delay: 50});
+  $('select').material_select();
+});

@@ -21,7 +21,6 @@ var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
 
   getDefaultProps: function() {
     return {
-      items: 20,
       autoSize: true,
       cols: 12,
       rowHeight: 100,
@@ -30,8 +29,6 @@ var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
       minW: 1,
       maxH: 12,
       maxW: 12,
-      isDraggable: true,
-      isResizable: true,
       useCSSTransforms: true,
       listenToWindowResize: true,
       verticalCompact: true,
@@ -51,6 +48,8 @@ var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
     return (
       <ReactGridLayout
         {...this.props}
+        isDraggable={this.props.editMode}
+        isResizable={this.props.editMode}
         onLayoutChange={this.persistLayout}>
         {this.renderWidgets()}
       </ReactGridLayout>

@@ -23,7 +23,7 @@ var CiWidget = React.createClass({
             </tr>
           </tbody>
         </table>
-        <div className="buttons">
+        <div className="buttons edit-only">
           <a className="delete btn-floating waves-effect waves-light white-text red tooltipped" data-delay="20" data-tooltip="Remove Widget" data-confirm="Are you sure you want to delete this widget?" rel="nofollow" data-method="delete" href={this.props.widget_path}>
             <i className="tiny material-icons">delete</i>
           </a>

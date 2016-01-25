@@ -17,12 +17,11 @@ describe('DashboardGrid', function () {
     layout: testLayout,
     widget_path: testPath
   };
+  var editMode=false;
 
   beforeEach(function() {
-    jQuery(window).width(600);
-    jQuery(window).height(400);
     dashboard = window.TestUtils.renderIntoDocument(
-      <DashboardGrid widgets={[widgetProps]} dashboardId='1'/>
+      <DashboardGrid widgets={[widgetProps]} dashboardId='1' editMode={editMode}/>
     );
   });
 
@@ -47,4 +46,29 @@ describe('DashboardGrid', function () {
     expect(widgetWidth).toBeGreaterThan(50 - delta); //Note: 50% - 6 of 12 columns
     expect(widgetWidth).toBeLessThan(50 + delta);
   });
+
+  describe('not in edit mode', function () {
+    beforeEach(function() {
+      dashboard = window.TestUtils.renderIntoDocument(<DashboardGrid widgets={[widgetProps]} dashboardId='1' editMode={false}/>);
+    });
+
+    it('does not allow dragging', function() {
+      widgetClasses = window.TestUtils.findRenderedDOMComponentWithClass(dashboard, 'widget').className
+      expect(widgetClasses).not.toContain('react-draggable')
+    });
+    //
+    // it('does not allow resizing', function() {
+    //   widgetClasses = window.TestUtils.findRenderedDOMComponentWithTag(dashboard, 'span').className
+    //   expect(widgetClasses).not.toContain('react-resizable')
+    // });
+  });
+
+  describe('in edit mode', function () {
+    it('allows dragging', function() {
+      dashboard = window.TestUtils.renderIntoDocument(<DashboardGrid widgets={[widgetProps]} dashboardId='1' editMode={true}/>);
+      widgetClasses = window.TestUtils.findRenderedDOMComponentWithClass(dashboard, 'widget').className
+      expect(widgetClasses).toContain('react-draggable')
+    });
+  });
+
 });

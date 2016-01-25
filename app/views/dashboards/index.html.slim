@@ -1,14 +1,23 @@
-.fixed-action-btn style="bottom: 24px; right: 24px;"
-  a.btn-floating.btn-large.waves-effect.waves-light.red.tooltipped data-position="left" data-delay="20" data-tooltip="New Widget" href=new_widget_path
-    i.material-icons add
+div(class="#{@edit ? 'edit': 'view'}")
+  .fixed-action-btn.edit-only.save-button
+    a.btn-floating.btn-large.waves-effect.waves-light.red.tooltipped data-position="top" data-delay="20" data-tooltip="Save Dashboard" href=dashboards_path
+      i.material-icons save
 
-- if notice || alert
-  .row
+  .fixed-action-btn.edit-only.add-button
+    a.btn-floating.btn-large.waves-effect.waves-light.red.tooltipped data-position="top" data-delay="20" data-tooltip="New Widget" href=new_widget_path
+      i.material-icons add
+
+  .fixed-action-btn.view-only.edit-button
+    a.btn-floating.btn-large.waves-effect.waves-light.red.tooltipped data-position="left" data-delay="20" data-tooltip="Edit Dashboard" href=dashboards_path(edit: true)
+      i.material-icons edit
+
+  - if notice || alert
+    .row
+      .col.s12
+        .card.notice
+          .card-content
+            = flash[:notice]
+
+  #ci-widgets.row
     .col.s12
-      .card.notice
-        .card-content
-          = flash[:notice]
-
-#ci-widgets.row
-  .col.s12
-    = react_component 'DashboardGrid', dashboardId: @dashboard.id, widgets: widgets_hash(@dashboard.widgets.active)
+      = react_component 'DashboardGrid', dashboardId: @dashboard.id, widgets: widgets_hash(@dashboard.widgets.active), editMode: @edit

@@ -2,14 +2,48 @@ body{
   background-color: #eeeeee;
 }
 
+.edit {
+  .react-grid-item {
+    cursor: move;
+  }
+}
+
 .react-grid-item {
   border: #dedede 1px solid;
   overflow: hidden;
-  cursor: move;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.edit-only {
+  visibility: hidden;
+}
+
+.edit {
+  .edit-only {
+    visibility: visible;
+  }
+  .view-only{
+    visibility: hidden;
+  }
+}
+
+.fixed-action-btn{
+  bottom: 24px;
+
+  &.save-button {
+    right: 24px;
+  }
+
+  &.edit-button {
+    right: 24px;
+  }
+
+  &.add-button {
+    right: 90px;
+  }
 }

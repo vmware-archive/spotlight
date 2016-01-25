@@ -14,5 +14,15 @@ RSpec.describe DashboardsController, type: :controller do
       expect(assigns(:dashboard)).to be
       expect(assigns(:dashboard).title).to eq dashboard.title
     end
+
+    it 'assigns edit mode if passed in' do
+      get :index, {edit: 'true'}
+      expect(assigns(:edit)).to be
+    end
+
+    it 'does not assign edit mode if it is not passed in' do
+      get :index, {edit: 'false'}
+      expect(assigns(:edit)).to_not be
+    end
   end
 end

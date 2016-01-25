@@ -36,13 +36,14 @@ describe('DashboardGrid', function () {
 
   it('renders the widget with correct height', function(){
     var widgetHeight = parseInt(window.TestUtils.findRenderedDOMComponentWithClass(dashboard, 'widget').style.height.replace("px",""));
-    var delta = 11;
+    var delta = 15;
     expect(widgetHeight).toBeGreaterThan((rowHeight*2) - delta);
     expect(widgetHeight).toBeLessThan((rowHeight*2) + delta);
   });
 
   it('renders the widget with correct width', function() {
-    var delta = 2.1;
+    var widgetWidth = parseInt(window.TestUtils.findRenderedDOMComponentWithClass(dashboard, 'widget').style.width.replace("%",""));
+    var delta = 3;
     expect(widgetWidth).toBeGreaterThan(50 - delta); //Note: 50% - 6 of 12 columns
     expect(widgetWidth).toBeLessThan(50 + delta);
   });

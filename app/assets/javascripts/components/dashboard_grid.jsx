@@ -1,11 +1,12 @@
-var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
+var currentLayout;
 
-  persistLayout: function(layout) {
+var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
+  persistLayout: function() {
     var settings = {
       "url": '/api/dashboards/' + this.props.dashboardId + '/layout',
       "async": true,
       "method": "PUT",
-      "data": JSON.stringify({"layout":layout}),
+      "data": JSON.stringify({"layout": currentLayout}),
       "dataType": "json",
       "headers": {
         "accept": "application/json",
@@ -14,9 +15,14 @@ var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
     };
 
     $.ajax(settings)
-      .done(function(data){
-        console.log(data)
-      });
+    .done(function(data){
+      window.location.href = "/dashboards";
+      console.log(data);
+    });
+  },
+
+  updateLayout: function(layout) {
+    currentLayout = layout;
   },
 
   getDefaultProps: function() {
@@ -46,13 +52,26 @@ var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
 
   render: function() {
     return (
-      <ReactGridLayout
-        {...this.props}
-        isDraggable={this.props.editMode}
-        isResizable={this.props.editMode}
-        onLayoutChange={this.persistLayout}>
-        {this.renderWidgets()}
-      </ReactGridLayout>
+      <div>
+        <div className="fixed-action-btn edit-only save-button">
+          <a className="btn-floating btn-large waves-effect waves-light red tooltipped" data-delay="20" data-position="top" data-tooltip="Save Dashboard" href="javascript:void(0);" onClick={this.persistLayout}>
+            <i className="material-icons">save</i>
+          </a>
+        </div>
+        <div className="fixed-action-btn edit-only add-button">
+          <a className="btn-floating btn-large waves-effect waves-light red tooltipped" data-delay="20" data-position="top" data-tooltip="New Widget" href="/widgets/new">
+            <i className="material-icons">add</i>
+          </a>
+        </div>
+
+        <ReactGridLayout
+          {...this.props}
+          isDraggable={this.props.editMode}
+          isResizable={this.props.editMode}
+          onLayoutChange={this.updateLayout}>
+          {this.renderWidgets()}
+        </ReactGridLayout>
+      </div>
     )
   }
 });

@@ -1,12 +1,4 @@
 div(class="#{@edit ? 'edit': 'view'}")
-  .fixed-action-btn.edit-only.save-button
-    a.btn-floating.btn-large.waves-effect.waves-light.red.tooltipped data-position="top" data-delay="20" data-tooltip="Save Dashboard" href=dashboards_path
-      i.material-icons save
-
-  .fixed-action-btn.edit-only.add-button
-    a.btn-floating.btn-large.waves-effect.waves-light.red.tooltipped data-position="top" data-delay="20" data-tooltip="New Widget" href=new_widget_path
-      i.material-icons add
-
   .fixed-action-btn.view-only.edit-button
     a.btn-floating.btn-large.waves-effect.waves-light.red.tooltipped data-position="left" data-delay="20" data-tooltip="Edit Dashboard" href=dashboards_path(edit: true)
       i.material-icons edit

@@ -16,6 +16,7 @@ gem 'faraday'
 gem 'faraday_middleware'
 gem 'react-rails', '1.4.1'
 gem 'materialize-sass'
+gem 'therubyracer', platforms: :ruby
 
 group :development do
   gem 'web-console', '~> 2.0'

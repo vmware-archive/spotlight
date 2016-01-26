@@ -53,21 +53,25 @@ describe('DashboardGrid', function () {
     });
 
     it('does not allow dragging', function() {
-      widgetClasses = window.TestUtils.findRenderedDOMComponentWithClass(dashboard, 'widget').className
-      expect(widgetClasses).not.toContain('react-draggable')
+      expect(dashboard.getDOMNode().innerHTML).not.toContain("react-draggable")
     });
-    //
-    // it('does not allow resizing', function() {
-    //   widgetClasses = window.TestUtils.findRenderedDOMComponentWithTag(dashboard, 'span').className
-    //   expect(widgetClasses).not.toContain('react-resizable')
-    // });
+
+    it('does not allow resizing', function() {
+      expect(dashboard.getDOMNode().innerHTML).not.toContain("react-resizable")
+    });
   });
 
   describe('in edit mode', function () {
-    it('allows dragging', function() {
+    beforeEach(function() {
       dashboard = window.TestUtils.renderIntoDocument(<DashboardGrid widgets={[widgetProps]} dashboardId='1' editMode={true}/>);
-      widgetClasses = window.TestUtils.findRenderedDOMComponentWithClass(dashboard, 'widget').className
-      expect(widgetClasses).toContain('react-draggable')
+    });
+
+    it('allows dragging', function() {
+      expect(dashboard.getDOMNode().innerHTML).toContain("react-draggable")
+    });
+
+    it('allows resizing', function() {
+      expect(dashboard.getDOMNode().innerHTML).toContain("react-resizable")
     });
   });
 

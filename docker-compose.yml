@@ -1,0 +1,11 @@
+db:
+  image: postgres
+web:
+  build: .
+  command: bundle exec foreman start
+  volumes:
+    - .:/spotlight
+  ports:
+    - "3030:3000"
+  links:
+    - db

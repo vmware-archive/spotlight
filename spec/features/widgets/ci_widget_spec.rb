@@ -35,7 +35,7 @@ describe "travis widget spec", :type => :feature do
 
   it "must create a widget", js: true do
     visit '/'
-    expect(page).to have_content project_name, wait: 5
+    expect(page).to have_content project_name, wait: 10
     expect(page).to have_content last_build_status
     expect(page).to have_content last_committer
   end

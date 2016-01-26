@@ -1,24 +1,22 @@
-var currentLayout;
+var currentLayout; //TODO: refactor so we're not using a global variable for current layout state =-(
 
 var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
   persistLayout: function() {
     var settings = {
-      "url": '/api/dashboards/' + this.props.dashboardId + '/layout',
-      "async": true,
-      "method": "PUT",
-      "data": JSON.stringify({"layout": currentLayout}),
-      "dataType": "json",
-      "headers": {
-        "accept": "application/json",
-        "content_type":"application/json"
+      url: '/api/dashboards/' + this.props.dashboardId + '/layout',
+      async: true,
+      method: "PUT",
+      data: JSON.stringify({layout: currentLayout}),
+      dataType: "json",
+      contentType: "application/json",
+      headers: {
+        accept: "application/json",
+        content_type: "application/json"
       }
     };
 
     $.ajax(settings)
-    .done(function(data){
-      window.location.href = "/dashboards";
-      console.log(data);
-    });
+    .done(this.props.onSave);
   },
 
   updateLayout: function(layout) {

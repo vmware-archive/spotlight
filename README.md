@@ -29,22 +29,71 @@ We belive there is a need for a simple, hassle free approach to CI monitors.
 [todo]
 
 
-## Docker
+## Running as Docker Container
 
 1. Install [Docker Toolbox](https://docs.docker.com/mac/step_one/).
-2. Replace `config/database.yml` with a copy of `config/database-docker.yml`.
-3. Run the following commands:
 
-  ```
-docker-compose build
-docker-compose run --rm web rake db:create
-docker-compose run --rm web rake db:migrate
+2. In your working folder, create a new file: `docker-compose.yml`
+
+	```yaml
+db:
+  image: postgres
+web:
+  image: neosgspotlight/spotlight-rails
+  command: bundle exec foreman start
+  ports:
+    - "3030:3000"
+  links:
+    - db
+```
+
+3. Run the following command:
+
+	```
+docker-compose run --rm web rake db:create db:migrate
 docker-compose up
 ```
 
 4. Access to app via the container IP address (e.g. `http://192.168.99.100:3030`).
 
   *You can find out the IP address of the docker machine by running `docker-machine ls`.*
+
+### Rebuilding the Docker container
+
+1. Rebuild the local Docker image
+
+	```
+docker build -t spotlight-rails .
+```
+
+2. Check for the image ID
+
+	```
+➜  spotlight git:(docker) ✗ docker images
+REPOSITORY                       TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+spotlight-rails                  latest              ba3dcc9b42b1        16 seconds ago      954.3 MB
+```
+
+3. Login to your Docker account (one time exercise) with `docker login`:
+
+	```
+➜  spotlight git:(docker) ✗ docker login
+Username (miccheng):
+WARNING: login credentials saved in /Users/miccheng/.docker/config.json
+Login Succeeded
+```
+
+4. Tag the image
+
+	```
+docker tag ffb36fa443d8 neosgspotlight/spotlight-rails:latest
+```
+
+5. Push to Docker Hub
+
+	```
+docker push neosgspotlight/spotlight-rails
+```
 
 ## Contributors
 [todo]

@@ -1,10 +1,8 @@
 db:
   image: postgres
 web:
-  build: .
+  image: neosgspotlight/spotlight-rails
   command: bundle exec foreman start
-  volumes:
-    - .:/spotlight
   ports:
     - "3030:3000"
   links:

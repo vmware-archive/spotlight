@@ -7,3 +7,4 @@ WORKDIR /spotlight
 ADD Gemfile /spotlight/Gemfile
 ADD Gemfile.lock /spotlight/Gemfile.lock
 RUN bundle install
+ADD . /spotlight

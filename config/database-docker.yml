@@ -3,10 +3,14 @@ development: &default
   encoding: unicode
   database: spotlight_development
   pool: 5
-  username: postgres
-  password:
-  host: db
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  host: <%= ENV['DB_HOST'] %>
 
 test:
   <<: *default
   database: spotlight_test
+
+production:
+  <<: *default
+  database: <%= ENV['DB_NAME'] %>

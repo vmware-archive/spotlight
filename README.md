@@ -90,7 +90,7 @@ Login Succeeded
 4. Tag the image
 
 	```
-docker tag ffb36fa443d8 neosgspotlight/spotlight-rails:latest
+docker tag ba3dcc9b42b1 neosgspotlight/spotlight-rails:latest
 ```
 
 5. Push to Docker Hub

@@ -34,6 +34,13 @@ class CircleCiService
     end
   end
 
+  def build_history(repository=@project_name, limit=5)
+    repo_info = repo_info(repository)
+    return [] if repo_info.body.empty?
+
+    repo_info.body.first(limit)
+  end
+
   def last_build_info(repository=@project_name)
     payload = {
       repo_name:          repository,
@@ -45,6 +52,8 @@ class CircleCiService
     build_response = repo_info
     last_build = build_response.body.try(:first)
     last_build_time = last_build['stop_time'].present? ? last_build['stop_time'] : last_build['usage_queued_at']
+
+    payload[:build_history] = build_response.body.empty? ? [] : build_response.body.first(5).map{|h| h['status']}.reverse
 
     payload[:last_build_status] = last_build['status']
     payload[:last_build_time] = Time.parse(last_build_time).localtime.to_datetime

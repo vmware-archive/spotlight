@@ -75,6 +75,30 @@ RSpec.describe JenkinsCiService do
     end
   end
 
+  describe '#build_history' do
+    it 'returns build history' do
+      builds_response_body = {"builds" => [
+                                { "number" => 716, "result" => "FAILURE", "timestamp" => 1453883748620 },
+                                { "number" => 715, "result" => "SUCCESS", "timestamp" => 1453796262456 },
+                                { "number" => 714, "result" => "SUCCESS", "timestamp" => 1453794808186 },
+                                { "number" => 713, "result" => "SUCCESS", "timestamp" => 1453792548935 },
+                                { "number" => 712, "result" => "SUCCESS", "timestamp" => 1453782648654 },
+                                { "number" => 711, "result" => "SUCCESS", "timestamp" => 1453777248465 }
+                              ]
+                            }.to_json
+      builds_request = stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,timestamp,result]").
+          with(headers: { 'Accept' => 'application/json',
+                          'Authorization' => 'Token "' + auth_key + '"' }).
+          to_return(body: builds_response_body,
+                    headers: {'Content-Type' => 'application/json'})
+
+      result = subject.build_history
+
+      expect(builds_request).to have_been_made
+      expect(result.count).to eq 5
+    end
+  end
+
   describe '#last_build_info' do
     let(:build_id) { 12345 }
     let(:is_building) { false }
@@ -95,6 +119,21 @@ RSpec.describe JenkinsCiService do
           to_return(body: build_response_body,
                     headers: {'Content-Type' => 'application/json'})
 
+      builds_response_body = {"builds" => [
+                                { "number" => 716, "result" => "FAILURE", "timestamp" => 1453883748620 },
+                                { "number" => 715, "result" => "SUCCESS", "timestamp" => 1453796262456 },
+                                { "number" => 714, "result" => "SUCCESS", "timestamp" => 1453794808186 },
+                                { "number" => 713, "result" => "SUCCESS", "timestamp" => 1453792548935 },
+                                { "number" => 712, "result" => "SUCCESS", "timestamp" => 1453782648654 },
+                                { "number" => 711, "result" => "SUCCESS", "timestamp" => 1453777248465 }
+                              ]
+                            }.to_json
+      builds_request = stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,timestamp,result]").
+          with(headers: { 'Accept' => 'application/json',
+                          'Authorization' => 'Token "' + auth_key + '"' }).
+          to_return(body: builds_response_body,
+                    headers: {'Content-Type' => 'application/json'})
+
       result = subject.last_build_info
 
       expect(build_request).to have_been_made
@@ -103,6 +142,7 @@ RSpec.describe JenkinsCiService do
       expect(result[:last_build_time]).to eq last_build_time
       expect(result[:last_build_status]).to eq last_build_status
       expect(result[:last_committer]).to eq last_committer
+      expect(result[:build_history]).to eq ['SUCCESS', 'SUCCESS', 'SUCCESS', 'SUCCESS', 'FAILURE']
     end
   end
 end

@@ -19,6 +19,17 @@ describe "travis widget spec", :type => :feature do
   end
   let!(:build_request) do
   end
+  let!(:builds_response_body) do
+    {"builds" => [
+        { "state" => 'passed' },
+        { "state" => 'passed' },
+        { "state" => 'failed' },
+        { "state" => 'failed' },
+        { "state" => 'failed' },
+        { "state" => 'passed' }
+      ]
+    }.to_json
+  end
 
   before do
     d = FactoryGirl.create :dashboard, title: 'Default Dashboard'
@@ -31,6 +42,12 @@ describe "travis widget spec", :type => :feature do
     stub_request(:get, "#{server_url}/repos/#{project_name}/builds/#{build_id}")
       .with(headers: {'Accept' => 'application/vnd.travis-ci.2+json', 'Authorization' => 'Token "' + auth_key + '"' })
       .to_return(body: build_response_body, headers: {'Content-Type' => 'application/json'})
+
+    stub_request(:get, "#{server_url}/repos/#{project_name}/builds").
+      with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
+                      'Authorization' => 'Token "' + auth_key + '"' }).
+      to_return(body: builds_response_body,
+                headers: {'Content-Type' => 'application/json'})
   end
 
   it "must create a widget", js: true do

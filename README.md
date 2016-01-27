@@ -36,15 +36,15 @@ We belive there is a need for a simple, hassle free approach to CI monitors.
 2. In your working folder, create a new file: `docker-compose.yml`
 
 	```yaml
-db:
-  image: postgres
-web:
-  image: neosgspotlight/spotlight-rails
-  command: bundle exec foreman start
-  ports:
-    - "3030:3000"
-  links:
-    - db
+	db:
+		image: postgres
+	web:
+		image: neosgspotlight/spotlight-rails
+		command: bundle exec foreman start
+		ports:
+			- "3030:3000"
+		links:
+			- db
 ```
 
 3. Run the following command:

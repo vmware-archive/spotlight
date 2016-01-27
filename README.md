@@ -50,8 +50,8 @@ We belive there is a need for a simple, hassle free approach to CI monitors.
 3. Run the following command:
 
 	```
-docker-compose run --rm web rake db:create db:migrate
 docker-compose up
+docker-compose run --rm web rake db:create db:migrate
 ```
 
 4. Access to app via the container IP address (e.g. `http://192.168.99.100:3030`).

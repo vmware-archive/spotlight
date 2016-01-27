@@ -41,11 +41,15 @@ We belive there is a need for a simple, hassle free approach to CI monitors.
 	web:
 		image: neosgspotlight/spotlight-rails
 		command: bundle exec foreman start
+		environment:
+			- SECRET_KEY_BASE=<change_me!>
 		ports:
 			- "3030:3000"
 		links:
 			- db
 ```
+
+	***Remember to add your own `SECRET_KEY_BASE`.***
 
 3. Run the following command:
 

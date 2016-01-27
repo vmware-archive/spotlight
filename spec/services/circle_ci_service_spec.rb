@@ -73,6 +73,20 @@ RSpec.describe CircleCiService do
     end
   end
 
+  describe '#build_history' do
+    it 'returns build history' do
+      mock_request = stub_request(:get, "#{server_url}/api/v1/project/#{project_name}?circle-token=#{auth_key}").
+          with(headers: { 'Accept' => 'application/json' }).
+          to_return(body:    '[{"status":"failed"}, {"status":"success"}, {"status":"success"}, {"status":"success"}, {"status":"success"}]',
+                    headers: {'Content-Type' => 'application/json'})
+
+      result = subject.build_history
+
+      expect(mock_request).to have_been_made
+      expect(result.count).to eq 5
+    end
+  end
+
   describe '#last_build_info' do
     let(:build_id) { 12345 }
     let(:last_build_status) { 'success' }
@@ -87,7 +101,11 @@ RSpec.describe CircleCiService do
           outcome: last_build_status,
           stop_time: '2016-01-15T08:20:20.000Z',
           usage_queued_at: '2016-01-15T08:20:00.000Z'
-        }
+        },
+        { status: 'success' },
+        { status: 'success' },
+        { status: 'success' },
+        { status: 'failed' },
       ].to_json
 
       build_request = stub_request(:get, "#{server_url}/api/v1/project/#{project_name}?circle-token=#{auth_key}").
@@ -103,6 +121,7 @@ RSpec.describe CircleCiService do
       expect(result[:last_build_time]).to eq last_build_time
       expect(result[:last_build_status]).to eq last_build_status
       expect(result[:last_committer]).to eq last_committer
+      expect(result[:build_history]).to eq ['failed', 'success', 'success', 'success', last_build_status]
     end
   end
 end

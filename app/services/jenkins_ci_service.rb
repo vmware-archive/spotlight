@@ -36,6 +36,16 @@ class JenkinsCiService
     end
   end
 
+  def build_history(repository=@project_name, limit=5)
+    build_history = connection.get do |req|
+      req.url '/job/' + repository + '/api/json?tree=builds[number,timestamp,result]'
+      req.headers['Accept'] = 'application/json'
+      req.headers['Authorization'] = 'Token "' + @auth_key + '"' if @auth_key.present?
+    end
+
+    build_history.body['builds'].first(5)
+  end
+
   def last_build_info(repository=@project_name)
     payload = {
       repo_name:          repository,
@@ -51,6 +61,8 @@ class JenkinsCiService
     payload[:last_build_status] = last_build['building'] ? 'building' : last_build['result']
     payload[:last_build_time] = Time.at(last_build['timestamp'] / 1000).to_datetime
     payload[:last_committer] = last_commit['author']['fullName']
+
+    payload[:build_history] = build_history(repository).reverse.map{|h| h['result']}
 
     payload
   end

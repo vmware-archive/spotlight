@@ -100,6 +100,24 @@ RSpec.describe TravisCiService do
         to_return(body: build_response_body,
                   headers: {'Content-Type' => 'application/json'})
     end
+    let!(:builds_response_body) do
+      {"builds" => [
+          { "state" => 'passed' },
+          { "state" => 'passed' },
+          { "state" => 'failed' },
+          { "state" => 'failed' },
+          { "state" => 'failed' },
+          { "state" => 'passed' }
+        ]
+      }.to_json
+    end
+    let!(:builds_request) do
+      stub_request(:get, "#{server_url}/repos/#{project_name}/builds").
+        with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
+                        'Authorization' => 'Token "' + auth_key + '"' }).
+        to_return(body: builds_response_body,
+                  headers: {'Content-Type' => 'application/json'})
+    end
 
     it 'makes request to repo' do
       result = subject.last_build_info
@@ -111,6 +129,7 @@ RSpec.describe TravisCiService do
       expect(result[:last_build_time]).to eq last_build_time
       expect(result[:last_build_status]).to eq last_build_status
       expect(result[:last_committer]).to eq last_committer
+      expect(result[:build_history]).to eq ['failed', 'failed', 'failed', 'passed', 'passed']
     end
 
     context 'build just started' do
@@ -127,6 +146,32 @@ RSpec.describe TravisCiService do
         expect(result[:last_build_time]).to eq last_build_time
       end
     end
+  end
 
+  describe '#build_history' do
+    let!(:builds_response_body) do
+      {"builds" => [
+          { "state" => 'passed' },
+          { "state" => 'passed' },
+          { "state" => 'failed' },
+          { "state" => 'failed' },
+          { "state" => 'failed' },
+          { "state" => 'passed' }
+        ]
+      }.to_json
+    end
+    let!(:builds_request) do
+      stub_request(:get, "#{server_url}/repos/#{project_name}/builds").
+        with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
+                        'Authorization' => 'Token "' + auth_key + '"' }).
+        to_return(body: builds_response_body,
+                  headers: {'Content-Type' => 'application/json'})
+    end
+
+    it 'fetches build history' do
+      result = subject.build_history
+
+      expect(result.count).to eq 5
+    end
   end
 end

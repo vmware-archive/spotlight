@@ -58,6 +58,18 @@ class TravisCiService
       payload[:last_committer] = last_commit['author_name']
     end
 
+    payload[:build_history] = build_history(repository).reverse.map{|h| h['state']}
+
     payload
+  end
+
+  def build_history(repository=@project_name, limit=5)
+    builds_response = connection.get do |req|
+      req.url '/repos/' + repository + '/builds'
+      req.headers['Accept'] = 'application/vnd.travis-ci.2+json'
+      req.headers['Authorization'] = 'Token "' + @auth_key + '"'
+    end
+
+    builds_response.body['builds'].first(limit)
   end
 end

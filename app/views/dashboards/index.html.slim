@@ -1,15 +1,10 @@
-div(class="#{@edit ? 'edit': 'view'}")
-  .fixed-action-btn.view-only.edit-button
-    a.btn-floating.btn-large.waves-effect.waves-light.red.tooltipped data-position="left" data-delay="20" data-tooltip="Edit Dashboard" href=dashboards_path(edit: true)
-      i.material-icons edit
-
-  - if notice || alert
-    .row
-      .col.s12
-        .card.notice
-          .card-content
-            = flash[:notice]
-
-  #ci-widgets.row
+- if notice || alert
+  .row
     .col.s12
-      = react_component 'DashboardGrid', dashboardId: @dashboard.id, widgets: widgets_hash(@dashboard.widgets.active), editMode: @edit
+      .card.notice
+        .card-content
+          = flash[:notice]
+
+.row
+  .col.s12
+    = react_component 'SpotlightWindow', dashboardId: @dashboard.id, widgets: widgets_hash(@dashboard.widgets.active), editMode: @edit

@@ -119,7 +119,7 @@ describe('DashboardGrid', function () {
         request.respondWith({ status: 200, responseText: '{}' });
       });
 
-      it('reloads the page in view-only mode', function() {
+      it('calls the onSave function', function() {
         expect(fakeWindowRedirect.calls.count()).toBe(1);
       });
     });

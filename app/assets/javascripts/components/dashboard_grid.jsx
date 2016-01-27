@@ -50,17 +50,10 @@ var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
 
   render: function() {
     return (
-      <div>
-        <div className="fixed-action-btn edit-only save-button">
-          <a className="btn-floating btn-large waves-effect waves-light red tooltipped" data-delay="20" data-position="top" data-tooltip="Save Dashboard" href="javascript:void(0);" onClick={this.persistLayout}>
-            <i className="material-icons">save</i>
-          </a>
-        </div>
-        <div className="fixed-action-btn edit-only add-button">
-          <a className="btn-floating btn-large waves-effect waves-light red tooltipped" data-delay="20" data-position="top" data-tooltip="New Widget" href="/widgets/new">
-            <i className="material-icons">add</i>
-          </a>
-        </div>
+      <div className={this.props.editMode ? 'edit': 'view'}>
+        <DashboardButton action="save" href="javascript:void(0);" onClick={this.persistLayout} tooltip="Save Dashboard" editOnly={true}/>
+        <DashboardButton action="add" href="/widgets/new" tooltip="New Widget" editOnly={true}/>
+        <DashboardButton action="edit" href="/dashboards?edit=true" tooltip="Edit Dashboard" editOnly={false}/>
 
         <ReactGridLayout
           {...this.props}

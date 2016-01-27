@@ -46,7 +46,7 @@ describe "the dashboard widget creation", :type => :feature do
     end
 
     it 'renders the widget in the correct position', js: true do
-      FactoryGirl.create(:widget, dashboard: Dashboard.first,
+      new_widget = FactoryGirl.create(:widget, dashboard: Dashboard.first,
         position_x: 2, position_y: 1,
         height: 4, width: 5 )
       row_height = 100;
@@ -54,8 +54,11 @@ describe "the dashboard widget creation", :type => :feature do
 
       visit '/'
 
-      widget = page.all(:css, '.widget').last
-      position_x, position_y = widget[:style]
+      ci_widget_node = page.first(:css, ".ci-widget[data-uuid='#{new_widget.uuid}']")
+      widget_node = ci_widget_node.find(:xpath, '..')
+      #widget is the parent div of the ci_widget.
+
+      position_x, position_y = widget_node[:style]
                                   .match(/translate\((.*)px, (.*)px\)/)[1..2]
                                   .map(&:to_i)
       window_width = page.current_window.size[0]

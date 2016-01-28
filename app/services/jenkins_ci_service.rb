@@ -1,6 +1,12 @@
 class JenkinsCiService
   attr_reader :connection, :server_url, :auth_key, :project_name
 
+  STATUSES = {
+    'SUCCESS' => Category::CiWidget::STATUS_PASSED,
+    'FAILURE' => Category::CiWidget::STATUS_FAILED,
+    nil => Category::CiWidget::STATUS_BUILDING # Jenkins returns null when its building
+  }
+
   def initialize(options={})
     @server_url = options[:server_url]
     @auth_key = options[:auth_key]
@@ -58,13 +64,18 @@ class JenkinsCiService
     last_build = build_response.body
     last_commit = last_build['changeSet']['items'][0]
 
-    payload[:last_build_status] = last_build['building'] ? 'building' : last_build['result']
+    payload[:last_build_status] = normalized_state_for(last_build['result'])
     payload[:last_build_time] = Time.at(last_build['timestamp'] / 1000).to_datetime
     payload[:last_committer] = last_commit['author']['fullName']
 
-    payload[:build_history] = build_history(repository).reverse.map{|h| h['result']}
+    payload[:build_history] = build_history(repository).reverse.map{|h| normalized_state_for(h['result']) }
 
     payload
   end
 
+  private
+
+  def normalized_state_for(state)
+    STATUSES[state] || Category::CiWidget::STATUS_UNKNOWN
+  end
 end

@@ -21,12 +21,12 @@ describe "travis widget spec", :type => :feature do
   end
   let!(:builds_response_body) do
     {"builds" => [
-        { "state" => 'passed' },
-        { "state" => 'passed' },
-        { "state" => 'failed' },
-        { "state" => 'failed' },
-        { "state" => 'failed' },
-        { "state" => 'passed' }
+        { "state" => 'started', started_at: '2016-01-28T09:03:32Z' },
+        { "state" => 'passed', started_at: '2016-01-28T08:18:46Z', finished_at: '2016-01-28T08:21:47Z' },
+        { "state" => 'failed', started_at: '2016-01-28T06:43:57Z', finished_at: '2016-01-28T06:47:48Z' },
+        { "state" => 'failed', started_at: '2016-01-28T04:09:34Z', finished_at: '2016-01-28T04:12:34Z' },
+        { "state" => 'failed', started_at: '2016-01-27T09:10:35Z', finished_at: '2016-01-27T09:13:23Z' },
+        { "state" => 'passed', started_at: '2016-01-27T08:11:46Z', finished_at: '2016-01-27T08:14:49Z' }
       ]
     }.to_json
   end

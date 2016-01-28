@@ -65,15 +65,29 @@ class JenkinsCiService
     last_commit = last_build['changeSet']['items'][0]
 
     payload[:last_build_status] = normalized_state_for(last_build['result'])
-    payload[:last_build_time] = Time.at(last_build['timestamp'] / 1000).to_datetime
+    payload[:last_build_time] = parse_timestamp(last_build['timestamp'])
     payload[:last_committer] = last_commit['author']['fullName']
 
-    payload[:build_history] = build_history(repository).map{|h| normalized_state_for(h['result']) }
+    payload[:build_history] = build_history(repository).map{|build| normalized_build_entry(build) }
 
     payload
   end
 
   private
+
+  def parse_timestamp(timestamp_string)
+    Time.at(timestamp_string / 1000).to_datetime
+  end
+
+  def normalized_build_entry(build)
+    state = normalized_state_for(build['result'])
+    timestamp = build['timestamp']
+
+    {
+      state: state,
+      timestamp: parse_timestamp(timestamp)
+    }
+  end
 
   def normalized_state_for(state)
     STATUSES[state] || Category::CiWidget::STATUS_UNKNOWN

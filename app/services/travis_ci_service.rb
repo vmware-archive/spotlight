@@ -42,6 +42,16 @@ class TravisCiService
     end
   end
 
+  def build_history(repository=@project_name, limit=5)
+    builds_response = connection.get do |req|
+      req.url '/repos/' + repository + '/builds'
+      req.headers['Accept'] = 'application/vnd.travis-ci.2+json'
+      req.headers['Authorization'] = 'Token "' + @auth_key + '"'
+    end
+
+    builds_response.body['builds'].first(limit)
+  end
+
   def last_build_info(repository=@project_name)
     payload = {
       repo_name:          repository,
@@ -60,26 +70,30 @@ class TravisCiService
 
       payload[:last_build_status] = normalized_state_for(last_build['state'])
       build_time = last_build['finished_at'].present? ? last_build['finished_at'] : last_build['started_at']
-      payload[:last_build_time] = Time.parse(build_time).localtime.to_datetime
+      payload[:last_build_time] = parse_timestamp(build_time)
       payload[:last_committer] = last_commit['author_name']
     end
 
-    payload[:build_history] = build_history(repository).map{|h| normalized_state_for(h['state']) }
+    payload[:build_history] = build_history(repository).map{|build| normalized_build_entry(build) }
 
     payload
   end
 
-  def build_history(repository=@project_name, limit=5)
-    builds_response = connection.get do |req|
-      req.url '/repos/' + repository + '/builds'
-      req.headers['Accept'] = 'application/vnd.travis-ci.2+json'
-      req.headers['Authorization'] = 'Token "' + @auth_key + '"'
-    end
+  private
 
-    builds_response.body['builds'].first(limit)
+  def parse_timestamp(timestamp_string)
+    Time.parse(timestamp_string).localtime.to_datetime
   end
 
-  private
+  def normalized_build_entry(build)
+    state = normalized_state_for(build['state'])
+    timestamp = state == Category::CiWidget::STATUS_BUILDING ? build['started_at'] : build['finished_at']
+
+    {
+      state: state,
+      timestamp: parse_timestamp(timestamp)
+    }
+  end
 
   def normalized_state_for(state)
     STATUSES[state] || Category::CiWidget::STATUS_UNKNOWN

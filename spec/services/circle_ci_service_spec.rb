@@ -77,7 +77,7 @@ RSpec.describe CircleCiService do
     it 'returns build history' do
       mock_request = stub_request(:get, "#{server_url}/api/v1/project/#{project_name}?circle-token=#{auth_key}").
           with(headers: { 'Accept' => 'application/json' }).
-          to_return(body:    '[{"status":"failed"}, {"status":"success"}, {"status":"success"}, {"status":"success"}, {"status":"success"}]',
+          to_return(body:    '[{"status":"failed"}, {"status":"success"}, {"status":"cancelled"}, {"status":"fixed"}, {"status":"success"}]',
                     headers: {'Content-Type' => 'application/json'})
 
       result = subject.build_history
@@ -89,7 +89,7 @@ RSpec.describe CircleCiService do
 
   describe '#last_build_info' do
     let(:build_id) { 12345 }
-    let(:last_build_status) { 'success' }
+    let(:last_build_status) { 'running' }
     let(:last_build_time) { '2016-01-15T16:20:20.000+08:00' }
     let(:last_committer) { 'Rahul Rajeev' }
 
@@ -103,8 +103,8 @@ RSpec.describe CircleCiService do
           usage_queued_at: '2016-01-15T08:20:00.000Z'
         },
         { status: 'success' },
-        { status: 'success' },
-        { status: 'success' },
+        { status: 'cancelled' },
+        { status: 'fixed' },
         { status: 'failed' },
       ].to_json
 
@@ -119,9 +119,13 @@ RSpec.describe CircleCiService do
       expect(result.keys).to include :repo_name, :last_build_status, :last_committer, :last_build_time
       expect(result[:repo_name]).to eq project_name
       expect(result[:last_build_time]).to eq last_build_time
-      expect(result[:last_build_status]).to eq last_build_status
+      expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_BUILDING
       expect(result[:last_committer]).to eq last_committer
-      expect(result[:build_history]).to eq ['failed', 'success', 'success', 'success', last_build_status]
+      expect(result[:build_history]).to eq [ Category::CiWidget::STATUS_FAILED,
+                                              Category::CiWidget::STATUS_PASSED,
+                                              Category::CiWidget::STATUS_FAILED,
+                                              Category::CiWidget::STATUS_PASSED,
+                                              Category::CiWidget::STATUS_BUILDING ]
     end
   end
 end

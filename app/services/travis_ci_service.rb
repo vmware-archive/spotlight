@@ -1,6 +1,12 @@
 class TravisCiService
   attr_reader :connection, :server_url, :auth_key, :project_name
 
+  STATUSES = {
+    'passed' => Category::CiWidget::STATUS_PASSED,
+    'failed' => Category::CiWidget::STATUS_FAILED,
+    'started' => Category::CiWidget::STATUS_BUILDING
+  }
+
   def initialize(options={})
     @server_url = options[:server_url]
     @auth_key = options[:auth_key]
@@ -52,13 +58,13 @@ class TravisCiService
       last_build = build_response.body['build']
       last_commit = build_response.body['commit']
 
-      payload[:last_build_status] = last_build['state']
+      payload[:last_build_status] = normalized_state_for(last_build['state'])
       build_time = last_build['finished_at'].present? ? last_build['finished_at'] : last_build['started_at']
       payload[:last_build_time] = Time.parse(build_time).localtime.to_datetime
       payload[:last_committer] = last_commit['author_name']
     end
 
-    payload[:build_history] = build_history(repository).reverse.map{|h| h['state']}
+    payload[:build_history] = build_history(repository).reverse.map{|h| normalized_state_for(h['state']) }
 
     payload
   end
@@ -71,5 +77,11 @@ class TravisCiService
     end
 
     builds_response.body['builds'].first(limit)
+  end
+
+  private
+
+  def normalized_state_for(state)
+    STATUSES[state] || Category::CiWidget::STATUS_UNKNOWN
   end
 end

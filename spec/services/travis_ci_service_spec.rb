@@ -77,7 +77,7 @@ RSpec.describe TravisCiService do
 
   describe '#last_build_info' do
     let(:build_id) { 12345 }
-    let(:last_build_status) { 'success' }
+    let(:last_build_status) { 'passed' }
     let(:last_build_time) { '2016-01-15T17:42:34.000+08:00' }
     let(:last_committer) { 'Rahul Rajeev' }
 
@@ -102,7 +102,7 @@ RSpec.describe TravisCiService do
     end
     let!(:builds_response_body) do
       {"builds" => [
-          { "state" => 'passed' },
+          { "state" => 'started' },
           { "state" => 'passed' },
           { "state" => 'failed' },
           { "state" => 'failed' },
@@ -127,9 +127,13 @@ RSpec.describe TravisCiService do
       expect(result.keys).to include :repo_name, :last_build_status, :last_committer, :last_build_time
       expect(result[:repo_name]).to eq project_name
       expect(result[:last_build_time]).to eq last_build_time
-      expect(result[:last_build_status]).to eq last_build_status
+      expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_PASSED
       expect(result[:last_committer]).to eq last_committer
-      expect(result[:build_history]).to eq ['failed', 'failed', 'failed', 'passed', 'passed']
+      expect(result[:build_history]).to eq [ Category::CiWidget::STATUS_FAILED,
+                                             Category::CiWidget::STATUS_FAILED,
+                                             Category::CiWidget::STATUS_FAILED,
+                                             Category::CiWidget::STATUS_PASSED,
+                                             Category::CiWidget::STATUS_BUILDING ]
     end
 
     context 'build just started' do
@@ -151,7 +155,7 @@ RSpec.describe TravisCiService do
   describe '#build_history' do
     let!(:builds_response_body) do
       {"builds" => [
-          { "state" => 'passed' },
+          { "state" => 'started' },
           { "state" => 'passed' },
           { "state" => 'failed' },
           { "state" => 'failed' },

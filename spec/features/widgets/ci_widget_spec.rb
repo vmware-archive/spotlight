@@ -6,7 +6,7 @@ describe "travis widget spec", :type => :feature do
   let(:project_name) { 'the_resistance/x_wing' }
 
   let(:build_id) { 12345 }
-  let(:last_build_status) { 'success' }
+  let(:last_build_status) { 'passed' }
   let(:last_build_time) { '2016-01-15T17:42:34.000+08:00' }
   let(:last_committer) { 'Luke Skywalker' }
 

@@ -121,11 +121,11 @@ RSpec.describe CircleCiService do
       expect(result[:last_build_time]).to eq last_build_time
       expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_BUILDING
       expect(result[:last_committer]).to eq last_committer
-      expect(result[:build_history]).to eq [ Category::CiWidget::STATUS_FAILED,
+      expect(result[:build_history]).to eq [ Category::CiWidget::STATUS_BUILDING,
                                               Category::CiWidget::STATUS_PASSED,
                                               Category::CiWidget::STATUS_FAILED,
                                               Category::CiWidget::STATUS_PASSED,
-                                              Category::CiWidget::STATUS_BUILDING ]
+                                              Category::CiWidget::STATUS_FAILED ]
     end
   end
 end

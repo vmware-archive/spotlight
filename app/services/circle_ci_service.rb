@@ -61,7 +61,7 @@ class CircleCiService
     last_build = build_response.body.try(:first)
     last_build_time = last_build['stop_time'].present? ? last_build['stop_time'] : last_build['usage_queued_at']
 
-    payload[:build_history] = build_response.body.empty? ? [] : build_response.body.first(5).map{|h| normalized_state_for(h['status']) }.reverse
+    payload[:build_history] = build_response.body.empty? ? [] : build_response.body.first(5).map{|h| normalized_state_for(h['status']) }
 
     payload[:last_build_status] = normalized_state_for(last_build['status'])
     payload[:last_build_time] = Time.parse(last_build_time).localtime.to_datetime

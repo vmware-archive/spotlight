@@ -64,7 +64,7 @@ class TravisCiService
       payload[:last_committer] = last_commit['author_name']
     end
 
-    payload[:build_history] = build_history(repository).reverse.map{|h| normalized_state_for(h['state']) }
+    payload[:build_history] = build_history(repository).map{|h| normalized_state_for(h['state']) }
 
     payload
   end

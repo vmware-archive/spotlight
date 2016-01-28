@@ -1,56 +1,54 @@
 //= require mock-ajax
 
 describe('DashboardGrid', function () {
-  var dashboard;
-  var testTitle = "Concierge";
-  var testUuid = "123456789";
-  var testPath = '/widget_path';
-  var rowHeight = 100;
-  var maxColumns = 12;
-  var testLayout = {
+  let dashboard;
+  const testTitle = 'Concierge';
+  const testUuid = '123456789';
+  const testPath = '/widget_path';
+  const rowHeight = 100;
+  const testLayout = {
     x: 3,
     y: 0,
     h: 2,
     w: 6
   };
-  var widgetProps = {
+  const widgetProps = {
     uuid: testUuid,
     title: testTitle,
     layout: testLayout,
     widget_path: testPath
   };
-  var editMode=false;
-  var fakeWindowRedirect = jasmine.createSpy('fakeWindowRedirect')
+  const fakeWindowRedirect = jasmine.createSpy('fakeWindowRedirect')
 
   beforeEach(function() {
     dashboard = window.TestUtils.renderIntoDocument(
-      <DashboardGrid widgets={[widgetProps]} dashboardId='1' editMode={editMode} onSave={fakeWindowRedirect}/>
+      <DashboardGrid widgets={[widgetProps]} dashboardId="1" editMode={false} onSave={fakeWindowRedirect}/>
     );
   });
 
   it('renders the widget', function () {
-    var titleNode = window.TestUtils.findRenderedDOMComponentWithTag(
+    const titleNode = window.TestUtils.findRenderedDOMComponentWithTag(
       dashboard,
       'h4'
-    )
+    );
     expect(titleNode.textContent).toEqual(testTitle);
   });
 
   it('renders the widget with correct height', function(){
-    var widgetHeight = parseInt(window.TestUtils.findRenderedDOMComponentWithClass(dashboard, 'widget').style.height.replace("px",""));
-    var delta = 15;
+    let widgetHeight = parseInt(window.TestUtils.findRenderedDOMComponentWithClass(dashboard, 'widget').style.height.replace("px",""));
+    let delta = 15;
     expect(widgetHeight).toBeGreaterThan((rowHeight*2) - delta);
     expect(widgetHeight).toBeLessThan((rowHeight*2) + delta);
   });
 
   it('renders the widget with correct width', function() {
-    var widgetWidth = parseInt(window.TestUtils.findRenderedDOMComponentWithClass(dashboard, 'widget').style.width.replace("%",""));
-    var delta = 3;
+    let widgetWidth = parseInt(window.TestUtils.findRenderedDOMComponentWithClass(dashboard, 'widget').style.width.replace("%",""));
+    let delta = 3;
     expect(widgetWidth).toBeGreaterThan(50 - delta); //Note: 50% - 6 of 12 columns
     expect(widgetWidth).toBeLessThan(50 + delta);
   });
 
-  describe('not in edit mode', function () {
+  describe('not in edit mode', function() {
     beforeEach(function() {
       dashboard = window.TestUtils.renderIntoDocument(<DashboardGrid widgets={[widgetProps]} dashboardId='1' editMode={false}/>);
     });
@@ -80,7 +78,7 @@ describe('DashboardGrid', function () {
 
   describe('update layout',function(){
     it('initialized the current layout with widget layout', function() {
-      expectedLayout = _.extend(testLayout, {"i": testUuid});
+      const expectedLayout = _.extend(testLayout, {"i": testUuid});
       expect(currentLayout).toEqual([expectedLayout]);
     });
 
@@ -100,7 +98,7 @@ describe('DashboardGrid', function () {
       jasmine.Ajax.uninstall();
     });
 
-    var doPersist = function(){ dashboard.persistLayout() };
+    let doPersist = function(){ dashboard.persistLayout() };
 
     it('sends the current layout to the server', function() {
       currentLayout = 'new Layout';

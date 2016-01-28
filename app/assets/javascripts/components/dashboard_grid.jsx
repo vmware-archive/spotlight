@@ -1,5 +1,3 @@
-let currentLayout; // TODO: refactor so we're not using a global variable for current layout state =-(
-
 const DashboardGrid = React.createClass({
   displayName: 'Dashboard Grid',
 
@@ -27,12 +25,17 @@ const DashboardGrid = React.createClass({
     };
   },
 
+  getInitialState: function() {
+    return {currentLayout: []};
+  },
+
+
   persistLayout: function() {
     const settings = {
       url: '/api/dashboards/' + this.props.dashboardId + '/layout',
       async: true,
       method: 'PUT',
-      data: JSON.stringify({layout: currentLayout}),
+      data: JSON.stringify({layout: this.state.currentLayout}),
       dataType: 'json',
       contentType: 'application/json',
       headers: {
@@ -46,9 +49,8 @@ const DashboardGrid = React.createClass({
   },
 
   updateLayout: function(layout) {
-    currentLayout = layout;
+    this.state.currentLayout = layout;
   },
-
 
   renderWidgets: function() {
     return _.map(this.props.widgets, function(widget) {

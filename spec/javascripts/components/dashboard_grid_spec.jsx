@@ -79,13 +79,13 @@ describe('DashboardGrid', function () {
   describe('update layout',function(){
     it('initialized the current layout with widget layout', function() {
       const expectedLayout = _.extend(testLayout, {"i": testUuid});
-      expect(currentLayout).toEqual([expectedLayout]);
+      expect(dashboard.state.currentLayout).toEqual([expectedLayout]);
     });
 
     it('saves the provided layout as current layout', function() {
       newLayout = 'new Layout';
       dashboard.updateLayout(newLayout);
-      expect(currentLayout).toEqual(newLayout);
+      expect(dashboard.state.currentLayout).toEqual(newLayout);
     });
   });
 
@@ -101,7 +101,7 @@ describe('DashboardGrid', function () {
     let doPersist = function(){ dashboard.persistLayout() };
 
     it('sends the current layout to the server', function() {
-      currentLayout = 'new Layout';
+      dashboard.state.currentLayout = 'new Layout';
       doPersist();
 
       request = jasmine.Ajax.requests.mostRecent();

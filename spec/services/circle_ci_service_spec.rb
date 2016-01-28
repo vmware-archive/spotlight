@@ -100,12 +100,13 @@ RSpec.describe CircleCiService do
           committer_name: last_committer,
           outcome: last_build_status,
           stop_time: '2016-01-15T08:20:20.000Z',
+          start_time: '2016-01-15T08:00:20.000Z',
           usage_queued_at: '2016-01-15T08:20:00.000Z'
         },
-        { status: 'success' },
-        { status: 'cancelled' },
-        { status: 'fixed' },
-        { status: 'failed' },
+        { status: 'success', stop_time: '2016-01-28T07:46:14.681Z' },
+        { status: 'cancelled', stop_time: '2015-10-09T10:28:42.832Z' },
+        { status: 'fixed', stop_time: '2015-10-09T10:25:25.476Z' },
+        { status: 'failed', stop_time: '2015-10-09T05:13:12.398Z' },
       ].to_json
 
       build_request = stub_request(:get, "#{server_url}/api/v1/project/#{project_name}?circle-token=#{auth_key}").
@@ -121,11 +122,13 @@ RSpec.describe CircleCiService do
       expect(result[:last_build_time]).to eq last_build_time
       expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_BUILDING
       expect(result[:last_committer]).to eq last_committer
-      expect(result[:build_history]).to eq [ Category::CiWidget::STATUS_BUILDING,
-                                              Category::CiWidget::STATUS_PASSED,
-                                              Category::CiWidget::STATUS_FAILED,
-                                              Category::CiWidget::STATUS_PASSED,
-                                              Category::CiWidget::STATUS_FAILED ]
+      expect(result[:build_history]).to eq [
+                                             { state: Category::CiWidget::STATUS_BUILDING, timestamp: '2016-01-15T08:00:20.000Z' },
+                                             { state: Category::CiWidget::STATUS_PASSED, timestamp: '2016-01-28T07:46:14.681Z' },
+                                             { state: Category::CiWidget::STATUS_FAILED, timestamp: '2015-10-09T10:28:42.832Z' },
+                                             { state: Category::CiWidget::STATUS_PASSED, timestamp: '2015-10-09T10:25:25.476Z' },
+                                             { state: Category::CiWidget::STATUS_FAILED, timestamp: '2015-10-09T05:13:12.398Z' }
+      ]
     end
   end
 end

@@ -75,6 +75,33 @@ RSpec.describe TravisCiService do
     end
   end
 
+  describe '#build_history' do
+    let!(:builds_response_body) do
+      {"builds" => [
+          { "state" => 'started', started_at: '2016-01-28T09:03:32Z' },
+          { "state" => 'passed', started_at: '2016-01-28T08:18:46Z', finished_at: '2016-01-28T08:21:47Z' },
+          { "state" => 'failed', started_at: '2016-01-28T06:43:57Z', finished_at: '2016-01-28T06:47:48Z' },
+          { "state" => 'failed', started_at: '2016-01-28T04:09:34Z', finished_at: '2016-01-28T04:12:34Z' },
+          { "state" => 'failed', started_at: '2016-01-27T09:10:35Z', finished_at: '2016-01-27T09:13:23Z' },
+          { "state" => 'passed', started_at: '2016-01-27T08:11:46Z', finished_at: '2016-01-27T08:14:49Z' }
+        ]
+      }.to_json
+    end
+    let!(:builds_request) do
+      stub_request(:get, "#{server_url}/repos/#{project_name}/builds").
+        with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
+                        'Authorization' => 'Token "' + auth_key + '"' }).
+        to_return(body: builds_response_body,
+                  headers: {'Content-Type' => 'application/json'})
+    end
+
+    it 'fetches build history' do
+      result = subject.build_history
+
+      expect(result.count).to eq 5
+    end
+  end
+
   describe '#last_build_info' do
     let(:build_id) { 12345 }
     let(:last_build_status) { 'passed' }
@@ -102,12 +129,12 @@ RSpec.describe TravisCiService do
     end
     let!(:builds_response_body) do
       {"builds" => [
-          { "state" => 'started' },
-          { "state" => 'passed' },
-          { "state" => 'failed' },
-          { "state" => 'failed' },
-          { "state" => 'failed' },
-          { "state" => 'passed' }
+          { "state" => 'started', started_at: '2016-01-28T09:03:32Z' },
+          { "state" => 'passed', started_at: '2016-01-28T08:18:46Z', finished_at: '2016-01-28T08:21:47Z' },
+          { "state" => 'failed', started_at: '2016-01-28T06:43:57Z', finished_at: '2016-01-28T06:47:48Z' },
+          { "state" => 'failed', started_at: '2016-01-28T04:09:34Z', finished_at: '2016-01-28T04:12:34Z' },
+          { "state" => 'failed', started_at: '2016-01-27T09:10:35Z', finished_at: '2016-01-27T09:13:23Z' },
+          { "state" => 'passed', started_at: '2016-01-27T08:11:46Z', finished_at: '2016-01-27T08:14:49Z' }
         ]
       }.to_json
     end
@@ -129,11 +156,13 @@ RSpec.describe TravisCiService do
       expect(result[:last_build_time]).to eq last_build_time
       expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_PASSED
       expect(result[:last_committer]).to eq last_committer
-      expect(result[:build_history]).to eq [ Category::CiWidget::STATUS_BUILDING,
-                                             Category::CiWidget::STATUS_PASSED,
-                                             Category::CiWidget::STATUS_FAILED,
-                                             Category::CiWidget::STATUS_FAILED,
-                                             Category::CiWidget::STATUS_FAILED ]
+      expect(result[:build_history]).to eq [
+                                            { state: Category::CiWidget::STATUS_BUILDING, timestamp: '2016-01-28T09:03:32Z' },
+                                            { state: Category::CiWidget::STATUS_PASSED, timestamp: '2016-01-28T08:21:47Z' },
+                                            { state: Category::CiWidget::STATUS_FAILED, timestamp: '2016-01-28T06:47:48Z' },
+                                            { state: Category::CiWidget::STATUS_FAILED, timestamp: '2016-01-28T04:12:34Z' },
+                                            { state: Category::CiWidget::STATUS_FAILED, timestamp: '2016-01-27T09:13:23Z' },
+      ]
     end
 
     context 'build just started' do
@@ -149,33 +178,6 @@ RSpec.describe TravisCiService do
 
         expect(result[:last_build_time]).to eq last_build_time
       end
-    end
-  end
-
-  describe '#build_history' do
-    let!(:builds_response_body) do
-      {"builds" => [
-          { "state" => 'started' },
-          { "state" => 'passed' },
-          { "state" => 'failed' },
-          { "state" => 'failed' },
-          { "state" => 'failed' },
-          { "state" => 'passed' }
-        ]
-      }.to_json
-    end
-    let!(:builds_request) do
-      stub_request(:get, "#{server_url}/repos/#{project_name}/builds").
-        with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
-                        'Authorization' => 'Token "' + auth_key + '"' }).
-        to_return(body: builds_response_body,
-                  headers: {'Content-Type' => 'application/json'})
-    end
-
-    it 'fetches build history' do
-      result = subject.build_history
-
-      expect(result.count).to eq 5
     end
   end
 end

@@ -142,11 +142,13 @@ RSpec.describe JenkinsCiService do
       expect(result[:last_build_time]).to eq last_build_time
       expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_PASSED
       expect(result[:last_committer]).to eq last_committer
-      expect(result[:build_history]).to eq [ Category::CiWidget::STATUS_PASSED,
-                                             Category::CiWidget::STATUS_FAILED,
-                                             Category::CiWidget::STATUS_PASSED,
-                                             Category::CiWidget::STATUS_PASSED,
-                                             Category::CiWidget::STATUS_FAILED ]
+      expect(result[:build_history]).to eq [
+                                             { state: Category::CiWidget::STATUS_PASSED, timestamp: '2016-01-27T16:35:48+08:00' },
+                                             { state: Category::CiWidget::STATUS_FAILED, timestamp: '2016-01-26T16:17:42+08:00' },
+                                             { state: Category::CiWidget::STATUS_PASSED, timestamp: '2016-01-26T15:53:28+08:00' },
+                                             { state: Category::CiWidget::STATUS_PASSED, timestamp: '2016-01-26T15:15:48+08:00' },
+                                             { state: Category::CiWidget::STATUS_FAILED, timestamp: '2016-01-26T12:30:48+08:00' }
+      ]
     end
   end
 end

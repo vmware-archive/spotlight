@@ -1,26 +1,13 @@
-var currentLayout; //TODO: refactor so we're not using a global variable for current layout state =-(
+let currentLayout; // TODO: refactor so we're not using a global variable for current layout state =-(
 
-var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
-  persistLayout: function() {
-    var settings = {
-      url: '/api/dashboards/' + this.props.dashboardId + '/layout',
-      async: true,
-      method: "PUT",
-      data: JSON.stringify({layout: currentLayout}),
-      dataType: "json",
-      contentType: "application/json",
-      headers: {
-        accept: "application/json",
-        content_type: "application/json"
-      }
-    };
+const DashboardGrid = React.createClass({
+  displayName: 'Dashboard Grid',
 
-    $.ajax(settings)
-    .done(this.props.onSave);
-  },
-
-  updateLayout: function(layout) {
-    currentLayout = layout;
+  propTypes: {
+    dashboardId: React.PropTypes.number.isRequired,
+    onSave: React.PropTypes.func.isRequired,
+    widgets: React.PropTypes.array.isRequired,
+    editMode: React.PropTypes.bool.isRequired
   },
 
   getDefaultProps: function() {
@@ -37,12 +24,35 @@ var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
       listenToWindowResize: true,
       verticalCompact: true,
       className: 'layout'
-    }
+    };
   },
+
+  persistLayout: function() {
+    const settings = {
+      url: '/api/dashboards/' + this.props.dashboardId + '/layout',
+      async: true,
+      method: 'PUT',
+      data: JSON.stringify({layout: currentLayout}),
+      dataType: 'json',
+      contentType: 'application/json',
+      headers: {
+        accept: 'application/json',
+        content_type: 'application/json'
+      }
+    };
+
+    $.ajax(settings)
+      .done(this.props.onSave);
+  },
+
+  updateLayout: function(layout) {
+    currentLayout = layout;
+  },
+
 
   renderWidgets: function() {
     return _.map(this.props.widgets, function(widget) {
-      return (<div className='widget card' key={widget.uuid} _grid={widget.layout}>
+      return (<div className="widget card" key={widget.uuid} _grid={widget.layout}>
                 <CiWidget {...widget}/>
               </div>);
     });
@@ -50,7 +60,7 @@ var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
 
   render: function() {
     return (
-      <div className={this.props.editMode ? 'edit': 'view'}>
+      <div className={this.props.editMode ? 'edit' : 'view'}>
         <DashboardButton action="save" href="javascript:void(0);" onClick={this.persistLayout} tooltip="Save Dashboard" editOnly={true}/>
         <DashboardButton action="add" href="/widgets/new" tooltip="New Widget" editOnly={true}/>
         <DashboardButton action="edit" href="/dashboards?edit=true" tooltip="Edit Dashboard" editOnly={false}/>
@@ -63,6 +73,6 @@ var DashboardGrid = React.createClass({displayName: 'Dashboard Grid',
           {this.renderWidgets()}
         </ReactGridLayout>
       </div>
-    )
+    );
   }
 });

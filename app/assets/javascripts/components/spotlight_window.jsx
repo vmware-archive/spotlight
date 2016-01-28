@@ -1,9 +1,15 @@
-
-var SpotlightWindow = React.createClass({
+const SpotlightWindow = React.createClass({
   displayName: 'Spotlight window',
 
-  defaultOnSave: function(data) {
-    window.location.href = "dashboards";
+  propTypes: {
+    dashboardId: React.PropTypes.number.isRequired,
+    onSave: React.PropTypes.func,
+    widgets: React.PropTypes.array.isRequired,
+    editMode: React.PropTypes.bool.isRequired
+  },
+
+  defaultOnSave: function() {
+    window.location.href = 'dashboards';
   },
 
   onSave: function() {
@@ -15,6 +21,6 @@ var SpotlightWindow = React.createClass({
       <div>
         <DashboardGrid  {...this.props} onSave={this.onSave()}/>
       </div>
-    )
+    );
   }
 });

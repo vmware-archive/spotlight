@@ -16,7 +16,7 @@ describe('DashboardGrid', function () {
     uuid: testUuid,
     title: testTitle,
     layout: testLayout,
-    widget_path: testPath
+    widgetPath: testPath
   };
   const fakeWindowRedirect = jasmine.createSpy('fakeWindowRedirect')
 
@@ -27,10 +27,7 @@ describe('DashboardGrid', function () {
   });
 
   it('renders the widget', function () {
-    const titleNode = window.TestUtils.findRenderedDOMComponentWithTag(
-      dashboard,
-      'h4'
-    );
+    const titleNode = window.TestUtils.findRenderedDOMComponentWithClass(dashboard, 'project-name');
     expect(titleNode.textContent).toEqual(testTitle);
   });
 

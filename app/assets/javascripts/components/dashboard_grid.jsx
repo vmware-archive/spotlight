@@ -1,3 +1,5 @@
+/* global $, React */
+
 const DashboardGrid = React.createClass({
   displayName: 'Dashboard Grid',
 
@@ -49,13 +51,15 @@ const DashboardGrid = React.createClass({
   },
 
   updateLayout: function(layout) {
-    this.state.currentLayout = layout;
+    this.state.currentLayout = layout; 
+    // we think this sound be setState() but this is causing a recursion loop 
+    // which we think is caused by setState() triggering a layout change that ReactGridLayout is picking up on and re-triggering this method again, etc...
   },
 
   renderWidgets: function() {
     return _.map(this.props.widgets, function(widget) {
       return (<div className="widget card" key={widget.uuid} _grid={widget.layout}>
-                <CiWidget {...widget}/>
+                <CiWidgetContainer {...widget}/>
               </div>);
     });
   },

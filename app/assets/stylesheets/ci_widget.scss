@@ -1,0 +1,71 @@
+.ci-widget{
+  padding: 0 !important;
+  height: 100%;
+  width: 100%;
+
+  .inner-ci-widget{
+    height: 100%;
+    width: 100%;
+
+    &.passed{
+      background-color: #2ECCA0;
+      .symbol{
+        background-image: url(image_path('Icon_Passed.svg'));
+      };
+    }
+
+    &.failed, &.errored{
+      background-color: #F16C4E;
+      .symbol{
+        background-image: url(image_path('Icon_Failed.svg'));
+      };
+    }
+
+    &.building, &.started{
+      background-color: #FFC107;
+      .symbol{
+        background-image: url(image_path('Icon_Building.svg'));
+      };
+    }
+
+    &.unknown{
+      background-color: gray;
+    }
+
+    .content{
+      font-family: 'Open Sans', sans-serif;
+      color: white;
+      padding-top: 20px;
+
+      .project-name {
+        padding-left: 20px;
+        font-weight: 600;
+        font-size: 25pt;
+      }
+
+      .symbol{
+        position: fixed;
+        top: 25%;
+        margin: auto;
+        width: 100%;
+        height: 40%;
+        background-position: center center;
+        background-repeat: no-repeat;
+      }
+
+      .commit-info {
+        position: fixed;
+        top: 70%;
+        margin: auto;
+        width: 100%;
+        padding: 0 20px;
+        font-size: 13pt;
+        font-weight: 600;
+
+        .inner-div{
+          text-align: center;
+        }
+      }
+    }
+  }
+}

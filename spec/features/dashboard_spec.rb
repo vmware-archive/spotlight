@@ -64,7 +64,7 @@ describe "the dashboard widget creation", :type => :feature do
 
       ci_widget_node = page.first(:css, ".ci-widget[data-uuid='#{new_widget.uuid}']")
       widget_node = ci_widget_node.find(:xpath, '..')
-      #widget is the parent div of the ci_widget.
+      # widget is the parent div of the ci_widget.
 
       position_x, position_y = get_offset(widget_node)
       window_width = page.current_window.size[0]

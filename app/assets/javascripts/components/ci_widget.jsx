@@ -1,46 +1,54 @@
+/* global React */
+
 const CiWidget = React.createClass({
   propTypes: {
     title: React.PropTypes.string.isRequired,
-    uuid: React.PropTypes.string.isRequired,
-    widget_path: React.PropTypes.string.isRequired
+    widgetPath: React.PropTypes.string.isRequired,
+    status: React.PropTypes.oneOf(['passed', 'failed', 'building', 'unknown']).isRequired,
+    committer: React.PropTypes.string.isRequired,
+    lastBuildTime: React.PropTypes.string.isRequired
+  },
+
+  getDefaultProps: function() {
+    return {
+      status: 'unknown'
+    };
+  },
+
+  committerInfo: function() {
+    if (this.props.committer) {
+      const committerName = this.props.committer;
+      const fomattedCommitterName = (committerName.length > 20) ?
+        (committerName.substring(0, 17) + '...') :
+        committerName;
+      return ('by ' + fomattedCommitterName);
+    }
   },
 
   render: function() {
     return (
-      <div className="ci-widget card-content" data-uuid={this.props.uuid}>
-        <h4 className="card-title">{this.props.title}</h4>
-        <table>
-          <tbody>
-            <tr>
-              <td>Repository Name:</td>
-              <td className="value repository_name"> - </td>
-            </tr>
-            <tr>
-              <td> Last Build Committer: </td>
-              <td className="value committer"> - </td>
-            </tr>
-            <tr>
-              <td> Last Build Status: </td>
-              <td className="value status"> - </td>
-            </tr>
-            <tr>
-              <td> Last Build Time: </td>
-              <td className="value last-build-at"> - </td>
-            </tr>
-          </tbody>
-        </table>
+      <div className={'inner-ci-widget ' + this.props.status}>
+        <div className="content">
+          <p className="project-name">{this.props.title}</p>
+          <div className="symbol"></div>
+          <div className="commit-info">
+            <div className="inner-div">
+              <p className="last-build-at">{this.props.lastBuildTime}</p>
+              <p className="committer">{this.committerInfo()}</p>
+            </div>
+          </div>
 
-        <div className="buttons edit-only">
-          <a className="delete btn-floating waves-effect waves-light white-text red tooltipped"
-            data-delay="20"
-            data-tooltip="Remove Widget"
-            data-confirm="You are about to permanently delete this widget. This change cannot be undone. Are you sure?"
-            rel="nofollow"
-            data-method="delete"
-            href={this.props.widget_path}>
-
-            <i className="tiny material-icons">delete</i>
-          </a>
+          <div className="buttons edit-only">
+            <a className="delete btn-floating waves-effect waves-light white-text red tooltipped"
+              data-delay="20"
+              data-tooltip="Remove Widget"
+              data-confirm="You are about to permanently delete this widget. This change cannot be undone. Are you sure?"
+              rel="nofollow"
+              data-method="delete"
+              href={this.props.widgetPath}>
+              <i className="tiny material-icons">delete</i>
+            </a>
+          </div>
         </div>
       </div>
     );

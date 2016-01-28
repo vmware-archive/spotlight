@@ -19,7 +19,7 @@ module WidgetHelper
           x: widget.position_x,
           y: widget.position_y
         },
-        widget_path: widget_path(id: widget.id)
+        widgetPath: widget_path(id: widget.id)
       }
     end
   end

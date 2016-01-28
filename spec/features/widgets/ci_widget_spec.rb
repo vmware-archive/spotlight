@@ -92,7 +92,7 @@ describe "travis widget spec", :type => :feature do
 
   before do
     d = FactoryGirl.create :dashboard, title: 'Default Dashboard'
-    w = FactoryGirl.create :widget, dashboard: d, server_url: server_url, auth_key: auth_key, project_name: project_name, server_type: 'travis_ci'
+    w = FactoryGirl.create :widget, title: 'spotlight', dashboard: d, server_url: server_url, auth_key: auth_key, project_name: project_name, server_type: 'travis_ci'
 
     stub_request(:get, "#{server_url}/repos/#{project_name}/builds").
       with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
@@ -103,14 +103,15 @@ describe "travis widget spec", :type => :feature do
 
   it "must create a widget", js: true do
     visit '/'
-    expect(page).to have_content project_name, wait: 10
-    expect(page).to have_content Category::CiWidget::STATUS_BUILDING
+    expect(page.find(('.' + Category::CiWidget::STATUS_BUILDING) , wait: 10)).to be
     expect(page).to have_content last_committer
+    expect(page).to have_content 'spotlight'
   end
 
   it "must update its status", js: true, slow: true do
     visit '/'
-    expect(page).to have_content Category::CiWidget::STATUS_BUILDING
+
+    expect(page).to have_content last_committer
 
     #changing the stub to simulate a change in the repository status
     build_history_response = {
@@ -128,7 +129,7 @@ describe "travis widget spec", :type => :feature do
         to_return(body: build_history_response,
                   headers: {'Content-Type' => 'application/json'})
 
-    expect(page).to have_content 'failed', wait: 60
+    expect(page.find('.failed', wait: 45)).to be
     expect(page).to have_content 'Ray'
 
   end

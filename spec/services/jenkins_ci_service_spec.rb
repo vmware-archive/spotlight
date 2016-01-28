@@ -120,11 +120,11 @@ RSpec.describe JenkinsCiService do
                     headers: {'Content-Type' => 'application/json'})
 
       builds_response_body = {"builds" => [
-                                { "number" => 716, "result" => "FAILURE", "timestamp" => 1453883748620 },
-                                { "number" => 715, "result" => "SUCCESS", "timestamp" => 1453796262456 },
+                                { "number" => 716, "result" => "SUCCESS", "timestamp" => 1453883748620 },
+                                { "number" => 715, "result" => "FAILURE", "timestamp" => 1453796262456 },
                                 { "number" => 714, "result" => "SUCCESS", "timestamp" => 1453794808186 },
                                 { "number" => 713, "result" => "SUCCESS", "timestamp" => 1453792548935 },
-                                { "number" => 712, "result" => "SUCCESS", "timestamp" => 1453782648654 },
+                                { "number" => 712, "result" => "FAILURE", "timestamp" => 1453782648654 },
                                 { "number" => 711, "result" => "SUCCESS", "timestamp" => 1453777248465 }
                               ]
                             }.to_json
@@ -143,7 +143,7 @@ RSpec.describe JenkinsCiService do
       expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_PASSED
       expect(result[:last_committer]).to eq last_committer
       expect(result[:build_history]).to eq [ Category::CiWidget::STATUS_PASSED,
-                                             Category::CiWidget::STATUS_PASSED,
+                                             Category::CiWidget::STATUS_FAILED,
                                              Category::CiWidget::STATUS_PASSED,
                                              Category::CiWidget::STATUS_PASSED,
                                              Category::CiWidget::STATUS_FAILED ]

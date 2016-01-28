@@ -68,7 +68,7 @@ class JenkinsCiService
     payload[:last_build_time] = Time.at(last_build['timestamp'] / 1000).to_datetime
     payload[:last_committer] = last_commit['author']['fullName']
 
-    payload[:build_history] = build_history(repository).reverse.map{|h| normalized_state_for(h['result']) }
+    payload[:build_history] = build_history(repository).map{|h| normalized_state_for(h['result']) }
 
     payload
   end

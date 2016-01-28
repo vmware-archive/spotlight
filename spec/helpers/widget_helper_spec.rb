@@ -17,7 +17,7 @@ describe WidgetHelper, :type => :helper do
 
     it 'has all the keys' do
       hash = widgets_hash(widgets).first
-      expect(hash.keys).to include(:uuid, :title, :layout, :widget_path)
+      expect(hash.keys).to include(:uuid, :title, :layout, :widgetPath)
       expect(hash[:layout].keys).to include(:w, :h, :x, :y)
     end
   end

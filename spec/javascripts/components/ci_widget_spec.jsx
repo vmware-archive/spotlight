@@ -1,12 +1,12 @@
-describe('CiWidget', function () {
-  var ciWidget;
-  var testTitle = "Concierge";
-  var testUuid = "123456789";
-  var testPath = '/widget_path';
-  var widgetProps = {
-    uuid: testUuid,
-    title: testTitle,
-    widget_path: testPath
+describe('CiWidget', function() {
+  let ciWidget;
+
+  const widgetProps = {
+    title: 'Concierge',
+    widgetPath: '/widget_path',
+    status: 'building',
+    committer: 'committer name',
+    lastBuildTime: 'last build time',
   };
 
   beforeEach(function() {
@@ -15,21 +15,22 @@ describe('CiWidget', function () {
     );
   });
 
-  it('renders the title', function () {
-    var titleNode = window.TestUtils.findRenderedDOMComponentWithTag(
-      ciWidget,
-      'h4'
-    )
-    expect(titleNode.textContent).toEqual(testTitle);
+  it('renders the title', function() {
+    const titleNode = window.TestUtils.findRenderedDOMComponentWithClass(ciWidget, 'project-name');
+    expect(titleNode.textContent).toEqual(widgetProps.title);
   });
 
-  it ('widget contains the uuid information', function() {
-    expect(ciWidget.getDOMNode().dataset.uuid).toEqual(testUuid);
+  it('renders the delete button', function() {
+    const deleteLink = window.TestUtils.findRenderedDOMComponentWithClass(ciWidget, 'delete');
+    expect(deleteLink.href).toContain(widgetProps.widgetPath);
   });
 
+  it('renders the build status', function() {
+    expect(window.TestUtils.findRenderedDOMComponentWithClass(ciWidget, widgetProps.status).tagName).toEqual('DIV');
+  });
 
-  it('renders the delete button', function () {
-    var deleteLink = window.TestUtils.findRenderedDOMComponentWithClass(ciWidget, 'delete')
-    expect(deleteLink.href).toContain(testPath);
+  it('renders the committers name', function() {
+    const committerNode = window.TestUtils.findRenderedDOMComponentWithClass(ciWidget, 'committer');
+    expect(committerNode.textContent).toEqual('by ' + widgetProps.committer);
   });
 });

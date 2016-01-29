@@ -15,13 +15,19 @@ var requestSettings = function(projectInfo) {
   };
 }
 
-var setCiStatus = function(widgetUuid, last_build) {
+var setCiStatus = function(widgetUuid, build_info) {
   var widget = $(".ci-widget[data-uuid=" + widgetUuid + "]");
-  var build_status = last_build.status
+  var build_status = build_info.status;
+
   widget.find(".repository_name").text(build_status.repo_name);
-  widget.find(".last-build-at").text(build_status.last_build_time);
-  widget.find(".status").text(build_status.last_build_status);
-  widget.find(".committer").text(build_status.last_committer);
+
+  if (build_status.build_history.length > 0) {
+    var last_build = build_status.build_history[0];
+
+    widget.find(".last-build-at").text(last_build.timestamp);
+    widget.find(".status").text(last_build.state);
+    widget.find(".committer").text(last_build.committer);
+  }
 };
 
 var updateCIStatus = function(widget) {

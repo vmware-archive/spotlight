@@ -75,23 +75,92 @@ RSpec.describe TravisCiService do
     end
   end
 
-  describe '#build_history' do
-    let!(:builds_response_body) do
-      {"builds" => [
-          { "state" => 'started', started_at: '2016-01-28T09:03:32Z' },
-          { "state" => 'passed', started_at: '2016-01-28T08:18:46Z', finished_at: '2016-01-28T08:21:47Z' },
-          { "state" => 'failed', started_at: '2016-01-28T06:43:57Z', finished_at: '2016-01-28T06:47:48Z' },
-          { "state" => 'failed', started_at: '2016-01-28T04:09:34Z', finished_at: '2016-01-28T04:12:34Z' },
-          { "state" => 'failed', started_at: '2016-01-27T09:10:35Z', finished_at: '2016-01-27T09:13:23Z' },
-          { "state" => 'passed', started_at: '2016-01-27T08:11:46Z', finished_at: '2016-01-27T08:14:49Z' }
+  let!(:build_history_response) do
+    {
+        "builds" => [
+            { "state" => 'started', started_at: '2016-01-28T09:03:32Z' },
+            { "state" => 'passed', started_at: '2016-01-28T08:18:46Z', finished_at: '2016-01-28T08:21:47Z' },
+            { "state" => 'failed', started_at: '2016-01-28T06:43:57Z', finished_at: '2016-01-28T06:47:48Z' },
+            { "state" => 'failed', started_at: '2016-01-28T04:09:34Z', finished_at: '2016-01-28T04:12:34Z' },
+            { "state" => 'failed', started_at: '2016-01-27T09:10:35Z', finished_at: '2016-01-27T09:13:23Z' },
+            { "state" => 'passed', started_at: '2016-01-27T08:11:46Z', finished_at: '2016-01-27T08:14:49Z' }
+        ],
+        "commits" => [
+            {
+                "id" => 28475154,
+                "sha" => "ff8065933ddebc03ddce7e5971a3331055fe08d9",
+                "branch" => "master",
+                "message" => "Update payload to return an array of objects instead of just string.\n\n[#111938377]",
+                "committed_at" => "2016-01-28T09:57:02Z",
+                "author_name" => "Rahul Rajeev",
+                "author_email" => "sg+mcn@neo.com",
+                "committer_name" => "Michael Cheng",
+                "committer_email" => "sg+mcn@neo.com",
+                "compare_url" => "https://github.com/neo/spotlight/compare/bbb3ec6e6048...ff8065933dde",
+                "pull_request_number" => nil
+            },
+            {
+                "id" => 28472170,
+                "sha" => "bbb3ec6e6048dc5aacc08809ad152275dfa1f607",
+                "branch" => "master",
+                "message" => "Remove the server side reversal of the order of Build History.\n\n[#111938377]",
+                "committed_at" => "2016-01-28T08:52:32Z",
+                "author_name" => "Michael Cheng",
+                "author_email" => "sg+mcn@neo.com",
+                "committer_name" => "Michael Cheng",
+                "committer_email" => "sg+mcn@neo.com",
+                "compare_url" => "https://github.com/neo/spotlight/compare/945a29cbef27...bbb3ec6e6048",
+                "pull_request_number" => nil
+            },
+            {
+                "id" => 28470139,
+                "sha" => "945a29cbef27cd287a5b1e87aea96b95ce91728e",
+                "branch" => "master",
+                "message" => "Normalised build statuses.\n\n[#111938377]",
+                "committed_at" => "2016-01-28T08:18:00Z",
+                "author_name" => "Michael Cheng",
+                "author_email" => "sg+mcn@neo.com",
+                "committer_name" => "Michael Cheng",
+                "committer_email" => "sg+mcn@neo.com",
+                "compare_url" => "https://github.com/neo/spotlight/compare/acc58dbe4b2e...945a29cbef27",
+                "pull_request_number" => nil
+            },
+            {
+                "id" => 28466719,
+                "sha" => "acc58dbe4b2e4af5f1ffbdf19573ddd3bca721a3",
+                "branch" => "master",
+                "message" => "Show last 5 history.\n\n- Fix feature test.\n\n[#111938377]",
+                "committed_at" => "2016-01-28T06:43:07Z",
+                "author_name" => "Michael Cheng",
+                "author_email" => "sg+mcn@neo.com",
+                "committer_name" => "Michael Cheng",
+                "committer_email" => "sg+mcn@neo.com",
+                "compare_url" => "https://github.com/neo/spotlight/compare/a1ccf5530da0...acc58dbe4b2e",
+                "pull_request_number" => nil
+            },
+            {
+                "id" => 28462052,
+                "sha" => "a1ccf5530da038e1db1e8884fc0d8a2c19e4355b",
+                "branch" => "master",
+                "message" => "Current dashboard layout is stored as a state\n\n[no-pt-story]",
+                "committed_at" => "2016-01-28T04:09:11Z",
+                "author_name" => "Rahul Rajeev",
+                "author_email" => "rahul@neo.com",
+                "committer_name" => "Rahul Rajeev",
+                "committer_email" => "rahul@neo.com",
+                "compare_url" => "https://github.com/neo/spotlight/compare/a779f9ccbf7d...a1ccf5530da0",
+                "pull_request_number" => nil
+            }
         ]
-      }.to_json
-    end
+    }.to_json
+  end
+
+  describe '#build_history' do
     let!(:builds_request) do
       stub_request(:get, "#{server_url}/repos/#{project_name}/builds").
         with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
                         'Authorization' => 'Token "' + auth_key + '"' }).
-        to_return(body: builds_response_body,
+        to_return(body: build_history_response,
                   headers: {'Content-Type' => 'application/json'})
     end
 
@@ -99,6 +168,7 @@ RSpec.describe TravisCiService do
       result = subject.build_history
 
       expect(result.count).to eq 5
+      expect(result.first.keys).to eq %w(build commit)
     end
   end
 
@@ -127,22 +197,11 @@ RSpec.describe TravisCiService do
         to_return(body: build_response_body,
                   headers: {'Content-Type' => 'application/json'})
     end
-    let!(:builds_response_body) do
-      {"builds" => [
-          { "state" => 'started', started_at: '2016-01-28T09:03:32Z' },
-          { "state" => 'passed', started_at: '2016-01-28T08:18:46Z', finished_at: '2016-01-28T08:21:47Z' },
-          { "state" => 'failed', started_at: '2016-01-28T06:43:57Z', finished_at: '2016-01-28T06:47:48Z' },
-          { "state" => 'failed', started_at: '2016-01-28T04:09:34Z', finished_at: '2016-01-28T04:12:34Z' },
-          { "state" => 'failed', started_at: '2016-01-27T09:10:35Z', finished_at: '2016-01-27T09:13:23Z' },
-          { "state" => 'passed', started_at: '2016-01-27T08:11:46Z', finished_at: '2016-01-27T08:14:49Z' }
-        ]
-      }.to_json
-    end
     let!(:builds_request) do
       stub_request(:get, "#{server_url}/repos/#{project_name}/builds").
         with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
                         'Authorization' => 'Token "' + auth_key + '"' }).
-        to_return(body: builds_response_body,
+        to_return(body: build_history_response,
                   headers: {'Content-Type' => 'application/json'})
     end
 
@@ -157,11 +216,11 @@ RSpec.describe TravisCiService do
       expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_PASSED
       expect(result[:last_committer]).to eq last_committer
       expect(result[:build_history]).to eq [
-                                            { state: Category::CiWidget::STATUS_BUILDING, timestamp: '2016-01-28T09:03:32Z' },
-                                            { state: Category::CiWidget::STATUS_PASSED, timestamp: '2016-01-28T08:21:47Z' },
-                                            { state: Category::CiWidget::STATUS_FAILED, timestamp: '2016-01-28T06:47:48Z' },
-                                            { state: Category::CiWidget::STATUS_FAILED, timestamp: '2016-01-28T04:12:34Z' },
-                                            { state: Category::CiWidget::STATUS_FAILED, timestamp: '2016-01-27T09:13:23Z' },
+        { state: Category::CiWidget::STATUS_BUILDING, committer: last_committer, timestamp: '2016-01-28T09:03:32Z' },
+        { state: Category::CiWidget::STATUS_PASSED, committer: 'Michael Cheng', timestamp: '2016-01-28T08:21:47Z' },
+        { state: Category::CiWidget::STATUS_FAILED, committer: 'Michael Cheng', timestamp: '2016-01-28T06:47:48Z' },
+        { state: Category::CiWidget::STATUS_FAILED, committer: 'Michael Cheng', timestamp: '2016-01-28T04:12:34Z' },
+        { state: Category::CiWidget::STATUS_FAILED, committer: 'Rahul Rajeev', timestamp: '2016-01-27T09:13:23Z' },
       ]
     end
 

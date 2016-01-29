@@ -22,7 +22,14 @@ class TravisCiService < BaseCiService
   def build_history(repository=@project_name, limit=5)
     builds_response = repo_info(repository, '/builds')
 
-    builds_response['builds'].first(limit)
+    (0...limit).map do |i|
+      {
+        'build' => builds_response['builds'][i],
+        'commit' => builds_response['commits'][i]
+      }
+    end
+
+    # builds_response['builds'].first(limit)
   end
 
   def last_build_info(repository=@project_name)
@@ -56,12 +63,15 @@ class TravisCiService < BaseCiService
     Time.parse(timestamp_string).localtime.to_datetime
   end
 
-  def self.normalized_build_entry(build)
+  def self.normalized_build_entry(build_info)
+    build = build_info['build']
+    commit = build_info['commit']
     state = self.normalized_state_for(build['state'])
     timestamp = state == Category::CiWidget::STATUS_BUILDING ? build['started_at'] : build['finished_at']
 
     {
       state: state,
+      committer: commit['author_name'],
       timestamp: self.parse_timestamp(timestamp)
     }
   end

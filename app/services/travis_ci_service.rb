@@ -22,6 +22,8 @@ class TravisCiService < BaseCiService
   def build_history(repository=@project_name, limit=5)
     builds_response = repo_info(repository, '/builds')
 
+    limit = [limit, builds_response['builds'].count].min
+
     (0...limit).map do |i|
       {
         'build' => builds_response['builds'][i],

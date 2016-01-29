@@ -58,6 +58,7 @@ class CircleCiService < BaseCiService
 
     {
       state: state,
+      committer: build['committer_name'],
       timestamp: self.parse_timestamp(timestamp)
     }
   end

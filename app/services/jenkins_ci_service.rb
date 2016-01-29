@@ -21,7 +21,7 @@ class JenkinsCiService < BaseCiService
   end
 
   def build_history(repository=@project_name, limit=5)
-    build_history = repo_info(repository, '', params: 'tree=builds[number,timestamp,result]')
+    build_history = repo_info(repository, '', params: 'tree=builds[number,timestamp,result,committer_name,changeSet[items[author[fullName]]]]')
 
     build_history['builds'].first(5)
   end
@@ -39,7 +39,7 @@ class JenkinsCiService < BaseCiService
 
     payload[:last_build_status] = self.class.normalized_state_for(last_build['result'])
     payload[:last_build_time] = self.class.parse_timestamp(last_build['timestamp'])
-    payload[:last_committer] = last_commit['author']['fullName']
+    payload[:last_committer] = last_commit.present? ? last_commit['author']['fullName'] : ''
 
     payload[:build_history] = build_history(repository).map{|build| self.class.normalized_build_entry(build) }
 
@@ -53,9 +53,11 @@ class JenkinsCiService < BaseCiService
   def self.normalized_build_entry(build)
     state = self.normalized_state_for(build['result'])
     timestamp = build['timestamp']
+    commit = build['changeSet']['items'][0]
 
     {
       state: state,
+      committer: commit.present? ? commit['author']['fullName'] : '',
       timestamp: self.parse_timestamp(timestamp)
     }
   end

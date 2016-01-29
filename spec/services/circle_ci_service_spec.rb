@@ -103,10 +103,10 @@ RSpec.describe CircleCiService do
           start_time: '2016-01-15T08:00:20.000Z',
           usage_queued_at: '2016-01-15T08:20:00.000Z'
         },
-        { status: 'success', stop_time: '2016-01-28T07:46:14.681Z' },
-        { status: 'cancelled', stop_time: '2015-10-09T10:28:42.832Z' },
-        { status: 'fixed', stop_time: '2015-10-09T10:25:25.476Z' },
-        { status: 'failed', stop_time: '2015-10-09T05:13:12.398Z' },
+        { status: 'success', stop_time: '2016-01-28T07:46:14.681Z', committer_name: 'Yifeng Hou'},
+        { status: 'cancelled', stop_time: '2015-10-09T10:28:42.832Z', committer_name: 'Michael Cheng' },
+        { status: 'fixed', stop_time: '2015-10-09T10:25:25.476Z', committer_name: 'Yifeng Hou' },
+        { status: 'failed', stop_time: '2015-10-09T05:13:12.398Z', committer_name: 'Yifeng Hou' },
       ].to_json
 
       build_request = stub_request(:get, "#{server_url}/api/v1/project/#{project_name}?circle-token=#{auth_key}").
@@ -123,11 +123,11 @@ RSpec.describe CircleCiService do
       expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_BUILDING
       expect(result[:last_committer]).to eq last_committer
       expect(result[:build_history]).to eq [
-                                             { state: Category::CiWidget::STATUS_BUILDING, timestamp: '2016-01-15T08:00:20.000Z' },
-                                             { state: Category::CiWidget::STATUS_PASSED, timestamp: '2016-01-28T07:46:14.681Z' },
-                                             { state: Category::CiWidget::STATUS_FAILED, timestamp: '2015-10-09T10:28:42.832Z' },
-                                             { state: Category::CiWidget::STATUS_PASSED, timestamp: '2015-10-09T10:25:25.476Z' },
-                                             { state: Category::CiWidget::STATUS_FAILED, timestamp: '2015-10-09T05:13:12.398Z' }
+                                             { state: Category::CiWidget::STATUS_BUILDING, committer: last_committer, timestamp: '2016-01-15T08:00:20.000Z' },
+                                             { state: Category::CiWidget::STATUS_PASSED, committer: 'Yifeng Hou', timestamp: '2016-01-28T07:46:14.681Z' },
+                                             { state: Category::CiWidget::STATUS_FAILED, committer: 'Michael Cheng', timestamp: '2015-10-09T10:28:42.832Z' },
+                                             { state: Category::CiWidget::STATUS_PASSED, committer: 'Yifeng Hou', timestamp: '2015-10-09T10:25:25.476Z' },
+                                             { state: Category::CiWidget::STATUS_FAILED, committer: 'Yifeng Hou', timestamp: '2015-10-09T05:13:12.398Z' }
       ]
     end
   end

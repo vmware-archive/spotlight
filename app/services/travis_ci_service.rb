@@ -41,28 +41,28 @@ class TravisCiService < BaseCiService
       last_build = build_response['build']
       last_commit = build_response['commit']
 
-      payload[:last_build_status] = normalized_state_for(last_build['state'])
+      payload[:last_build_status] = self.class.normalized_state_for(last_build['state'])
       build_time = last_build['finished_at'].present? ? last_build['finished_at'] : last_build['started_at']
-      payload[:last_build_time] = parse_timestamp(build_time)
+      payload[:last_build_time] = self.class.parse_timestamp(build_time)
       payload[:last_committer] = last_commit['author_name']
     end
 
-    payload[:build_history] = build_history(repository).map{|build| normalized_build_entry(build) }
+    payload[:build_history] = build_history(repository).map{|build| self.class.normalized_build_entry(build) }
 
     payload
   end
 
-  def parse_timestamp(timestamp_string)
+  def self.parse_timestamp(timestamp_string)
     Time.parse(timestamp_string).localtime.to_datetime
   end
 
-  def normalized_build_entry(build)
-    state = normalized_state_for(build['state'])
+  def self.normalized_build_entry(build)
+    state = self.normalized_state_for(build['state'])
     timestamp = state == Category::CiWidget::STATUS_BUILDING ? build['started_at'] : build['finished_at']
 
     {
       state: state,
-      timestamp: parse_timestamp(timestamp)
+      timestamp: self.parse_timestamp(timestamp)
     }
   end
 end

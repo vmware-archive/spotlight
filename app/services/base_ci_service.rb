@@ -20,8 +20,8 @@ class BaseCiService
     self.new(opts)
   end
 
-  def normalized_state_for(state)
-    self.class::STATUSES[state] || Category::CiWidget::STATUS_UNKNOWN
+  def self.normalized_state_for(state)
+    self::STATUSES[state] || Category::CiWidget::STATUS_UNKNOWN
   end
 
   # Overridden classes
@@ -38,9 +38,9 @@ class BaseCiService
   def last_build_info(repository=@project_name)
   end
 
-  def parse_timestamp(timestamp_string)
+  def self.parse_timestamp(timestamp_string)
   end
 
-  def normalized_build_entry(build)
+  def self.normalized_build_entry(build)
   end
 end

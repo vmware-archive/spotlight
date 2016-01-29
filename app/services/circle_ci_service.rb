@@ -27,27 +27,6 @@ class CircleCiService < BaseCiService
     repo_info.first(limit)
   end
 
-  def last_build_info(repository=@project_name)
-    payload = {
-      repo_name:          repository,
-      last_build_status:  nil,
-      last_committer:     nil,
-      last_build_time:    nil
-    }
-
-    payload[:build_history] = build_history(repository).map{|build| self.class.normalized_build_entry(build) }
-
-    if payload[:build_history].present?
-      last_build = payload[:build_history].first
-
-      payload[:last_build_status] = last_build[:state]
-      payload[:last_build_time] = last_build[:timestamp]
-      payload[:last_committer] = last_build[:committer]
-    end
-
-    payload
-  end
-
   def self.parse_timestamp(timestamp_string)
     Time.parse(timestamp_string).localtime.to_datetime
   end

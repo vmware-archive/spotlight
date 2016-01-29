@@ -190,11 +190,8 @@ RSpec.describe TravisCiService do
       result = subject.last_build_info
 
       expect(builds_request).to have_been_made
-      expect(result.keys).to include :repo_name, :last_build_status, :last_committer, :last_build_time
+      expect(result.keys).to include :repo_name, :build_history
       expect(result[:repo_name]).to eq project_name
-      expect(result[:last_build_time]).to eq last_build_time
-      expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_BUILDING
-      expect(result[:last_committer]).to eq last_committer
       expect(result[:build_history]).to eq [
         { state: Category::CiWidget::STATUS_BUILDING, committer: last_committer, timestamp: last_build_time },
         { state: Category::CiWidget::STATUS_PASSED, committer: 'Michael Cheng', timestamp: '2016-01-28T08:21:47Z' },
@@ -202,21 +199,6 @@ RSpec.describe TravisCiService do
         { state: Category::CiWidget::STATUS_FAILED, committer: 'Michael Cheng', timestamp: '2016-01-28T04:12:34Z' },
         { state: Category::CiWidget::STATUS_FAILED, committer: 'Rahul Rajeev', timestamp: '2016-01-27T09:13:23Z' },
       ]
-    end
-
-    context 'build just started' do
-      let!(:build_response_body) do
-        {"build" => { "state" => last_build_status,
-                      "started_at" => '2016-01-15T09:42:34Z',
-                      "finished_at" => nil },
-         "commit" => { "author_name" => last_committer }}.to_json
-      end
-
-      it 'displays the started_at timing' do
-        result = subject.last_build_info
-
-        expect(result[:last_build_time]).to eq last_build_time
-      end
     end
   end
 end

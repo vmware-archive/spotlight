@@ -120,11 +120,8 @@ RSpec.describe JenkinsCiService do
       result = subject.last_build_info
 
       expect(builds_history_request).to have_been_made
-      expect(result.keys).to include :repo_name, :last_build_status, :last_committer, :last_build_time
+      expect(result.keys).to include :repo_name, :build_history
       expect(result[:repo_name]).to eq project_name
-      expect(result[:last_build_time]).to eq last_build_time
-      expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_PASSED
-      expect(result[:last_committer]).to eq last_committer
       expect(result[:build_history]).to eq [
                                              { state: Category::CiWidget::STATUS_PASSED, committer: last_committer, timestamp: last_build_time },
                                              { state: Category::CiWidget::STATUS_FAILED, committer: 'benjamintanweihao', timestamp: '2016-01-26T16:17:42+08:00' },

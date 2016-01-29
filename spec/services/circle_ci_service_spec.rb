@@ -117,11 +117,8 @@ RSpec.describe CircleCiService do
       result = subject.last_build_info
 
       expect(build_request).to have_been_made
-      expect(result.keys).to include :repo_name, :last_build_status, :last_committer, :last_build_time
+      expect(result.keys).to include :repo_name, :build_history
       expect(result[:repo_name]).to eq project_name
-      expect(result[:last_build_time]).to eq last_build_time
-      expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_BUILDING
-      expect(result[:last_committer]).to eq last_committer
       expect(result[:build_history]).to eq [
                                              { state: Category::CiWidget::STATUS_BUILDING, committer: last_committer, timestamp: '2016-01-15T08:00:20.000Z' },
                                              { state: Category::CiWidget::STATUS_PASSED, committer: 'Yifeng Hou', timestamp: '2016-01-28T07:46:14.681Z' },

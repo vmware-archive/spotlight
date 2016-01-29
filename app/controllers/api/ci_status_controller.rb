@@ -1,8 +1,14 @@
 class Api::CiStatusController < ApplicationController
   def show
-    service_class = (widget.server_type + '_service').camelize.constantize
+    build_class = ('Ci::' + (widget.server_type + '_build').camelize).constantize
 
-    @ci_status = service_class.for_widget(widget).last_build_info
+    service_class = (widget.server_type + '_service').camelize.constantize
+    service = service_class.for_widget(widget)
+
+    @ci_status = {
+      repo_name: widget.project_name,
+      build_history: service.build_history.map{|build_info| build_class.new(build_info) }
+    }
   end
 
   private

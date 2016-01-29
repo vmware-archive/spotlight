@@ -1,6 +1,4 @@
-class CircleCiService
-  attr_reader :connection, :server_url, :auth_key, :project_name
-
+class CircleCiService < BaseCiService
   STATUSES = {
     'success' => Category::CiWidget::STATUS_PASSED,
     'fixed' => Category::CiWidget::STATUS_PASSED,
@@ -9,37 +7,15 @@ class CircleCiService
     'running' => Category::CiWidget::STATUS_BUILDING
   }
 
-  def initialize(options={})
-    @server_url = options[:server_url]
-    @auth_key = options[:auth_key]
-    @project_name = options[:project_name]
-    @connection = Faraday.new(:url => @server_url) do |faraday|
-        faraday.response :json, :content_type => /\bjson$/
-        faraday.adapter Faraday.default_adapter
-      end
-  end
-
-  def self.for_widget(widget)
-    opts = {
-      server_url: widget.server_url,
-      auth_key: widget.auth_key,
-      project_name: widget.project_name
-    }
-    self.new(opts)
-  end
-
-  def repo_info(repository=@project_name)
+  def make_request(repository=@project_name, path='', options={})
     connection.get do |req|
-      req.url '/api/v1/project/' + repository + '?circle-token=' + @auth_key
+      req.url '/api/v1/project/' + repository + path + '?circle-token=' + @auth_key
       req.headers['Accept'] = 'application/json'
     end
   end
 
   def build_info(build_id, repository=@project_name)
-    connection.get do |req|
-      req.url '/api/v1/project/' + repository + '/' + build_id.to_s + '?circle-token=' + @auth_key
-      req.headers['Accept'] = 'application/json'
-    end
+    make_request(repository, '/' + build_id.to_s)
   end
 
   def build_history(repository=@project_name, limit=5)
@@ -70,8 +46,6 @@ class CircleCiService
     payload
   end
 
-  private
-
   def parse_timestamp(timestamp_string)
     Time.parse(timestamp_string).localtime.to_datetime
   end
@@ -84,9 +58,5 @@ class CircleCiService
       state: state,
       timestamp: parse_timestamp(timestamp)
     }
-  end
-
-  def normalized_state_for(state)
-    STATUSES[state] || Category::CiWidget::STATUS_UNKNOWN
   end
 end

@@ -174,29 +174,10 @@ RSpec.describe TravisCiService do
 
   describe '#last_build_info' do
     let(:build_id) { 12345 }
-    let(:last_build_status) { 'passed' }
-    let(:last_build_time) { '2016-01-15T17:42:34.000+08:00' }
+    let(:last_build_status) { 'started' }
+    let(:last_build_time) { '2016-01-28T09:03:32Z' }
     let(:last_committer) { 'Rahul Rajeev' }
 
-    let!(:repo_request) do
-      stub_request(:get, "#{server_url}/repos/#{project_name}").
-        with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
-                        'Authorization' => 'Token "' + auth_key + '"' }).
-        to_return(body: {"repo" => {"last_build_id" => build_id}}.to_json,
-                  headers: {'Content-Type' => 'application/json'})
-    end
-    let!(:build_response_body) do
-      {"build" => { "state" => last_build_status,
-                    "finished_at" => '2016-01-15T09:42:34Z' },
-       "commit" => { "author_name" => last_committer }}.to_json
-    end
-    let!(:build_request) do
-      stub_request(:get, "#{server_url}/repos/#{project_name}/builds/#{build_id}").
-        with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
-                        'Authorization' => 'Token "' + auth_key + '"' }).
-        to_return(body: build_response_body,
-                  headers: {'Content-Type' => 'application/json'})
-    end
     let!(:builds_request) do
       stub_request(:get, "#{server_url}/repos/#{project_name}/builds").
         with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
@@ -208,15 +189,14 @@ RSpec.describe TravisCiService do
     it 'makes request to repo' do
       result = subject.last_build_info
 
-      expect(repo_request).to have_been_made
-      expect(build_request).to have_been_made
+      expect(builds_request).to have_been_made
       expect(result.keys).to include :repo_name, :last_build_status, :last_committer, :last_build_time
       expect(result[:repo_name]).to eq project_name
       expect(result[:last_build_time]).to eq last_build_time
-      expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_PASSED
+      expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_BUILDING
       expect(result[:last_committer]).to eq last_committer
       expect(result[:build_history]).to eq [
-        { state: Category::CiWidget::STATUS_BUILDING, committer: last_committer, timestamp: '2016-01-28T09:03:32Z' },
+        { state: Category::CiWidget::STATUS_BUILDING, committer: last_committer, timestamp: last_build_time },
         { state: Category::CiWidget::STATUS_PASSED, committer: 'Michael Cheng', timestamp: '2016-01-28T08:21:47Z' },
         { state: Category::CiWidget::STATUS_FAILED, committer: 'Michael Cheng', timestamp: '2016-01-28T06:47:48Z' },
         { state: Category::CiWidget::STATUS_FAILED, committer: 'Michael Cheng', timestamp: '2016-01-28T04:12:34Z' },

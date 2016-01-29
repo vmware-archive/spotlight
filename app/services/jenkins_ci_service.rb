@@ -34,14 +34,15 @@ class JenkinsCiService < BaseCiService
       last_build_time:    nil
     }
 
-    last_build = build_info('lastBuild', repository)
-    last_commit = last_build['changeSet']['items'][0]
-
-    payload[:last_build_status] = self.class.normalized_state_for(last_build['result'])
-    payload[:last_build_time] = self.class.parse_timestamp(last_build['timestamp'])
-    payload[:last_committer] = last_commit.present? ? last_commit['author']['fullName'] : ''
-
     payload[:build_history] = build_history(repository).map{|build| self.class.normalized_build_entry(build) }
+
+    if payload[:build_history].present?
+      last_build = payload[:build_history].first
+
+      payload[:last_build_status] = last_build[:state]
+      payload[:last_build_time] = last_build[:timestamp]
+      payload[:last_committer] = last_build[:committer]
+    end
 
     payload
   end

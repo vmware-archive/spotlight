@@ -90,7 +90,7 @@ RSpec.describe CircleCiService do
   describe '#last_build_info' do
     let(:build_id) { 12345 }
     let(:last_build_status) { 'running' }
-    let(:last_build_time) { '2016-01-15T16:20:20.000+08:00' }
+    let(:last_build_time) { '2016-01-15T08:00:20.000Z' }
     let(:last_committer) { 'Rahul Rajeev' }
 
     it 'makes request to repo' do

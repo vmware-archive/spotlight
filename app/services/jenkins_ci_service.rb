@@ -1,53 +1,25 @@
-class JenkinsCiService
-  attr_reader :connection, :server_url, :auth_key, :project_name
-
+class JenkinsCiService < BaseCiService
   STATUSES = {
     'SUCCESS' => Category::CiWidget::STATUS_PASSED,
     'FAILURE' => Category::CiWidget::STATUS_FAILED,
     nil => Category::CiWidget::STATUS_BUILDING # Jenkins returns null when its building
   }
 
-  def initialize(options={})
-    @server_url = options[:server_url]
-    @auth_key = options[:auth_key]
-    @project_name = options[:project_name]
-    @connection = Faraday.new(:url => @server_url) do |faraday|
-        faraday.response :json, :content_type => /\bjson$/
-        faraday.adapter Faraday.default_adapter
-      end
-  end
-
-  def self.for_widget(widget)
-    opts = {
-      server_url: widget.server_url,
-      auth_key: widget.auth_key,
-      project_name: widget.project_name
-    }
-    self.new(opts)
-  end
-
-  def repo_info(repository=@project_name)
+  def make_request(repository=@project_name, path='', options={})
+    params = options[:params] ? '?' + options[:params] : ''
     connection.get do |req|
-      req.url '/job/' + repository + '/api/json'
+      req.url '/job/' + repository + path + '/api/json' + params
       req.headers['Accept'] = 'application/json'
       req.headers['Authorization'] = 'Token "' + @auth_key + '"' if @auth_key.present?
     end
   end
 
   def build_info(build_id, repository=@project_name)
-    connection.get do |req|
-      req.url '/job/' + repository + '/' + build_id.to_s + '/api/json'
-      req.headers['Accept'] = 'application/json'
-      req.headers['Authorization'] = 'Token "' + @auth_key + '"' if @auth_key.present?
-    end
+    make_request(repository, '/' + build_id.to_s)
   end
 
   def build_history(repository=@project_name, limit=5)
-    build_history = connection.get do |req|
-      req.url '/job/' + repository + '/api/json?tree=builds[number,timestamp,result]'
-      req.headers['Accept'] = 'application/json'
-      req.headers['Authorization'] = 'Token "' + @auth_key + '"' if @auth_key.present?
-    end
+    build_history = make_request(repository, '', params: 'tree=builds[number,timestamp,result]')
 
     build_history.body['builds'].first(5)
   end
@@ -73,8 +45,6 @@ class JenkinsCiService
     payload
   end
 
-  private
-
   def parse_timestamp(timestamp_string)
     Time.at(timestamp_string / 1000).to_datetime
   end
@@ -87,9 +57,5 @@ class JenkinsCiService
       state: state,
       timestamp: parse_timestamp(timestamp)
     }
-  end
-
-  def normalized_state_for(state)
-    STATUSES[state] || Category::CiWidget::STATUS_UNKNOWN
   end
 end

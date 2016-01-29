@@ -39,26 +39,26 @@ class CircleCiService < BaseCiService
     last_build = build_response.try(:first)
     last_build_time = last_build['stop_time'].present? ? last_build['stop_time'] : last_build['usage_queued_at']
 
-    payload[:build_history] = build_response.empty? ? [] : build_response.first(5).map{|build| normalized_build_entry(build) }
+    payload[:build_history] = build_response.empty? ? [] : build_response.first(5).map{|build| self.class.normalized_build_entry(build) }
 
-    payload[:last_build_status] = normalized_state_for(last_build['status'])
-    payload[:last_build_time] = parse_timestamp(last_build_time)
+    payload[:last_build_status] = self.class.normalized_state_for(last_build['status'])
+    payload[:last_build_time] = self.class.parse_timestamp(last_build_time)
     payload[:last_committer] = last_build['committer_name']
 
     payload
   end
 
-  def parse_timestamp(timestamp_string)
+  def self.parse_timestamp(timestamp_string)
     Time.parse(timestamp_string).localtime.to_datetime
   end
 
-  def normalized_build_entry(build)
-    state = normalized_state_for(build['status'])
+  def self.normalized_build_entry(build)
+    state = self.normalized_state_for(build['status'])
     timestamp = state == Category::CiWidget::STATUS_BUILDING ? build['start_time'] : build['stop_time']
 
     {
       state: state,
-      timestamp: parse_timestamp(timestamp)
+      timestamp: self.parse_timestamp(timestamp)
     }
   end
 end

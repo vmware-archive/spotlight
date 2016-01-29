@@ -35,15 +35,15 @@ class CircleCiService < BaseCiService
       last_build_time:    nil
     }
 
-    build_response = repo_info
-    last_build = build_response.try(:first)
-    last_build_time = last_build['stop_time'].present? ? last_build['stop_time'] : last_build['usage_queued_at']
+    payload[:build_history] = build_history(repository).map{|build| self.class.normalized_build_entry(build) }
 
-    payload[:build_history] = build_response.empty? ? [] : build_response.first(5).map{|build| self.class.normalized_build_entry(build) }
+    if payload[:build_history].present?
+      last_build = payload[:build_history].first
 
-    payload[:last_build_status] = self.class.normalized_state_for(last_build['status'])
-    payload[:last_build_time] = self.class.parse_timestamp(last_build_time)
-    payload[:last_committer] = last_build['committer_name']
+      payload[:last_build_status] = last_build[:state]
+      payload[:last_build_time] = last_build[:timestamp]
+      payload[:last_committer] = last_build[:committer]
+    end
 
     payload
   end

@@ -77,7 +77,7 @@ RSpec.describe JenkinsCiService do
 
   let(:build_history_response_body) do
     { "builds" => [
-        { "number" => 716, "result" => "SUCCESS", "timestamp" => 1453883748620, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} },
+        { "number" => 716, "result" => "SUCCESS", "timestamp" => 1453883748620, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'Rahul Rajeev'}} ]} },
         { "number" => 715, "result" => "FAILURE", "timestamp" => 1453796262456, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} },
         { "number" => 714, "result" => "SUCCESS", "timestamp" => 1453794808186, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} },
         { "number" => 713, "result" => "SUCCESS", "timestamp" => 1453792548935, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} },
@@ -107,22 +107,10 @@ RSpec.describe JenkinsCiService do
     let(:build_id) { 12345 }
     let(:is_building) { false }
     let(:last_build_status) { 'SUCCESS' }
-    let(:last_build_time) { '2016-01-15T16:20:20.000+08:00' }
+    let(:last_build_time) { '2016-01-27T16:35:48+08:00' }
     let(:last_committer) { 'Rahul Rajeev' }
 
     it 'makes request to repo' do
-      build_response_body = {"building" => is_building, "result" => last_build_status,
-                             "timestamp" => 1452846020564,
-                             "changeSet" => { "items" => [
-                                              { "author" => { "fullName" => last_committer } }
-                                            ]
-                             } }.to_json
-      build_request = stub_request(:get, "#{server_url}/job/#{project_name}/lastBuild/api/json").
-          with(headers: { 'Accept' => 'application/json',
-                          'Authorization' => 'Token "' + auth_key + '"' }).
-          to_return(body: build_response_body,
-                    headers: {'Content-Type' => 'application/json'})
-
       builds_history_request = stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,timestamp,result,committer_name,changeSet[items[author[fullName]]]]").
           with(headers: { 'Accept' => 'application/json',
                           'Authorization' => 'Token "' + auth_key + '"' }).
@@ -131,7 +119,6 @@ RSpec.describe JenkinsCiService do
 
       result = subject.last_build_info
 
-      expect(build_request).to have_been_made
       expect(builds_history_request).to have_been_made
       expect(result.keys).to include :repo_name, :last_build_status, :last_committer, :last_build_time
       expect(result[:repo_name]).to eq project_name
@@ -139,7 +126,7 @@ RSpec.describe JenkinsCiService do
       expect(result[:last_build_status]).to eq Category::CiWidget::STATUS_PASSED
       expect(result[:last_committer]).to eq last_committer
       expect(result[:build_history]).to eq [
-                                             { state: Category::CiWidget::STATUS_PASSED, committer: 'benjamintanweihao', timestamp: '2016-01-27T16:35:48+08:00' },
+                                             { state: Category::CiWidget::STATUS_PASSED, committer: last_committer, timestamp: last_build_time },
                                              { state: Category::CiWidget::STATUS_FAILED, committer: 'benjamintanweihao', timestamp: '2016-01-26T16:17:42+08:00' },
                                              { state: Category::CiWidget::STATUS_PASSED, committer: 'benjamintanweihao', timestamp: '2016-01-26T15:53:28+08:00' },
                                              { state: Category::CiWidget::STATUS_PASSED, committer: 'benjamintanweihao', timestamp: '2016-01-26T15:15:48+08:00' },

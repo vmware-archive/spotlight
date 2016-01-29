@@ -40,21 +40,15 @@ class TravisCiService < BaseCiService
       last_build_time:    nil
     }
 
-    repo_response = repo_info(repository)
-
-    if last_build_id = repo_response['repo']['last_build_id']
-      build_response = build_info(last_build_id, repository)
-
-      last_build = build_response['build']
-      last_commit = build_response['commit']
-
-      payload[:last_build_status] = self.class.normalized_state_for(last_build['state'])
-      build_time = last_build['finished_at'].present? ? last_build['finished_at'] : last_build['started_at']
-      payload[:last_build_time] = self.class.parse_timestamp(build_time)
-      payload[:last_committer] = last_commit['author_name']
-    end
-
     payload[:build_history] = build_history(repository).map{|build| self.class.normalized_build_entry(build) }
+
+    if payload[:build_history].present?
+      last_build = payload[:build_history].first
+
+      payload[:last_build_status] = last_build[:state]
+      payload[:last_build_time] = last_build[:timestamp]
+      payload[:last_committer] = last_build[:committer]
+    end
 
     payload
   end

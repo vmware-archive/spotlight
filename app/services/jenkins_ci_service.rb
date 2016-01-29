@@ -5,23 +5,25 @@ class JenkinsCiService < BaseCiService
     nil => Category::CiWidget::STATUS_BUILDING # Jenkins returns null when its building
   }
 
-  def make_request(repository=@project_name, path='', options={})
+  def repo_info(repository=@project_name, path='', options={})
     params = options[:params] ? '?' + options[:params] : ''
-    connection.get do |req|
+    response = connection.get do |req|
       req.url '/job/' + repository + path + '/api/json' + params
       req.headers['Accept'] = 'application/json'
       req.headers['Authorization'] = 'Token "' + @auth_key + '"' if @auth_key.present?
     end
+
+    response.success? ? response.body : {}
   end
 
   def build_info(build_id, repository=@project_name)
-    make_request(repository, '/' + build_id.to_s)
+    repo_info(repository, '/' + build_id.to_s)
   end
 
   def build_history(repository=@project_name, limit=5)
-    build_history = make_request(repository, '', params: 'tree=builds[number,timestamp,result]')
+    build_history = repo_info(repository, '', params: 'tree=builds[number,timestamp,result]')
 
-    build_history.body['builds'].first(5)
+    build_history['builds'].first(5)
   end
 
   def last_build_info(repository=@project_name)
@@ -32,8 +34,7 @@ class JenkinsCiService < BaseCiService
       last_build_time:    nil
     }
 
-    build_response = build_info('lastBuild', repository)
-    last_build = build_response.body
+    last_build = build_info('lastBuild', repository)
     last_commit = last_build['changeSet']['items'][0]
 
     payload[:last_build_status] = normalized_state_for(last_build['result'])

@@ -20,18 +20,7 @@ class BaseCiService
     self.new(opts)
   end
 
-  def self.normalized_state_for(state)
-    self::STATUSES[state] || Category::CiWidget::STATUS_UNKNOWN
-  end
-
-  def last_build_info(repository=@project_name)
-    {
-      repo_name: repository,
-      build_history: build_history(repository).map{|build| self.class.normalized_build_entry(build) }
-    }
-  end
-
-  # Overridden classes
+  # Overridden methods
 
   def repo_info(repository=@project_name, path='', options={})
   end
@@ -40,11 +29,5 @@ class BaseCiService
   end
 
   def build_history(repository=@project_name, limit=5)
-  end
-
-  def self.parse_timestamp(timestamp_string)
-  end
-
-  def self.normalized_build_entry(build)
   end
 end

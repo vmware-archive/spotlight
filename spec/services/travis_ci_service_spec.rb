@@ -171,34 +171,4 @@ RSpec.describe TravisCiService do
       expect(result.first.keys).to eq %w(build commit)
     end
   end
-
-  describe '#last_build_info' do
-    let(:build_id) { 12345 }
-    let(:last_build_status) { 'started' }
-    let(:last_build_time) { '2016-01-28T09:03:32Z' }
-    let(:last_committer) { 'Rahul Rajeev' }
-
-    let!(:builds_request) do
-      stub_request(:get, "#{server_url}/repos/#{project_name}/builds").
-        with(headers: { 'Accept' => 'application/vnd.travis-ci.2+json',
-                        'Authorization' => 'Token "' + auth_key + '"' }).
-        to_return(body: build_history_response,
-                  headers: {'Content-Type' => 'application/json'})
-    end
-
-    it 'makes request to repo' do
-      result = subject.last_build_info
-
-      expect(builds_request).to have_been_made
-      expect(result.keys).to include :repo_name, :build_history
-      expect(result[:repo_name]).to eq project_name
-      expect(result[:build_history]).to eq [
-        { state: Category::CiWidget::STATUS_BUILDING, committer: last_committer, timestamp: last_build_time },
-        { state: Category::CiWidget::STATUS_PASSED, committer: 'Michael Cheng', timestamp: '2016-01-28T08:21:47Z' },
-        { state: Category::CiWidget::STATUS_FAILED, committer: 'Michael Cheng', timestamp: '2016-01-28T06:47:48Z' },
-        { state: Category::CiWidget::STATUS_FAILED, committer: 'Michael Cheng', timestamp: '2016-01-28T04:12:34Z' },
-        { state: Category::CiWidget::STATUS_FAILED, committer: 'Rahul Rajeev', timestamp: '2016-01-27T09:13:23Z' },
-      ]
-    end
-  end
 end

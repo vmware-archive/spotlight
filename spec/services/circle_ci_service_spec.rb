@@ -86,46 +86,4 @@ RSpec.describe CircleCiService do
       expect(result.count).to eq 5
     end
   end
-
-  describe '#last_build_info' do
-    let(:build_id) { 12345 }
-    let(:last_build_status) { 'running' }
-    let(:last_build_time) { '2016-01-15T08:00:20.000Z' }
-    let(:last_committer) { 'Rahul Rajeev' }
-
-    it 'makes request to repo' do
-      build_response_body = [
-        {
-          status: last_build_status,
-          committer_name: last_committer,
-          outcome: last_build_status,
-          stop_time: '2016-01-15T08:20:20.000Z',
-          start_time: '2016-01-15T08:00:20.000Z',
-          usage_queued_at: '2016-01-15T08:20:00.000Z'
-        },
-        { status: 'success', stop_time: '2016-01-28T07:46:14.681Z', committer_name: 'Yifeng Hou'},
-        { status: 'cancelled', stop_time: '2015-10-09T10:28:42.832Z', committer_name: 'Michael Cheng' },
-        { status: 'fixed', stop_time: '2015-10-09T10:25:25.476Z', committer_name: 'Yifeng Hou' },
-        { status: 'failed', stop_time: '2015-10-09T05:13:12.398Z', committer_name: 'Yifeng Hou' },
-      ].to_json
-
-      build_request = stub_request(:get, "#{server_url}/api/v1/project/#{project_name}?circle-token=#{auth_key}").
-          with(headers: { 'Accept' => 'application/json' }).
-          to_return(body: build_response_body,
-                    headers: {'Content-Type' => 'application/json'})
-
-      result = subject.last_build_info
-
-      expect(build_request).to have_been_made
-      expect(result.keys).to include :repo_name, :build_history
-      expect(result[:repo_name]).to eq project_name
-      expect(result[:build_history]).to eq [
-                                             { state: Category::CiWidget::STATUS_BUILDING, committer: last_committer, timestamp: '2016-01-15T08:00:20.000Z' },
-                                             { state: Category::CiWidget::STATUS_PASSED, committer: 'Yifeng Hou', timestamp: '2016-01-28T07:46:14.681Z' },
-                                             { state: Category::CiWidget::STATUS_FAILED, committer: 'Michael Cheng', timestamp: '2015-10-09T10:28:42.832Z' },
-                                             { state: Category::CiWidget::STATUS_PASSED, committer: 'Yifeng Hou', timestamp: '2015-10-09T10:25:25.476Z' },
-                                             { state: Category::CiWidget::STATUS_FAILED, committer: 'Yifeng Hou', timestamp: '2015-10-09T05:13:12.398Z' }
-      ]
-    end
-  end
 end

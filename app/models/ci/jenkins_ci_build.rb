@@ -1,0 +1,22 @@
+module Ci
+  class JenkinsCiBuild < BaseBuild
+    STATUSES = {
+        'SUCCESS' => Category::CiWidget::STATUS_PASSED,
+        'FAILURE' => Category::CiWidget::STATUS_FAILED,
+        nil => Category::CiWidget::STATUS_BUILDING # Jenkins returns null when its building
+    }
+
+    def initialize(build={})
+      @state = self.class.normalized_state_for(build['result'])
+
+      @timestamp = self.class.parse_timestamp(build['timestamp'])
+
+      commit = build['changeSet']['items'][0]
+      @committer = commit.present? ? commit['author']['fullName'] : ''
+    end
+
+    def self.parse_timestamp(timestamp_string)
+      Time.at(timestamp_string / 1000).to_datetime
+    end
+  end
+end

@@ -102,33 +102,4 @@ RSpec.describe JenkinsCiService do
       expect(result.count).to eq 5
     end
   end
-
-  describe '#last_build_info' do
-    let(:build_id) { 12345 }
-    let(:is_building) { false }
-    let(:last_build_status) { 'SUCCESS' }
-    let(:last_build_time) { '2016-01-27T16:35:48+08:00' }
-    let(:last_committer) { 'Rahul Rajeev' }
-
-    it 'makes request to repo' do
-      builds_history_request = stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,timestamp,result,committer_name,changeSet[items[author[fullName]]]]").
-          with(headers: { 'Accept' => 'application/json',
-                          'Authorization' => 'Token "' + auth_key + '"' }).
-          to_return(body: build_history_response_body,
-                    headers: {'Content-Type' => 'application/json'})
-
-      result = subject.last_build_info
-
-      expect(builds_history_request).to have_been_made
-      expect(result.keys).to include :repo_name, :build_history
-      expect(result[:repo_name]).to eq project_name
-      expect(result[:build_history]).to eq [
-                                             { state: Category::CiWidget::STATUS_PASSED, committer: last_committer, timestamp: last_build_time },
-                                             { state: Category::CiWidget::STATUS_FAILED, committer: 'benjamintanweihao', timestamp: '2016-01-26T16:17:42+08:00' },
-                                             { state: Category::CiWidget::STATUS_PASSED, committer: 'benjamintanweihao', timestamp: '2016-01-26T15:53:28+08:00' },
-                                             { state: Category::CiWidget::STATUS_PASSED, committer: 'benjamintanweihao', timestamp: '2016-01-26T15:15:48+08:00' },
-                                             { state: Category::CiWidget::STATUS_FAILED, committer: 'benjamintanweihao', timestamp: '2016-01-26T12:30:48+08:00' }
-      ]
-    end
-  end
 end

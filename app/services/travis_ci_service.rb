@@ -5,22 +5,24 @@ class TravisCiService < BaseCiService
     'started' => Category::CiWidget::STATUS_BUILDING
   }
 
-  def make_request(repository=@project_name, path='', options={})
-    connection.get do |req|
+  def repo_info(repository=@project_name, path='', options={})
+    response = connection.get do |req|
       req.url '/repos/' + repository + path
       req.headers['Accept'] = 'application/vnd.travis-ci.2+json'
       req.headers['Authorization'] = 'Token "' + @auth_key + '"'
     end
+
+    response.success? ? response.body : {}
   end
 
   def build_info(build_id, repository=@project_name)
-    make_request(repository, '/builds/' + build_id.to_s)
+    repo_info(repository, '/builds/' + build_id.to_s)
   end
 
   def build_history(repository=@project_name, limit=5)
-    builds_response = make_request(repository, '/builds')
+    builds_response = repo_info(repository, '/builds')
 
-    builds_response.body['builds'].first(limit)
+    builds_response['builds'].first(limit)
   end
 
   def last_build_info(repository=@project_name)
@@ -33,11 +35,11 @@ class TravisCiService < BaseCiService
 
     repo_response = repo_info(repository)
 
-    if last_build_id = repo_response.body['repo']['last_build_id']
+    if last_build_id = repo_response['repo']['last_build_id']
       build_response = build_info(last_build_id, repository)
 
-      last_build = build_response.body['build']
-      last_commit = build_response.body['commit']
+      last_build = build_response['build']
+      last_commit = build_response['commit']
 
       payload[:last_build_status] = normalized_state_for(last_build['state'])
       build_time = last_build['finished_at'].present? ? last_build['finished_at'] : last_build['started_at']

@@ -26,11 +26,7 @@ class BaseCiService
 
   # Overridden classes
 
-  def make_request(repository=@project_name, path='', options={})
-  end
-
-  def repo_info(repository=@project_name)
-    make_request(repository)
+  def repo_info(repository=@project_name, path='', options={})
   end
 
   def build_info(build_id, repository=@project_name)

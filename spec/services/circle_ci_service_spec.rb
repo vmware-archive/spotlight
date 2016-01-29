@@ -53,7 +53,7 @@ RSpec.describe CircleCiService do
       result = subject.repo_info
 
       expect(mock_request).to have_been_made
-      expect(result.body[0]["foo"]).to eq "bar"
+      expect(result[0]["foo"]).to eq "bar"
     end
   end
 
@@ -69,7 +69,7 @@ RSpec.describe CircleCiService do
       result = subject.build_info(build_id)
 
       expect(mock_request).to have_been_made
-      expect(result.body["foo"]).to eq "bar"
+      expect(result["foo"]).to eq "bar"
     end
   end
 

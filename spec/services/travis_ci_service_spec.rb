@@ -54,7 +54,7 @@ RSpec.describe TravisCiService do
       result = subject.repo_info
 
       expect(mock_request).to have_been_made
-      expect(result.body["foo"]).to eq "bar"
+      expect(result["foo"]).to eq "bar"
     end
   end
 
@@ -71,7 +71,7 @@ RSpec.describe TravisCiService do
       result = subject.build_info(build_id)
 
       expect(mock_request).to have_been_made
-      expect(result.body["foo"]).to eq "bar"
+      expect(result["foo"]).to eq "bar"
     end
   end
 

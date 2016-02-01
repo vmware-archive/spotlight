@@ -1,17 +1,19 @@
 describe('CiWidget', function() {
-  var status = 'building'
+  let status = 'building';
+  let buildHistory = [ {state: 'passed'} ];
 
-  var widgetProps = function() {
+  const widgetProps = function() {
     return {
       title: 'Concierge',
       widgetPath: '/widget_path',
       status: status,
       committer: 'committer name',
-      lastBuildTime: moment().format()
-    }
+      lastBuildTime: moment().format(),
+      buildHistory: buildHistory
+    };
   };
 
-  var renderWidget = function() {
+  const renderWidget = function() {
     return window.TestUtils.renderIntoDocument(
       <CiWidget {...widgetProps()}/>
     );
@@ -37,8 +39,8 @@ describe('CiWidget', function() {
   });
 
   describe('committers name', function() {
-    describe('build is building', function(){
-      beforeEach(function(){
+    describe('build is building', function() {
+      beforeEach(function() {
         status = 'building';
       });
 
@@ -48,8 +50,8 @@ describe('CiWidget', function() {
       });
     });
 
-    describe('build is passed', function(){
-      beforeEach(function(){
+    describe('build is passed', function() {
+      beforeEach(function() {
         status = 'passed';
       });
 
@@ -59,8 +61,8 @@ describe('CiWidget', function() {
       });
     });
 
-    describe('build is unknown', function(){
-      beforeEach(function(){
+    describe('build is unknown', function() {
+      beforeEach(function() {
         status = 'unknown';
       });
 
@@ -70,8 +72,8 @@ describe('CiWidget', function() {
       });
     });
 
-    describe('build has failed', function(){
-      beforeEach(function(){
+    describe('build has failed', function() {
+      beforeEach(function() {
         status = 'failed';
       });
 
@@ -81,5 +83,25 @@ describe('CiWidget', function() {
         expect(committerNode.classList).not.toContain('hidden');
       });
     });
+  });
+
+  it('renders previous build status', function() {
+    const nodes = window.TestUtils.scryRenderedDOMComponentsWithClass(renderWidget(), 'build-block');
+    expect(nodes.length).toEqual(4);
+  });
+
+  it('renders previous build in reverse order and pads mising builds', function() {
+    buildHistory = [
+      {state: 'passed'},
+      {state: 'unknown'},
+      {state: 'failed'}
+    ];
+
+    const nodes = window.TestUtils.scryRenderedDOMComponentsWithClass(renderWidget(), 'build-block');
+    expect(nodes.length).toEqual(4);
+    expect(nodes[0].className).toContain('unknown');
+    expect(nodes[1].className).toContain('failed');
+    expect(nodes[2].className).toContain('unknown');
+    expect(nodes[3].className).toContain('passed');
   });
 });

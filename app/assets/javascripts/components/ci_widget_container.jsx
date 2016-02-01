@@ -40,8 +40,9 @@ const CiWidgetContainer = React.createClass({
   },
 
   defaultOnBuildUpdate: function(buildStatus) {
-    if (buildStatus.build_history.length > 0) {
-      const lastBuild = buildStatus.build_history[0];
+    const buildHistory = buildStatus.status.build_history;
+    if (buildHistory.length > 0) {
+      const lastBuild = buildHistory[0];
 
       this.setState({
         status: lastBuild.state,

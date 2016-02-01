@@ -3,7 +3,8 @@ module Ci
     STATUSES = {
         'passed' => Category::CiWidget::STATUS_PASSED,
         'failed' => Category::CiWidget::STATUS_FAILED,
-        'started' => Category::CiWidget::STATUS_BUILDING
+        'errored' => Category::CiWidget::STATUS_FAILED,
+        'started' => Category::CiWidget::STATUS_BUILDING,
     }
 
     def initialize(build_info={})

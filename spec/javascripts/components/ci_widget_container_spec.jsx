@@ -68,25 +68,27 @@ describe('CiWidgetContainer', function() {
   });
 
   describe('updateBuildInfo', function() {
+    const testBuildInfo = {
+      state: 'passed',
+      committer: 'Luke Skywalker',
+      timestamp: 'A long time ago'
+    };
+
     const buildInfo = {
       status: {
-        last_build_status: 'passed',
-        last_committer: 'Luke Skywalker',
-        last_build_time: 'A long time ago'
+        build_history: [testBuildInfo]
       }
     };
 
     it('updates the component state', function() {
       component.onBuildUpdate(buildInfo);
-      expect(component.state.status).toEqual(buildInfo.status.last_build_status);
-      expect(component.state.committer).toEqual(buildInfo.status.last_committer);
-      expect(component.state.lastBuildTime).toEqual(buildInfo.status.last_build_time);
+      expect(component.state.status).toEqual(testBuildInfo.state);
+      expect(component.state.committer).toEqual(testBuildInfo.committer);
+      expect(component.state.lastBuildTime).toEqual(testBuildInfo.timestamp);
     });
   });
 
   describe('componentDidMount', function() {
-    let fakeTimerTick;
-
     beforeEach(function() {
       fakeTimerTick = jasmine.createSpy('timer tick');
       jasmine.clock().install();

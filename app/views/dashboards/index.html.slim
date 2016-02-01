@@ -1,10 +1,11 @@
-- if notice || alert
+.dashboard
+  - if notice || alert
+    .row
+      .col.s12
+        .card.notice
+          .card-content
+            = flash[:notice]
+
   .row
     .col.s12
-      .card.notice
-        .card-content
-          = flash[:notice]
-
-.row
-  .col.s12
-    = react_component 'SpotlightWindow', dashboardId: @dashboard.id, widgets: widgets_hash(@dashboard.widgets.active), editMode: @edit
+      = react_component 'SpotlightWindow', dashboardId: @dashboard.id, widgets: widgets_hash(@dashboard.widgets.active), editMode: @edit

@@ -29,6 +29,10 @@ const CiWidget = React.createClass({
     return moment(timestamp).fromNow();
   },
 
+  showCommitter: function() {
+    return (this.props.status == 'failed' ? '' : 'hidden');
+  },
+
   render: function() {
     return (
       <div className={'inner-ci-widget ' + this.props.status}>
@@ -38,7 +42,7 @@ const CiWidget = React.createClass({
           <div className="commit-info">
             <div className="inner-div">
               <p className="last-build-at">{this.timeAgo(this.props.lastBuildTime)}</p>
-              <p className="committer">{this.committerInfo()}</p>
+              <p className={ 'committer ' + this.showCommitter() }>{this.committerInfo()}</p>
             </div>
           </div>
 

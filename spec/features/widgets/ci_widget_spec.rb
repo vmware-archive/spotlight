@@ -6,14 +6,14 @@ describe "travis widget spec", :type => :feature do
   let(:project_name) { 'the_resistance/x_wing' }
 
   let(:build_id) { 12345 }
-  let(:last_build_status) { 'started' }
+  let(:last_build_status) { 'failed' }
   let(:last_build_time) { '2016-01-28T09:03:32Z' }
   let(:last_committer) { 'Luke Skywalker' }
 
   let!(:build_history_response) do
     {
         "builds" => [
-            { "state" => last_build_status, started_at: last_build_time },
+            { "state" => last_build_status, started_at: '2016-01-28T09:02:32Z', finished_at: last_build_time },
             { "state" => 'passed', started_at: '2016-01-28T08:18:46Z', finished_at: '2016-01-28T08:21:47Z' },
             { "state" => 'failed', started_at: '2016-01-28T06:43:57Z', finished_at: '2016-01-28T06:47:48Z' },
             { "state" => 'failed', started_at: '2016-01-28T04:09:34Z', finished_at: '2016-01-28T04:12:34Z' },
@@ -103,7 +103,7 @@ describe "travis widget spec", :type => :feature do
 
   it "must create a widget", js: true do
     visit '/'
-    expect(page.find(('.' + Category::CiWidget::STATUS_BUILDING) , wait: 10)).to be
+    expect(page.find(('.' + Category::CiWidget::STATUS_FAILED) , wait: 10)).to be
     expect(page).to have_content last_committer
     expect(page).to have_content 'spotlight'
   end
@@ -116,7 +116,7 @@ describe "travis widget spec", :type => :feature do
     #changing the stub to simulate a change in the repository status
     build_history_response = {
       "builds" => [
-          { "state" => 'failed', started_at: '2016-01-27T09:10:35Z', finished_at: '2016-01-27T09:13:23Z' }
+          { "state" => 'passed', started_at: '2016-01-27T09:10:35Z', finished_at: '2016-01-27T09:13:23Z' }
       ],
       "commits" => [
           { "author_name" => "Ray" }
@@ -129,8 +129,8 @@ describe "travis widget spec", :type => :feature do
         to_return(body: build_history_response,
                   headers: {'Content-Type' => 'application/json'})
 
-    expect(page.find('.failed', wait: 45)).to be
-    expect(page).to have_content 'Ray'
+    expect(page.find('.passed', wait: 45)).to be
+    expect(page).to_not have_content 'Ray'
 
   end
 end

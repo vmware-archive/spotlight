@@ -37,6 +37,7 @@ group :development, :test do
   gem 'spring-commands-rspec'
   gem 'factory_girl_rails'
   gem 'faker'
+  gem 'phantomjs', '1.9.8'
   gem 'jasmine-rails'
 end
 

@@ -135,7 +135,7 @@ GEM
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     pg (0.18.4)
-    phantomjs (2.1.1.0)
+    phantomjs (1.9.8.0)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -287,6 +287,7 @@ DEPENDENCIES
   license_finder
   materialize-sass
   pg (~> 0.15)
+  phantomjs (= 1.9.8)
   pry
   pry-byebug
   pry-rails

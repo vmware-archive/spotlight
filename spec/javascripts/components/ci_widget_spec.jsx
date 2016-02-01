@@ -1,41 +1,85 @@
 describe('CiWidget', function() {
-  let ciWidget;
+  var status = 'building'
 
-  const widgetProps = {
-    title: 'Concierge',
-    widgetPath: '/widget_path',
-    status: 'building',
-    committer: 'committer name',
-    lastBuildTime: moment().format(),
+  var widgetProps = function() {
+    return {
+      title: 'Concierge',
+      widgetPath: '/widget_path',
+      status: status,
+      committer: 'committer name',
+      lastBuildTime: moment().format()
+    }
   };
 
-  beforeEach(function() {
-    ciWidget = window.TestUtils.renderIntoDocument(
-      <CiWidget {...widgetProps}/>
+  var renderWidget = function() {
+    return window.TestUtils.renderIntoDocument(
+      <CiWidget {...widgetProps()}/>
     );
-  });
+  };
 
   it('renders the title', function() {
-    const titleNode = window.TestUtils.findRenderedDOMComponentWithClass(ciWidget, 'project-name');
-    expect(titleNode.textContent).toEqual(widgetProps.title);
+    const titleNode = window.TestUtils.findRenderedDOMComponentWithClass(renderWidget(), 'project-name');
+    expect(titleNode.textContent).toEqual(widgetProps().title);
   });
 
   it('renders the time since the last build', function() {
-    const titleNode = window.TestUtils.findRenderedDOMComponentWithClass(ciWidget, 'last-build-at');
+    const titleNode = window.TestUtils.findRenderedDOMComponentWithClass(renderWidget(), 'last-build-at');
     expect(titleNode.textContent).toEqual('a few seconds ago');
   });
 
   it('renders the delete button', function() {
-    const deleteLink = window.TestUtils.findRenderedDOMComponentWithClass(ciWidget, 'delete');
-    expect(deleteLink.href).toContain(widgetProps.widgetPath);
+    const deleteLink = window.TestUtils.findRenderedDOMComponentWithClass(renderWidget(), 'delete');
+    expect(deleteLink.href).toContain(widgetProps().widgetPath);
   });
 
   it('renders the build status', function() {
-    expect(window.TestUtils.findRenderedDOMComponentWithClass(ciWidget, widgetProps.status).tagName).toEqual('DIV');
+    expect(window.TestUtils.findRenderedDOMComponentWithClass(renderWidget(), widgetProps().status).tagName).toEqual('DIV');
   });
 
-  it('renders the committers name', function() {
-    const committerNode = window.TestUtils.findRenderedDOMComponentWithClass(ciWidget, 'committer');
-    expect(committerNode.textContent).toEqual('by ' + widgetProps.committer);
+  describe('committers name', function() {
+    describe('build is building', function(){
+      beforeEach(function(){
+        status = 'building';
+      });
+
+      it('hides the committer', function() {
+        const committerNode = window.TestUtils.findRenderedDOMComponentWithClass(renderWidget(), 'committer');
+        expect(committerNode.classList).toContain('hidden');
+      });
+    });
+
+    describe('build is passed', function(){
+      beforeEach(function(){
+        status = 'passed';
+      });
+
+      it('hides the committer', function() {
+        const committerNode = window.TestUtils.findRenderedDOMComponentWithClass(renderWidget(), 'committer');
+        expect(committerNode.classList).toContain('hidden');
+      });
+    });
+
+    describe('build is unknown', function(){
+      beforeEach(function(){
+        status = 'unknown';
+      });
+
+      it('hides the committer', function() {
+        const committerNode = window.TestUtils.findRenderedDOMComponentWithClass(renderWidget(), 'committer');
+        expect(committerNode.classList).toContain('hidden');
+      });
+    });
+
+    describe('build has failed', function(){
+      beforeEach(function(){
+        status = 'failed';
+      });
+
+      it('shows the committer', function() {
+        const committerNode = window.TestUtils.findRenderedDOMComponentWithClass(renderWidget(), 'committer');
+        expect(committerNode.textContent).toEqual('by ' + widgetProps().committer);
+        expect(committerNode.classList).not.toContain('hidden');
+      });
+    });
   });
 });

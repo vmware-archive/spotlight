@@ -25,6 +25,10 @@ const CiWidget = React.createClass({
     }
   },
 
+  timeAgo: function(timestamp){
+    return moment(timestamp).fromNow();
+  },
+
   render: function() {
     return (
       <div className={'inner-ci-widget ' + this.props.status}>
@@ -33,7 +37,7 @@ const CiWidget = React.createClass({
           <div className="symbol"></div>
           <div className="commit-info">
             <div className="inner-div">
-              <p className="last-build-at">{this.props.lastBuildTime}</p>
+              <p className="last-build-at">{this.timeAgo(this.props.lastBuildTime)}</p>
               <p className="committer">{this.committerInfo()}</p>
             </div>
           </div>

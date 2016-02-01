@@ -6,7 +6,7 @@ describe('CiWidget', function() {
     widgetPath: '/widget_path',
     status: 'building',
     committer: 'committer name',
-    lastBuildTime: 'last build time',
+    lastBuildTime: moment().format(),
   };
 
   beforeEach(function() {
@@ -18,6 +18,11 @@ describe('CiWidget', function() {
   it('renders the title', function() {
     const titleNode = window.TestUtils.findRenderedDOMComponentWithClass(ciWidget, 'project-name');
     expect(titleNode.textContent).toEqual(widgetProps.title);
+  });
+
+  it('renders the time since the last build', function() {
+    const titleNode = window.TestUtils.findRenderedDOMComponentWithClass(ciWidget, 'last-build-at');
+    expect(titleNode.textContent).toEqual('a few seconds ago');
   });
 
   it('renders the delete button', function() {

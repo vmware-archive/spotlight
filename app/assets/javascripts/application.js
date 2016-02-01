@@ -18,6 +18,7 @@
 //= require components
 //= require react_grid_layout
 //= require lodash
+//= require moment
 //= require_tree .
 
 $(document).ready(function(){

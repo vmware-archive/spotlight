@@ -129,6 +129,8 @@ GEM
     mime-types (2.99)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
+    momentjs-rails (2.11.0)
+      railties (>= 3.1)
     multi_json (1.11.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -286,6 +288,7 @@ DEPENDENCIES
   jquery-rails
   license_finder
   materialize-sass
+  momentjs-rails
   pg (~> 0.15)
   phantomjs (= 1.9.8)
   pry

@@ -11,8 +11,8 @@ module Ci
 
       @timestamp = self.class.parse_timestamp(build['timestamp'])
 
-      commit = build['changeSet']['items'][0]
-      @committer = commit.present? ? commit['author']['fullName'] : ''
+      commit = build['changeSet']['items']
+      @committer = commit.dig(0, 'author', 'fullName') || ''
     end
 
     def self.parse_timestamp(timestamp_string)

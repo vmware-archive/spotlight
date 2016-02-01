@@ -14,7 +14,7 @@ module Ci
       relevant_timestamp = @state == Category::CiWidget::STATUS_BUILDING ? build['started_at'] : build['finished_at']
       @timestamp         = self.class.parse_timestamp(relevant_timestamp)
 
-      @committer = build_info['commit']['author_name']
+      @committer = build_info.dig('commit', 'author_name') || ''
     end
 
     def self.parse_timestamp(timestamp_string)

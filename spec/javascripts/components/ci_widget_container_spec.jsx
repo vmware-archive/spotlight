@@ -74,9 +74,15 @@ describe('CiWidgetContainer', function() {
       timestamp: 'A long time ago'
     };
 
+    const olderBuildInfo = {
+      state: 'failded',
+      committer: 'Anakin Skywalker',
+      timestamp: 'A longer time ago'
+    };
+
     const buildInfo = {
       status: {
-        build_history: [testBuildInfo]
+        build_history: [testBuildInfo, olderBuildInfo]
       }
     };
 
@@ -85,6 +91,7 @@ describe('CiWidgetContainer', function() {
       expect(component.state.status).toEqual(testBuildInfo.state);
       expect(component.state.committer).toEqual(testBuildInfo.committer);
       expect(component.state.lastBuildTime).toEqual(testBuildInfo.timestamp);
+      expect(component.state.buildHistory).toEqual([olderBuildInfo]);
     });
   });
 
@@ -115,7 +122,7 @@ describe('CiWidgetContainer', function() {
   });
 
   it('passes the build status from its state to the CI widget component', function() {
-    const expectedProps = {status: 'status', committer: 'committer name', lastBuildTime: 'last build'};
+    const expectedProps = {status: 'status', committer: 'committer name', lastBuildTime: 'last build', buildHistory: [{foo: 'bar'}]};
     component.setState(expectedProps);
     expect(ciWidget.props).toEqual(jasmine.objectContaining(expectedProps));
   });

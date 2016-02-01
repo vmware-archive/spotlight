@@ -7,45 +7,22 @@
     height: 100%;
     width: 100%;
 
-    &.passed{
-      background-color: #2ECCA0;
-      .symbol{
-        background-image: url(image_path('Icon_Passed.svg'));
-      };
-    }
-
-    &.failed, &.errored{
-      background-color: #F16C4E;
-      .symbol{
-        background-image: url(image_path('Icon_Failed.svg'));
-      };
-    }
-
-    &.building, &.started{
-      background-color: #FFC107;
-      .symbol{
-        background-image: url(image_path('Icon_Building.svg'));
-      };
-    }
-
-    &.unknown{
-      background-color: gray;
-    }
-
     .content{
       font-family: 'Open Sans', sans-serif;
       color: white;
-      padding-top: 20px;
+      padding-top: 15px;
+      overflow: hidden;
+
 
       .project-name {
-        padding-left: 20px;
+        padding-left: 30px;
         font-weight: 600;
-        font-size: 25pt;
+        font-size: 35pt;
       }
 
       .symbol{
         position: fixed;
-        top: 25%;
+        top: 22%;
         margin: auto;
         width: 100%;
         height: 40%;
@@ -55,17 +32,67 @@
 
       .commit-info {
         position: fixed;
-        top: 70%;
+        top: 67%;
         margin: auto;
         width: 100%;
         padding: 0 20px;
-        font-size: 13pt;
+        font-size: 17pt;
         font-weight: 600;
 
         .inner-div{
           text-align: center;
+          line-height: 30px;
+        }
+      }
+      .build-history{
+        position: fixed;
+        width: 80%;
+        height: 10%;
+        bottom: 0px;
+        border-top: 1px black solid;
+        right: 20%;
+        background-color: black;
+        border-right: 1px solid black;
+
+        .build-block{
+          width: 25%;
+          height: 100%;
+          border-right: 1px black solid;
+          float: left;
+          opacity: 0.8;
+
+          &:last-child{
+            border-right: none;
+          }
         }
       }
     }
   }
 }
+
+// Build statuses
+.passed{
+  background-color: #2ECCA0;
+  .symbol{
+    background-image: url(image_path('Icon_Passed.svg'));
+  };
+}
+
+.failed, .errored{
+  background-color: #F16C4E;
+  .symbol{
+    background-image: url(image_path('Icon_Failed.svg'));
+  };
+}
+
+.building, .started{
+  background-color: #FFC107;
+  .symbol{
+    background-image: url(image_path('Icon_Building.svg'));
+  };
+}
+
+.unknown{
+  background-color: gray;
+}
+

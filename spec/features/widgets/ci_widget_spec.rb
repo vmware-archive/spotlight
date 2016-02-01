@@ -103,7 +103,7 @@ describe "travis widget spec", :type => :feature do
 
   it "must create a widget", js: true do
     visit '/'
-    expect(page.find(('.' + Category::CiWidget::STATUS_FAILED) , wait: 10)).to be
+    expect(page.find(('.inner-ci-widget.' + Category::CiWidget::STATUS_FAILED) , wait: 10)).to be
     expect(page).to have_content last_committer
     expect(page).to have_content 'spotlight'
   end
@@ -129,7 +129,7 @@ describe "travis widget spec", :type => :feature do
         to_return(body: build_history_response,
                   headers: {'Content-Type' => 'application/json'})
 
-    expect(page.find('.passed', wait: 45)).to be
+    expect(page.find('.inner-ci-widget.passed', wait: 45)).to be
     expect(page).to_not have_content 'Ray'
 
   end

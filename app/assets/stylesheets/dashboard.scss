@@ -1,5 +1,14 @@
-body{
+html, body, .dashboard{
+  height: 100%;
+  width: 100%;
+}
+
+.dashboard{
   background-color: black;
+  .row {
+    background-color: black;
+    margin-bottom: 0;
+  }
 }
 
 .edit {

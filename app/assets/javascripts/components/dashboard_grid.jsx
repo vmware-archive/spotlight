@@ -63,7 +63,7 @@ const DashboardGrid = React.createClass({
   render: function() {
     return (
       <div className={this.props.editMode ? 'edit' : 'view'}>
-        <DashboardButton action="save" href="javascript:void(0);" onClick={this.persistLayout} tooltip="Save Dashboard" editOnly={true}/>
+        <DashboardButton action="save" href="javascript:void(0);" onClick={this.persistLayout} tooltip="Save Layout" editOnly={true}/>
         <DashboardButton action="add" href="/widgets/new" tooltip="New Widget" editOnly={true}/>
         <DashboardButton action="edit" href="/dashboards?edit=true" tooltip="Edit Dashboard" editOnly={false}/>
 

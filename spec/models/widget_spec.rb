@@ -23,12 +23,6 @@ RSpec.describe Widget, type: :model do
     end
   end
 
-  describe 'failing test' do
-    it do
-      expect(false).to be(true)
-    end
-  end
-
   describe 'scope' do
     describe 'active' do
       let!(:active) { FactoryGirl.create :widget, active: true, dashboard: dashboard }

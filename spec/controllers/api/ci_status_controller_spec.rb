@@ -18,12 +18,12 @@ RSpec.describe Api::CiStatusController, type: :controller do
 
     let(:build_history_response_body) do
       { "builds" => [
-          { "number" => 716, "result" => "SUCCESS", "timestamp" => 1453883748620, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'Rahul Rajeev'}} ]} }
+          { "number" => 716, 'building' => false, "result" => "SUCCESS", "timestamp" => 1453883748620, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'Rahul Rajeev'}} ]} }
       ]
       }.to_json
     end
     let!(:mock_request) do
-      stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,timestamp,result,committer_name,changeSet[items[author[fullName]]]]").
+      stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,building,timestamp,result,committer_name,changeSet[items[author[fullName]]]]").
         with(headers: { 'Accept' => 'application/json',
                         'Authorization' => 'Token "' + auth_key + '"' }).
         to_return(body:    build_history_response_body,

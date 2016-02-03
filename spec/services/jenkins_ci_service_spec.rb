@@ -77,12 +77,12 @@ RSpec.describe JenkinsCiService do
 
   let(:build_history_response_body) do
     { "builds" => [
-        { "number" => 716, "result" => "SUCCESS", "timestamp" => 1453883748620, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'Rahul Rajeev'}} ]} },
-        { "number" => 715, "result" => "FAILURE", "timestamp" => 1453796262456, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} },
-        { "number" => 714, "result" => "SUCCESS", "timestamp" => 1453794808186, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} },
-        { "number" => 713, "result" => "SUCCESS", "timestamp" => 1453792548935, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} },
-        { "number" => 712, "result" => "FAILURE", "timestamp" => 1453782648654, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} },
-        { "number" => 711, "result" => "SUCCESS", "timestamp" => 1453777248465, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} }
+        { "number" => 716, 'building' => false, "result" => "SUCCESS", "timestamp" => 1453883748620, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'Rahul Rajeev'}} ]} },
+        { "number" => 715, 'building' => false, "result" => "FAILURE", "timestamp" => 1453796262456, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} },
+        { "number" => 714, 'building' => false, "result" => "SUCCESS", "timestamp" => 1453794808186, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} },
+        { "number" => 713, 'building' => false, "result" => "SUCCESS", "timestamp" => 1453792548935, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} },
+        { "number" => 712, 'building' => false, "result" => "FAILURE", "timestamp" => 1453782648654, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} },
+        { "number" => 711, 'building' => false, "result" => "SUCCESS", "timestamp" => 1453777248465, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'benjamintanweihao'}} ]} }
       ]
     }.to_json
   end
@@ -90,7 +90,7 @@ RSpec.describe JenkinsCiService do
   describe '#build_history' do
     it 'returns build history' do
 
-      builds_request = stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,timestamp,result,committer_name,changeSet[items[author[fullName]]]]").
+      builds_request = stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,building,timestamp,result,committer_name,changeSet[items[author[fullName]]]]").
           with(headers: { 'Accept' => 'application/json',
                           'Authorization' => 'Token "' + auth_key + '"' }).
           to_return(body: build_history_response_body,

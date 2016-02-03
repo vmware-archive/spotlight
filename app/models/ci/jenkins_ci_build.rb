@@ -7,7 +7,11 @@ module Ci
     }
 
     def initialize(build={})
-      @state = self.class.normalized_state_for(build['result'])
+      if build['building']
+        @state = Category::CiWidget::STATUS_BUILDING
+      else
+        @state = self.class.normalized_state_for(build['result'])
+      end
 
       @timestamp = self.class.parse_timestamp(build['timestamp'])
 

@@ -15,7 +15,7 @@ class JenkinsCiService < BaseCiService
   end
 
   def build_history(repository=@project_name, limit=5)
-    build_history = repo_info(repository, '', params: 'tree=builds[number,timestamp,result,committer_name,changeSet[items[author[fullName]]]]')
+    build_history = repo_info(repository, '', params: 'tree=builds[number,building,timestamp,result,committer_name,changeSet[items[author[fullName]]]]')
 
     build_history['builds'].first(5)
   end

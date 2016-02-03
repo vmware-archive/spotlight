@@ -27,6 +27,10 @@ $(document).ready(function() {
   $('.tooltipped').tooltip({delay: 50});
   $('select').material_select();
   setInterval(function() {
-    $('.clock').html(moment().format('h:mm:ss'));
+    $('.clock').html(moment().format('h:mm:ss a'));
   }, 1000);
+
+  setTimeout(function() {
+    $('.edit-button').hide();
+  }, 20000);
 });

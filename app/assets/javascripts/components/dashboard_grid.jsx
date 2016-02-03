@@ -78,6 +78,7 @@ const DashboardGrid = React.createClass({
           onLayoutChange={this.updateLayout}>
           {this.renderWidgets()}
         </ReactGridLayout>
+        <div className="clock">{moment().format('h:mm:ss')}</div>
       </div>
     );
   }

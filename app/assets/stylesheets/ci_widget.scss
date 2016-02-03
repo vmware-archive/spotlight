@@ -57,13 +57,10 @@
         .build-block{
           width: 25%;
           height: 100%;
-          border-right: 1px black solid;
+          border: 1px black solid;
+          border-bottom: none;
           float: left;
           opacity: 0.8;
-
-          &:last-child{
-            border-right: none;
-          }
         }
       }
     }

@@ -1,3 +1,5 @@
+/* global $ */
+
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
@@ -21,10 +23,10 @@
 //= require moment
 //= require_tree .
 
-$(document).ready(function(){
+$(document).ready(function() {
   $('.tooltipped').tooltip({delay: 50});
   $('select').material_select();
-  setInterval(function(){
+  setInterval(function() {
     $('.clock').html(moment().format('h:mm:ss'));
-   }, 1000);
+  }, 1000);
 });

@@ -4,7 +4,7 @@ module Ci
         'success' => Category::CiWidget::STATUS_PASSED,
         'fixed' => Category::CiWidget::STATUS_PASSED,
         'failed' => Category::CiWidget::STATUS_FAILED,
-        'cancelled' => Category::CiWidget::STATUS_FAILED,
+        'canceled' => Category::CiWidget::STATUS_FAILED,
         'running' => Category::CiWidget::STATUS_BUILDING
     }
 

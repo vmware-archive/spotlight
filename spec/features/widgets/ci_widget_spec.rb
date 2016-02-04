@@ -90,7 +90,7 @@ describe "travis widget spec", :type => :feature do
     }.to_json
   end
 
-  before do
+  before :each  do
     d = FactoryGirl.create :dashboard, title: 'Default Dashboard'
     w = FactoryGirl.create :widget, title: 'spotlight', dashboard: d, server_url: server_url, auth_key: auth_key, project_name: project_name, server_type: 'travis_ci'
 
@@ -106,6 +106,12 @@ describe "travis widget spec", :type => :feature do
     expect(page.find(('.inner-ci-widget.' + Category::CiWidget::STATUS_FAILED) , wait: 10)).to be
     expect(page).to have_content last_committer
     expect(page).to have_content 'spotlight'
+  end
+
+  it 'must show the build history', js: true do
+    visit '/'
+    expect(page.find_all(('.build-block.' + Category::CiWidget::STATUS_FAILED) , wait: 10).count).to eq 3
+    expect(page.find_all(('.build-block.' + Category::CiWidget::STATUS_PASSED) , wait: 10).count).to eq 1
   end
 
   it "must update its status", js: true, slow: true do

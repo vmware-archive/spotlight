@@ -20,18 +20,13 @@ Software developers are increasingly adopting agile and lean approaches to the s
 
 We belive there is a need for a simple, hassle free approach to CI monitors.
 
-## Installation
+## Running the Spotlight Dashboard
 
-[todo]
+We recommend installing the Spotlight dashboard as a Docker instance on the target machine.
 
-## Tests
+### Installing
 
-[todo]
-
-
-## Running as Docker Container
-
-1. Install [Docker Toolbox](https://docs.docker.com/mac/step_one/).
+1. Install the [Docker Toolbox](https://docs.docker.com/mac/step_one/).
 
 2. In your working folder, create a new file: `docker-compose.yml`
 
@@ -51,18 +46,153 @@ We belive there is a need for a simple, hassle free approach to CI monitors.
 
 	***Remember to add your own `SECRET_KEY_BASE`.***
 
-3. Run the following command:
+### Starting the Spotlight docker instance
+
+1. Run the following command:
 
 	```
-docker-compose up
+docker-compose up -d
 docker-compose run --rm web rake db:create db:migrate
 ```
 
-4. Access to app via the container IP address (e.g. `http://192.168.99.100:3030`).
+2. You can now access the dashboard via the container IP address (e.g. `http://192.168.99.100:3030`).
 
   *You can find out the IP address of the docker machine by running `docker-machine ls`.*
 
-### Rebuilding the Docker container
+### Stopping Spotlight
+
+To stop the Spotlight dashboard:
+
+```
+docker-compose stop
+```
+
+### Accessing Spotlight on your network
+
+To make this dashboard available to your local area network (LAN), you should map one of your host OS's public ports to the Docker Machine's port 3030.
+
+[Here's a nice write up](http://www.howtogeek.com/122641/how-to-forward-ports-to-a-virtual-machine-and-use-it-as-a-server/) on how to do so.
+
+## Local Development Setup
+
+To contribute code to this project, you will need to setup your local development environment to run Ruby and Rails. Here are the steps:
+
+### A. Install Ruby
+
+1. Install [Homebrew](http://brew.sh).
+
+2. Install [rbenv](https://github.com/rbenv/rbenv):
+
+	```
+brew update
+brew install rbenv ruby-build
+```
+
+3. Add `rbenv` support to your local profile:
+
+	```
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+```
+
+	If you are using `zsh`:
+
+	```
+echo 'eval "$(rbenv init -)"' >> ~/.zshrc
+```
+
+3. Install the current Ruby version:
+
+	```
+rbenv install -l
+rbenv install 2.3.0
+```
+
+4. Use it globally:
+
+	```
+rbenv global 2.3.0
+```
+
+### B. Install PostgreSQL database server
+
+1. You will need [PostgreSQL](http://www.postgresql.org) installed and started.
+
+	> If you are unfamiliar with PostgreSQL, we suggest that you download and install [Postgres Mac App](http://postgresapp.com). You may need to edit `config/database.yml` to [connect via TCP socket](http://postgresapp.com/documentation/configuration-ruby.html).
+
+### C. Install Rails & other Gems
+
+1. Install [Bundler](http://bundler.io/), the Ruby dependency management software:
+
+	```
+gem install bundler
+```
+
+2. Install the rest of the Ruby Gems needed for the app (including Ruby on Rails):
+
+	```
+bundle install
+```
+
+### D. Prepare the Database
+
+1. Create the database:
+
+	```
+bundle exec rake db:create
+```
+
+2. Create the database tables:
+
+	```
+bundle exec rake db:migrate
+```
+
+3. Prepare sample data:
+
+	```
+bundle exec rake db:seed
+```
+
+### E. Start the development web server
+
+1. Prepare the environment file (one time exercise):
+
+  ```
+cp env.sample .env
+```
+
+2. You can start the local development web server with the following command:
+
+	```
+foreman start
+```
+
+3. You can now visit the local development site at [http://localhost:3000](http://localhost:3000).
+
+4. To stop the dev server, just press `ctrl` + `c` on your keyboard to stop the foreman process.
+
+
+## Tests
+
+We use the [RSpec](http://rspec.info) testing framework for this app.
+
+To run the test locally, use this command:
+
+```
+bundle exec rspec spec
+```
+
+To run the Javascript tests, use this command:
+
+```
+bundle exec rake spec:javascript
+```
+
+or open your browser to [http://localhost:3000/specs](http://localhost:3000/specs).
+
+
+## Rebuilding the Docker container
 
 1. Rebuild the local Docker image
 
@@ -100,7 +230,12 @@ docker push neosgspotlight/spotlight-rails
 ```
 
 ## Contributors
-[todo]
+
+- [Divya Bhargov](https://github.com/divyabhargov)
+- Erika Buenaventura
+- [Gabe Hollombe](https://github.com/gabehollombe)
+- [Michael Cheng](https://github.com/miccheng)
+- [Rahul Rajeev](https://github.com/rhlrjv)
 
 ## License
 

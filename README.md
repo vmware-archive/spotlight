@@ -1,4 +1,4 @@
-#Spotlight 🔦
+# Spotlight 🔦
 **A kickass dashboard for devshops**
 
 [![Build Status](https://travis-ci.com/neo/spotlight.svg?token=32PipsqvKVziGaUwVvvT)](https://travis-ci.com/neo/spotlight)
@@ -18,7 +18,7 @@ Spotlight is a simple dashboard for your devshop that:
 
 Software developers are increasingly adopting agile and lean approaches to the software development lifecycle. One key component for agile software processes is that of Continuous Integration (CI). With the ubiquity of inexpensive hardware like flat panel displays and Raspberry Pis (single board computer), the DIY approach to building custom information displays is gaining increasing appeal.
 
-We belive there is a need for a simple, hassle free approach to CI monitors.
+We believe there is a need for a simple, hassle free approach to CI monitors.
 
 ## Running the Spotlight Dashboard
 
@@ -46,7 +46,7 @@ We recommend installing the Spotlight dashboard as a Docker instance on the targ
 
 	***Remember to add your own `SECRET_KEY_BASE`.***
 
-### Starting the Spotlight docker instance
+### Starting the Spotlight Docker instance
 
 1. Run the following command:
 

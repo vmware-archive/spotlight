@@ -33,12 +33,22 @@ RSpec.describe Ci::CircleCiBuild do
       end
     end
 
-    %w(success failed fixed cancelled).each do |state|
+    %w(success failed fixed canceled).each do |state|
       context "when the state it #{state}" do
         let(:state) { state }
 
         it 'uses the `stop_time` timestamp' do
           expect(subject.timestamp).to eq(stop_timestamp)
+        end
+      end
+    end
+
+    context 'state is failed' do
+      %w(failed canceled).each do |state|
+        let(:state) { state }
+
+        describe "when `status` is #{state}" do
+          specify { expect(subject.state).to eq Category::CiWidget::STATUS_FAILED }
         end
       end
     end

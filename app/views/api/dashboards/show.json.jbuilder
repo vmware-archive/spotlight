@@ -1,0 +1,1 @@
+json.widgets @widgets, partial: 'shared/widget', as: :widget

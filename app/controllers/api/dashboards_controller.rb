@@ -1,6 +1,15 @@
 class Api::DashboardsController < ApplicationController
   protect_from_forgery with: :null_session
 
+  def index
+    show
+    render :show
+  end
+
+  def show
+    @widgets = dashboard.widgets
+  end
+
   def layout
     if layout_param.present?
       layout_param.each do |widget_layout|

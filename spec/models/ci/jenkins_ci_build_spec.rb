@@ -41,5 +41,18 @@ RSpec.describe Ci::JenkinsCiBuild do
         expect(subject.state).to eq Category::CiWidget::STATUS_BUILDING
       end
     end
+
+    context 'failed' do
+      %w(FAILURE ABORTED).each do |state_string|
+
+        describe "jenkins state is `#{state_string}`" do
+          let(:state) { state_string }
+
+          it 'returns building' do
+            expect(subject.state).to eq Category::CiWidget::STATUS_FAILED
+          end
+        end
+      end
+    end
   end
 end

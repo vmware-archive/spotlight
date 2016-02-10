@@ -49,5 +49,17 @@ RSpec.describe Ci::TravisCiService do
         end
       end
     end
+
+    context 'failed' do
+      %w(failed errored canceled).each do |state_string|
+        describe "state string is `#{state_string}`" do
+          let(:state) { state_string }
+
+          it 'returns building' do
+            expect(subject.state).to eq Category::CiWidget::STATUS_FAILED
+          end
+        end
+      end
+    end
   end
 end

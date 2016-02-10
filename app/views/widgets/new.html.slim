@@ -31,19 +31,20 @@
           = f.label :height
           = f.select :height, widget_size_choices, {}, class: 'browser-default'
 
-      .row
-        .col.s12
-          h4 Widget Configuration
+      - if @widget.category.fields.present?
+        .row
+          .col.s12
+            h4 Widget Configuration
 
-        - @widget.category.fields.each do |key, defaults|
-          - if defaults.nil?
-            .input-field.col.s12
-              = f.text_field key
-              = f.label key
-          - elsif defaults.is_a? Array
-            .col.s12
-              = f.label key
-              = f.select key, defaults, {}, class: 'browser-default'
+          - @widget.category.fields.each do |key, defaults|
+            - if defaults.nil?
+              .input-field.col.s12
+                = f.text_field key
+                = f.label key
+            - elsif defaults.is_a? Array
+              .col.s12
+                = f.label key
+                = f.select key, defaults, {}, class: 'browser-default'
 
       .row
         .actions.col.s12

@@ -4,6 +4,9 @@ class Category < ClassyEnum::Base
   end
 end
 
+class Category::ClockWidget < Category
+end
+
 class Category::CiWidget < Category
   STATUS_PASSED = 'passed'
   STATUS_FAILED = 'failed'

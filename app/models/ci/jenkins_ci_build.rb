@@ -3,6 +3,7 @@ module Ci
     STATUSES = {
         'SUCCESS' => Category::CiWidget::STATUS_PASSED,
         'FAILURE' => Category::CiWidget::STATUS_FAILED,
+        'ABORTED' => Category::CiWidget::STATUS_FAILED,
         nil => Category::CiWidget::STATUS_BUILDING # Jenkins returns null when its building
     }
 

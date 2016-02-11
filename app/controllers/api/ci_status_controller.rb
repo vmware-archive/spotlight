@@ -1,4 +1,4 @@
-class Api::CiStatusController < ApplicationController
+class Api::CiStatusController < Api::BaseController
   def show
     build_class = ('Ci::' + (widget.server_type + '_build').camelize).constantize
 

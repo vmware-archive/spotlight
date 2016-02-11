@@ -7,6 +7,17 @@ end
 class Category::ClockWidget < Category
 end
 
+class Category::GcalWidget < Category
+  def fields
+    {
+      authenticate: { type: 'link', text: 'Authenticate with Google', url: '/api/google/login?return_url=/widget/gcal/new' },
+      access_token: { type: 'hidden' },
+      refresh_token: { type: 'hidden' },
+      calendar_id: { type: 'hidden' },
+    }
+  end
+end
+
 class Category::CiWidget < Category
   STATUS_PASSED = 'passed'
   STATUS_FAILED = 'failed'

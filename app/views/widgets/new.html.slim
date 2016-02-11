@@ -45,6 +45,10 @@
               .col.s12
                 = f.label key
                 = f.select key, defaults, {}, class: 'browser-default'
+            - elsif defaults.is_a? Hash
+              - if defaults[:type] == 'link'
+                .col.s12
+                  = link_to defaults[:text], defaults[:url], class: 'waves-effect waves-light btn blue lighten-1', id: "widget_link_#{key}"
 
       .row
         .actions.col.s12

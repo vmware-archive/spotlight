@@ -3,7 +3,8 @@ module WidgetHelper
   def widget_category_choices
     [
       ['Continuous Integration Status', 'ci_widget'],
-      ['Clock', 'clock_widget']
+      ['Clock', 'clock_widget'],
+      ['Google Calendar', 'gcal_widget'],
     ]
   end
 

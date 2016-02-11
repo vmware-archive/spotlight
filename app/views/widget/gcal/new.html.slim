@@ -1,0 +1,38 @@
+#qa-new-gcal-widget-form.container
+  .row
+    .col.s12
+      h3 New Google Calendar Widget
+
+  = form_for @widget, url: widget_gcal_index_path do |f|
+    - if @widget.errors.any?
+      .row
+        .col.s12
+          #error_explanation.flash-message.card.pink.lighten-4
+            .flash-notice.card-content.valign-wrapper
+              i.left.material-icons.small warning
+              - @widget.errors.full_messages.each do |message|
+                span.valign
+                  = message
+    .row
+      .input-field.col.s12
+        = f.text_field :title, placeholder: "Key in title of widget"
+        = f.label :title
+      .col.s6
+        = f.label :width
+        = f.select :width, widget_size_choices, {}, class: 'browser-default'
+      .col.s6
+        = f.label :height
+        = f.select :height, widget_size_choices, {}, class: 'browser-default'
+
+    .row
+      .col.s12
+        h4 Widget Configuration
+
+    .row
+      .col.s12
+        = f.label :calendar_id
+        = f.select :calendar_id, @calendar_list, {prompt: 'Select a calendar...'}, {class: 'browser-default'}
+
+    .row
+      .actions.col.s12
+        = f.submit 'Submit', class: 'waves-effect waves-light btn'

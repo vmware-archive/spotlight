@@ -8,6 +8,12 @@ Rails.application.routes.draw do
     resources :dashboards, only: [:index, :show, :layout] do
       put '/layout', to: 'dashboards#layout'
     end
+    resources :google, only: [] do
+      collection do
+        get '/login', to: 'google#login'
+        get '/callback', to: 'google#callback'
+      end
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

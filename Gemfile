@@ -18,6 +18,7 @@ gem 'react-rails', '1.4.1'
 gem 'materialize-sass'
 gem 'momentjs-rails'
 gem 'foreman'
+gem 'google-api-client', '~> 0.9', require: 'google/apis/calendar_v3'
 
 group :development do
   gem 'web-console', '~> 2.0'
@@ -26,6 +27,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'rspec-rails'
   gem 'capybara'
   gem 'selenium-webdriver'

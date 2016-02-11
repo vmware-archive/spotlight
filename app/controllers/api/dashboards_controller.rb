@@ -1,4 +1,4 @@
-class Api::DashboardsController < ApplicationController
+class Api::DashboardsController < Api::BaseController
   protect_from_forgery with: :null_session
 
   def index

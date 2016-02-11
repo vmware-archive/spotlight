@@ -11,7 +11,7 @@ class WidgetsController < ApplicationController
     @widget.assign_attributes(config_params_for(@widget))
 
     if @widget.save
-      return redirect_to dashboards_path, notice: 'Widget was successfully created.'
+      return redirect_to redirect_path, notice: 'Widget was successfully created.'
     else
       return render :new
     end
@@ -44,4 +44,11 @@ class WidgetsController < ApplicationController
   def default_dashboard
     Dashboard.first
   end
+
+  private
+
+  def redirect_path
+    ENV['WEB_HOST'] || dashboards_path
+  end
+
 end

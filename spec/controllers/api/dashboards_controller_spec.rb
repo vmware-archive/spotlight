@@ -41,9 +41,11 @@ RSpec.describe Api::DashboardsController, type: :controller do
       result = JSON.parse(response.body)
 
       expect(result['widgets'].count).to eq 1
-      expect(result['widgets'].first.keys).to eq %w(uuid title category height width position_x position_y)
+      expect(result['widgets'].first.keys).to eq %w(uuid title category layout widgetPath)
       expect(result['widgets'].first['uuid']).to eq widget.uuid
       expect(result['widgets'].first['category']).to eq widget.category.to_s
+      expect(result['widgets'].first['layout'].keys).to eq %w(x y h w)
+      expect(result['widgets'].first['widgetPath']).to eq widget_path(widget.id)
     end
   end
 

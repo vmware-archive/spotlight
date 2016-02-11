@@ -1,7 +1,10 @@
 json.uuid widget.uuid
 json.title widget.title
 json.category widget.category
-json.height widget.height
-json.width widget.width
-json.position_x widget.position_x
-json.position_y widget.position_y
+json.layout do 
+	json.x widget.position_x
+	json.y widget.position_y
+	json.h widget.height
+	json.w widget.width
+end
+json.widgetPath widget_path(id: widget.id)

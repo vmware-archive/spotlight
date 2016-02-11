@@ -1,4 +1,4 @@
-class Api::GoogleController < ApplicationController
+class Api::GoogleController < Api::BaseController
   API_SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR_READONLY
 
   def login
@@ -26,6 +26,7 @@ class Api::GoogleController < ApplicationController
     {
       client_id: ENV.fetch('GOOGLE_API_CLIENT_ID'),
       client_secret: ENV.fetch('GOOGLE_API_CLIENT_SECRET'),
+      authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
       token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
       redirect_uri: url_for(action: :callback),
     }

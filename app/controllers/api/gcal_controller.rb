@@ -1,4 +1,4 @@
-class Api::GcalController < ApplicationController
+class Api::GcalController < Api::BaseController
   def show
     service = calendar_service(widget.access_token, widget.refresh_token)
 

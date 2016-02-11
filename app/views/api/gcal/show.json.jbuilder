@@ -1,0 +1,1 @@
+json.events @events, partial: 'api/gcal/event', as: :event

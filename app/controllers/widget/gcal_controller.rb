@@ -26,6 +26,7 @@ class Widget::GcalController < ApplicationController
                                             refresh_token: refresh_token,
                                             client_id: ENV.fetch('GOOGLE_API_CLIENT_ID'),
                                             client_secret: ENV.fetch('GOOGLE_API_CLIENT_SECRET'),
+                                            authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
                                             token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
                                         })
 

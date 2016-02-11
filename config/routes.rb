@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :gcal, only: [:show]
     resources :dashboards, only: [:index, :show, :layout] do
       put '/layout', to: 'dashboards#layout'
+      post '/layout', to: 'dashboards#layout'
     end
     resources :google, only: [] do
       collection do

@@ -11,7 +11,7 @@ class Widget::GcalController < ApplicationController
 
     if @widget.save
       reset_session
-      return redirect_to dashboards_path, notice: 'Widget was successfully created.'
+      return redirect_to dashboard_home_path, notice: 'Widget was successfully created.'
     else
       @calendar_list = user_calendar_list
       return render :new
@@ -38,9 +38,5 @@ class Widget::GcalController < ApplicationController
                  access_token: session[:access_token],
                  refresh_token: session[:refresh_token]
                })
-  end
-
-  def default_dashboard
-    Dashboard.first
   end
 end

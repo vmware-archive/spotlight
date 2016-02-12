@@ -1,5 +1,9 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
+
+ENV['GOOGLE_API_CLIENT_ID'] = 'fake-api-id'
+ENV['GOOGLE_API_CLIENT_SECRET'] = 'fake-api-secret'
+
 require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'

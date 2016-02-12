@@ -45,7 +45,7 @@ RSpec.describe Api::DashboardsController, type: :controller do
       expect(result['widgets'].first['uuid']).to eq widget.uuid
       expect(result['widgets'].first['category']).to eq widget.category.to_s
       expect(result['widgets'].first['layout'].keys).to eq %w(x y h w)
-      expect(result['widgets'].first['widgetPath']).to eq widget_path(widget.id)
+      expect(result['widgets'].first['widgetPath']).to eq api_widget_path(widget.id)
     end
   end
 

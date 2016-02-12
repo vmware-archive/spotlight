@@ -7,4 +7,4 @@ json.layout do
 	json.h widget.height
 	json.w widget.width
 end
-json.widgetPath widget_path(id: widget.id)
+json.widgetPath api_widget_path(id: widget.id)

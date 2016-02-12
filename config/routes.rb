@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :dashboards, only: [:index]
   resources :widgets, only: [:new, :create, :destroy]
   namespace :api, defaults: { format: :json } do
+    resources :widgets, only: [:destroy]
     resources :ci_status, only: [:show]
     resources :gcal, only: [:show]
     resources :dashboards, only: [:index, :show, :layout] do

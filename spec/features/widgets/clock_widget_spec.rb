@@ -19,7 +19,7 @@ describe "clock widget spec", :type => :feature do
     fill_in 'Title', :with => widget_title
 
     click_button 'Submit'
-    expect(page).to have_content 'Widget was successfully created.'
+    expect(page).to have_css '.edit-button' # goes back to read mode
 
     expect(Widget.count).to eq 1
     expect(Widget.first.category).to eq 'clock_widget'

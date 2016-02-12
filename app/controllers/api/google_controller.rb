@@ -4,31 +4,27 @@ class Api::GoogleController < Api::BaseController
   def login
     session[:return_url] = params[:return_url]
 
-    client = Signet::OAuth2::Client.new( oauth2_config.merge({scope: API_SCOPE}) )
-
-    redirect_to client.authorization_uri.to_s
+    redirect_to auth_service.get_authorization_uri(redirect_uri: callback_url, scope: API_SCOPE)
   end
 
   def callback
-    client = Signet::OAuth2::Client.new( oauth2_config.merge({code: params[:code]}) )
+    tokens = auth_service.fetch_tokens(redirect_uri: callback_url, scope: API_SCOPE, code: params[:code])
 
-    response = client.fetch_access_token!
+    if tokens
+      session[:access_token] = tokens[:access_token]
+      session[:refresh_token] = tokens[:refresh_token]
+    end
 
-    session[:access_token] = response['access_token']
-    session[:refresh_token] = response['refresh_token']
-
-    redirect_to session[:return_url]
+    redirect_to session[:return_url] || dashboards_path
   end
 
   private
 
-  def oauth2_config
-    {
-      client_id: ENV.fetch('GOOGLE_API_CLIENT_ID'),
-      client_secret: ENV.fetch('GOOGLE_API_CLIENT_SECRET'),
-      authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
-      token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
-      redirect_uri: url_for(action: :callback),
-    }
+  def callback_url
+    url_for(action: :callback)
+  end
+
+  def auth_service
+    @service ||= GoogleAuthService.new
   end
 end

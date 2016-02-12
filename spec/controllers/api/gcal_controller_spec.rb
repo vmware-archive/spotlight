@@ -8,8 +8,7 @@ RSpec.describe Api::GcalController, type: :controller do
     let(:events) { double }
 
     before do
-      expect_any_instance_of(Signet::OAuth2::Client).to receive(:refresh!)
-      expect_any_instance_of(Google::Apis::CalendarV3::CalendarService).to receive_message_chain('list_events.items') { events }
+      expect_any_instance_of(GoogleCalendarService).to receive(:list_events).with(widget.calendar_id).and_return(events)
 
       get :show, id: widget.uuid, format: :json
     end

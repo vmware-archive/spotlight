@@ -15,9 +15,7 @@ RSpec.describe Widget::GcalController, type: :controller do
     let(:calendars) { double }
 
     it 'returns http success' do
-      expect_any_instance_of(Widget::GcalController).to receive(:user_calendar_list)
-                                                            .with(access_token, refresh_token)
-                                                            .and_return(calendars)
+      expect_any_instance_of(GoogleCalendarService).to receive(:list_calendars).and_return(calendars)
 
       get :new
 

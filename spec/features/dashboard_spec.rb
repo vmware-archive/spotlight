@@ -14,7 +14,7 @@ describe "the dashboard widget creation", :type => :feature do
   end
 
   it "must create a widget", js: true do
-    visit '/'
+    visit home_page
     click_link 'edit'
     click_link 'add'
     expect(page).to have_css '#qa-new-widget-form'
@@ -30,7 +30,7 @@ describe "the dashboard widget creation", :type => :feature do
     click_button 'Submit'
     expect(page).to have_content 'Widget was successfully created.'
 
-    visit '/'
+    visit home_page
     expect(page).to have_content widget_title
     expect(page).to have_selector('.widget', count: 1)
   end
@@ -41,7 +41,7 @@ describe "the dashboard widget creation", :type => :feature do
     end
 
     it "must be able to delete a widget", js: true do
-      visit '/'
+      visit home_page
       expect(page).to have_selector('.widget', count: 1)
       click_link 'edit'
       click_link 'delete'
@@ -60,7 +60,7 @@ describe "the dashboard widget creation", :type => :feature do
         position_y: vertical_offset,
         height: 4, width: 4 )
 
-      visit '/'
+      visit home_page
 
       ci_widget_node = page.first(:css, ".ci-widget[data-uuid='#{new_widget.uuid}']")
       widget_node = ci_widget_node.find(:xpath, '..')
@@ -77,7 +77,7 @@ describe "the dashboard widget creation", :type => :feature do
     end
 
     it 'saves the layout changes and redirects to dashboards path', js:true do
-      visit '/'
+      visit home_page
       click_link 'edit'
       sleep(1)
 

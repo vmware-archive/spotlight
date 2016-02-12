@@ -102,20 +102,20 @@ describe "travis widget spec", :type => :feature do
   end
 
   it "must create a widget", js: true do
-    visit '/'
+    visit home_page
     expect(page.find(('.inner-ci-widget.' + Category::CiWidget::STATUS_FAILED) , wait: 10)).to be
     expect(page).to have_content last_committer
     expect(page).to have_content 'spotlight'
   end
 
   it 'must show the build history', js: true do
-    visit '/'
+    visit home_page
     expect(page.find_all(('.build-block.' + Category::CiWidget::STATUS_FAILED) , wait: 10).count).to eq 3
     expect(page.find_all(('.build-block.' + Category::CiWidget::STATUS_PASSED) , wait: 10).count).to eq 1
   end
 
   it "must update its status", js: true, slow: true do
-    visit '/'
+    visit home_page
 
     expect(page).to have_content last_committer
 

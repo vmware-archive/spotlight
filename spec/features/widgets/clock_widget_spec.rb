@@ -8,7 +8,7 @@ describe "clock widget spec", :type => :feature do
   end
 
   it "must create a widget", js: true do
-    visit '/'
+    visit home_page
     click_link 'edit'
     click_link 'add'
     expect(page).to have_css '#qa-new-widget-form'

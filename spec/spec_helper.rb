@@ -91,7 +91,7 @@ RSpec.configure do |config|
 =end
 
   def home_page
-    '/'
+    'http://localhost:8080/'
   end
 
 end

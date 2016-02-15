@@ -15,7 +15,7 @@ class Api::GoogleController < Api::BaseController
       session[:refresh_token] = tokens[:refresh_token]
     end
 
-    redirect_to session[:return_url] || dashboards_path
+    redirect_to session[:return_url] || dashboard_home_path
   end
 
   private

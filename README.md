@@ -32,16 +32,23 @@ We recommend installing the Spotlight dashboard as a Docker instance on the targ
 
 	```yaml
 	db:
-		image: postgres
+	  image: postgres
+	api:
+	  image: neosgspotlight/spotlight-rails
+	  command: bundle exec foreman start
+	  environment:
+	    - SECRET_KEY_BASE=<change_me!>
+	    - WEB_HOST=/
+	    - GOOGLE_API_CLIENT_ID=<change_me!>
+	    - GOOGLE_API_CLIENT_SECRET=<change_me!>
+	  links:
+	    - db
 	web:
-		image: neosgspotlight/spotlight-rails
-		command: bundle exec foreman start
-		environment:
-			- SECRET_KEY_BASE=<change_me!>
-		ports:
-			- "3030:3000"
-		links:
-			- db
+	  image: neosgspotlight/spotlight-frontend
+	  ports:
+	    - "3030:80"
+	  links:
+	    - api
 ```
 
 	***Remember to add your own `SECRET_KEY_BASE`.***

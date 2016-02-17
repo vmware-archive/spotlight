@@ -11,6 +11,8 @@ class Api::GcalController < Api::BaseController
 
   def calendar_service_for(widget)
     authorization = GoogleAuthService.new.client(access_token: widget.access_token, refresh_token: widget.refresh_token)
+    authorization.refresh!
+
     GoogleCalendarService.new(authorization: authorization)
   end
 end

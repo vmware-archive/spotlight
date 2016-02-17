@@ -1,10 +1,15 @@
 db:
   image: postgres
-web:
+api:
   image: neosgspotlight/spotlight-rails
   command: bundle exec foreman start
   env_file: docker_env
-  ports:
-    - "3030:3000"
   links:
     - db
+web:
+  image: neosgspotlight/spotlight-frontend
+  env_file: docker_env
+  ports:
+    - "3030:80"
+  links:
+    - api

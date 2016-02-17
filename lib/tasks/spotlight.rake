@@ -3,7 +3,6 @@ namespace :spotlight do
   task start_test_server: :environment do
     system "cp .env .env.bak"
     system "cp .env.feature_test .env && foreman start -f Procfile.test &"
-    sleep 10
   end
 
   task stop_test_server: :environment do
@@ -13,6 +12,7 @@ namespace :spotlight do
 
   task test_features: :environment do
     Rake::Task["spotlight:start_test_server"].invoke
+    sleep 60 # npm install, start takes a while
     system "bundle exec rspec spec/features"
     Rake::Task["spotlight:stop_test_server"].invoke
   end

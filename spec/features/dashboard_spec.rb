@@ -39,7 +39,7 @@ describe "the dashboard widget creation", :type => :feature do
       FactoryGirl.create(:widget, dashboard: Dashboard.first, height: 2, width: 2, position_x: 0, position_y: 0)
     end
 
-    xit "must be able to delete a widget", js: true do
+    it "must be able to delete a widget", js: true do
       visit home_page
       expect(page).to have_selector('.widget', count: 1)
       click_link 'edit'
@@ -47,7 +47,6 @@ describe "the dashboard widget creation", :type => :feature do
       sleep(3)
       page.driver.browser.switch_to.alert.accept
       expect(page).to have_selector('.widget', count: 0)
-      expect(page).to have_content('successfully deleted.')
     end
 
     it 'renders the widget in the correct position', js: true do

@@ -1,0 +1,2 @@
+web: ps aux | grep -ie webpack-dev-server | grep -v grep | awk '{print $2}' | xargs kill -9 && cd ../spotlight_dashboard && npm install && npm start
+api: ps aux | grep -ie puma | grep -v grep | awk '{print $2}' | xargs kill -9  && RAILS_ENV=test bundle exec puma -C ./config/puma.rb -p 3000

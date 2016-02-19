@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   helper_method :dashboard_home_path
 
   def default_dashboard
-    Dashboard.first
+    Dashboard.first || Dashboard.create(title: 'Default Dashboard')
   end
 
   def dashboard_home_path

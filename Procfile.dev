@@ -1,2 +1,2 @@
-api: bundle exec puma -C ./config/puma.rb -p 3000
-web: cd ../spotlight_dashboard && npm install && npm start
+web: ps aux | grep -ie server.js | grep -v grep | awk '{print $2}' | xargs kill -9 && cd ../spotlight_dashboard && npm install && API_HOST=http://localhost:3000 npm start --port 9000
+api: ps aux | grep -ie puma | grep -v grep | awk '{print $2}' | xargs kill -9  && bundle exec puma -C ./config/puma.rb -p 3000

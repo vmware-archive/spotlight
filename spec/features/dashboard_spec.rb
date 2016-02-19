@@ -49,7 +49,7 @@ describe "the dashboard widget creation", :type => :feature do
       expect(page).to have_selector('.widget', count: 0)
     end
 
-    it 'renders the widget in the correct position', js: true do
+    xit 'renders the widget in the correct position', js: true do
       vertical_offset = 2
       horizontal_offset = 1
 

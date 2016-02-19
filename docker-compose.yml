@@ -7,7 +7,7 @@ api:
   links:
     - db
 web:
-  image: neosgspotlight/spotlight-frontend
+  image: neosgspotlight/spotlight-dashboard
   env_file: docker_env
   ports:
     - "3030:80"

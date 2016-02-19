@@ -44,7 +44,7 @@ We recommend installing the Spotlight dashboard as a Docker instance on the targ
 	  links:
 	    - db
 	web:
-	  image: neosgspotlight/spotlight-frontend
+	  image: neosgspotlight/spotlight-dashboard
 	  ports:
 	    - "3030:80"
 	  links:

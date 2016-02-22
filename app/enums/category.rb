@@ -7,6 +7,9 @@ end
 class Category::ClockWidget < Category
 end
 
+class Category::ComicWidget < Category
+end
+
 class Category::GcalWidget < Category
   def fields
     {

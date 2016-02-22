@@ -19,6 +19,7 @@ gem 'materialize-sass'
 gem 'momentjs-rails'
 gem 'foreman'
 gem 'google-api-client', '~> 0.9', require: 'google/apis/calendar_v3'
+gem 'xkcd'
 
 group :development do
   gem 'web-console', '~> 2.0'

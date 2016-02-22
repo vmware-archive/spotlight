@@ -39,7 +39,7 @@ describe "the dashboard widget creation", :type => :feature do
       FactoryGirl.create(:widget, dashboard: Dashboard.first, height: 2, width: 2, position_x: 0, position_y: 0)
     end
 
-    xit "must be able to delete a widget", js: true do
+    it "must be able to delete a widget", js: true do
       visit home_page
       expect(page).to have_selector('.widget', count: 1)
       click_link 'edit'
@@ -49,7 +49,7 @@ describe "the dashboard widget creation", :type => :feature do
       expect(page).to have_selector('.widget', count: 0)
     end
 
-    xit 'renders the widget in the correct position', js: true do
+    it 'renders the widget in the correct position', js: true do
       vertical_offset = 2
       horizontal_offset = 1
 
@@ -67,7 +67,7 @@ describe "the dashboard widget creation", :type => :feature do
       position_x, position_y = get_offset(widget_node)
       window_width = page.current_window.size[0]
 
-      row_height = 100
+      row_height = 25
       column_count = 12
       delta = 15
       expect(position_x).to be_within(delta).of(window_width/column_count * horizontal_offset)

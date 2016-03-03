@@ -18,6 +18,7 @@ module Ci
     end
 
     def self.parse_timestamp(timestamp_string)
+      return '' if timestamp_string.nil?
       Time.parse(timestamp_string).localtime.to_datetime
     end
   end

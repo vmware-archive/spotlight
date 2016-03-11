@@ -10,6 +10,15 @@ end
 class Category::ComicWidget < Category
 end
 
+class Category::UrlWidget < Category
+  def fields
+    {
+      url: nil
+    }
+
+  end
+end
+
 class Category::GcalWidget < Category
   def fields
     {

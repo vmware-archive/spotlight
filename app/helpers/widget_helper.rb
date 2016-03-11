@@ -6,6 +6,7 @@ module WidgetHelper
       ['Clock', 'clock_widget'],
       ['Google Calendar', 'gcal_widget'],
       ['XKCD Comic', 'comic_widget'],
+      ['Render URL', 'url_widget'],
     ]
   end
 

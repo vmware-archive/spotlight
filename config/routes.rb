@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :widgets, only: [:new, :create, :destroy]
   namespace :api, defaults: { format: :json } do
     get '/random_comic', to: 'comics#random'
+    get '/url/:id', to: 'urls#url'
+    get '/url_content_copy/:id', to: 'urls#url_content_copy'
     resources :widgets, only: [:destroy]
     resources :ci_status, only: [:show]
     resources :gcal, only: [:show]

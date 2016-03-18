@@ -41,7 +41,7 @@ RSpec.describe WidgetsController, type: :controller do
 
       it "redirects to the dashboard" do
         post :create, {:widget => valid_attributes}
-        expect(response).to redirect_to(dashboards_path)
+        expect(response).to redirect_to(ENV["WEB_HOST"])
       end
 
       it "saves the widget title and size" do
@@ -95,7 +95,7 @@ RSpec.describe WidgetsController, type: :controller do
 
     it "redirects to dashboard" do
       delete :destroy, id: widget.id
-      expect(response).to redirect_to(dashboards_path)
+      expect(response).to redirect_to(ENV['WEB_HOST'])
     end
   end
 end

@@ -11,7 +11,7 @@ class WidgetsController < ApplicationController
     @widget.assign_attributes(config_params_for(@widget))
 
     if @widget.save
-      return redirect_to dashboard_home_path, notice: 'Widget was successfully created.'
+      return redirect_to ENV['WEB_HOST'], notice: 'Widget was successfully created.'
     else
       return render :new
     end
@@ -24,7 +24,7 @@ class WidgetsController < ApplicationController
       notice = 'Widget could not be deleted.'
     end
 
-    redirect_to dashboard_home_path, notice: notice
+    redirect_to ENV['WEB_HOST'], notice: notice
   end
 
   private

@@ -13,6 +13,9 @@ Spotlight is a simple dashboard for your devshop that:
  * Lets you view Continuous Integration build status for the various projects is the primary goal. 
  * Lets you add new widgets from a list of predefined ones, or create your own.
 
+## Configuration instructions for Pivotal SG Spotlight
+
+Please checkout our [wiki](https://github.com/pivotal-sg/spotlight/wiki) for configuration details
 
 ## Motivation
 

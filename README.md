@@ -6,11 +6,11 @@
 
 ## Synopsis
 
-Spotlight is a simple dashboard for your devshop that: 
+Spotlight is a simple dashboard for your devshop that:
 
- * Allows people to easily create a dashboard and manage widgets from a predefined set of widgets. 
+ * Allows people to easily create a dashboard and manage widgets from a predefined set of widgets.
  * Is wrapped in a container that can easily be downloaded and installed on any environment.
- * Lets you view Continuous Integration build status for the various projects is the primary goal. 
+ * Lets you view Continuous Integration build status for the various projects is the primary goal.
  * Lets you add new widgets from a list of predefined ones, or create your own.
 
 ## Configuration instructions for Pivotal SG Spotlight
@@ -259,7 +259,7 @@ docker push neosgspotlight/spotlight-rails
 ## License
 
 **The MIT License (MIT)**
-Copyright (c) 2015 Neo Innovation
+Copyright (c) 2015 Pivotal Labs Singapore
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

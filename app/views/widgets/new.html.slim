@@ -1,0 +1,59 @@
+#qa-new-widget-form.container
+  .row
+    .col.s12
+      h3 New widget
+
+  = form_for @widget do |f|
+    - if @widget.errors.any?
+      .row
+        .col.s12
+          #error_explanation.flash-message.card.pink.lighten-4
+            .flash-notice.card-content.valign-wrapper
+              i.left.material-icons.small warning
+              - @widget.errors.full_messages.each do |message|
+                span.valign
+                  = message
+
+    .row
+      .col.s12
+        = f.label :category
+        = f.select :category, widget_category_choices, {prompt: 'Select one...'}, {onchange: 'javascript:location.href = "/widgets/new?category=" + this.value;', class: 'browser-default'}
+
+    - if @widget.category.present?
+      .row
+        .input-field.col.s12
+          = f.text_field :title, placeholder: "Key in title of widget"
+          = f.label :title
+        .col.s6
+          = f.label :width
+          = f.select :width, widget_size_choices, {},  class: 'browser-default'
+        .col.s6
+          = f.label :height
+          = f.select :height, widget_size_choices, {}, class: 'browser-default'
+
+      - if @widget.category.fields.present?
+        .row
+          .col.s12
+            h4 Widget Configuration
+
+          - @widget.category.fields.each do |key, defaults|
+            - if defaults.nil?
+              .input-field.col.s12
+                = f.text_field key
+                = f.label key
+            - elsif defaults.is_a? Array
+              .col.s12
+                = f.label key
+                = f.select key, defaults, {}, class: 'browser-default'
+            - elsif defaults.is_a? Hash
+              - if defaults[:type] == 'link'
+                .col.s12
+                  = link_to defaults[:text], defaults[:url], class: 'waves-effect waves-light btn blue lighten-1', id: "widget_link_#{key}"
+
+      .row
+        .actions.col.s12
+          = f.submit 'Submit', class: 'waves-effect waves-light btn'
+
+  .row
+    .col.s12
+      = link_to '<< Back', dashboard_home_path

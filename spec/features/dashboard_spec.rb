@@ -24,7 +24,7 @@ describe "the dashboard widget creation", :type => :feature do
 
     fill_in 'Title', :with => widget_title
     fill_in 'Server url', :with => 'https://api.travis-ci.com'
-    fill_in 'Project name', :with => 'neo/spotlight'
+    fill_in 'Project name', :with => 'pivotal-sg/spotlight'
     fill_in 'Auth key', :with => '5V_zKW9KmdYMpyBR12rtug'
 
     click_button 'Submit'
@@ -63,7 +63,7 @@ describe "the dashboard widget creation", :type => :feature do
       ci_widget_node = page.first(:css, ".ci-widget[data-uuid='#{new_widget.uuid}']")
       widget_node = ci_widget_node.find(:xpath, '../..')
       # widget is the parent div of the ci_widget.
-      
+
       position_x, position_y = get_offset(widget_node)
       window_width = page.current_window.size[0]
 
@@ -91,7 +91,7 @@ describe "the dashboard widget creation", :type => :feature do
       expect(page).to have_css '.save-button'  # edit mode
 
       click_link 'save'
-      
+
       expect(page).to have_css '.edit-button'  # moved out of edit mode, hence edit button is displayed to get back there
 
       sleep(1)

@@ -1,13 +1,13 @@
 db:
   image: postgres
 api:
-  image: neosgspotlight/spotlight-rails
+  image: pivotalsingapore/spotlight-rails
   command: bundle exec foreman start
   env_file: docker_env
   links:
     - db
 web:
-  image: neosgspotlight/spotlight-dashboard
+  image: pivotalsingapore/spotlight-dashboard
   env_file: docker_env
   ports:
     - "3030:80"

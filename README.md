@@ -37,7 +37,7 @@ We recommend installing the Spotlight dashboard as a Docker instance on the targ
 	db:
 	  image: postgres
 	api:
-	  image: neosgspotlight/spotlight-rails
+	  image: pivotalsingapore/spotlight-rails
 	  command: bundle exec foreman start
 	  environment:
 	    - SECRET_KEY_BASE=<change_me!>
@@ -47,7 +47,7 @@ We recommend installing the Spotlight dashboard as a Docker instance on the targ
 	  links:
 	    - db
 	web:
-	  image: neosgspotlight/spotlight-dashboard
+	  image: pivotalsingapore/spotlight-dashboard
 	  ports:
 	    - "3030:80"
 	  links:

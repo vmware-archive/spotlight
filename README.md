@@ -1,8 +1,8 @@
 # Spotlight 🔦
 **A kickass dashboard for devshops**
 
-[![Build Status](https://travis-ci.com/neo/spotlight.svg?token=32PipsqvKVziGaUwVvvT)](https://travis-ci.com/neo/spotlight)
-[![Code Climate](https://codeclimate.com/repos/568b75839848c5568e002bc6/badges/fa755cbb5f59a5f15936/gpa.svg)](https://codeclimate.com/repos/568b75839848c5568e002bc6/feed)
+[![Build Status](https://travis-ci.org/pivotal-sg/spotlight.svg?branch=develop)](https://travis-ci.org/pivotal-sg/spotlight)
+[![Code Climate](https://codeclimate.com/github/pivotal-sg/spotlight/badges/gpa.svg)](https://codeclimate.com/github/pivotal-sg/spotlight)
 
 ## Synopsis
 

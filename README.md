@@ -227,6 +227,27 @@ REPOSITORY                       TAG                 IMAGE ID            CREATED
 spotlight-rails                  latest              ba3dcc9b42b1        16 seconds ago      954.3 MB
 ```
 
+3. Login to your Docker account (one time exercise) with `docker login`:
+
+	```
+➜  spotlight git:(docker) ✗ docker login
+Username (miccheng):
+WARNING: login credentials saved in /Users/miccheng/.docker/config.json
+Login Succeeded
+```
+
+4. Tag the image (assuming `ba3dcc9b42b1` is the latest image ID)
+
+	```
+docker tag ba3dcc9b42b1 pivotalsingapore/spotlight-rails:latest
+```
+
+5. Push to Docker Hub
+
+	```
+docker push pivotalsingapore/spotlight-rails
+```
+
 ## Contributors
 
 - [Divya Bhargov](https://github.com/divyabhargov)

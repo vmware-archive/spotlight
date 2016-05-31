@@ -1,0 +1,22 @@
+[Unit]
+Description=Postgres service for the Spotlite app
+After=docker.service
+BindsTo=docker.service
+Conflicts=shutdown.target reboot.target halt.target
+
+[Service]
+Environment=APP='db'
+TimeoutStartSec=0
+TimeoutStopSec=30
+Restart=always
+RestartSec=10
+
+WorkingDirectory=/opt/spotlight/
+
+ExecStart=/usr/local/bin/docker-compose -f /opt/spotlight/docker-compose.yml up --no-deps $APP
+ExecStop=/usr/local/bin/docker-compose -f /opt/spotlight/docker-compose.yml stop $APP
+
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,23 @@
+[Unit]
+Description=Spotlight Rails API (dockerized)
+After=docker-postgres.service
+BindsTo=docker.service docker-postgres.service
+Conflicts=shutdown.target reboot.target halt.target
+
+[Service]
+Environment=APP='api'
+TimeoutStartSec=0
+TimeoutStopSec=30
+Restart=always
+RestartSec=10
+
+WorkingDirectory=/opt/spotlight/
+
+ExecStart=/usr/local/bin/docker-compose -f /opt/spotlight/docker-compose.yml up --no-deps $APP
+ExecStop=/usr/local/bin/docker-compose -f /opt/spotlight/docker-compose.yml stop $APP
+
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
+

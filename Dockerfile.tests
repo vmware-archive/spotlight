@@ -1,0 +1,22 @@
+FROM pivotalsingapore/concourse-base-rails:latest
+
+USER root
+
+# Build and install dependencies as their own step to prevent
+# Docker cache invalidation from rebuilding everything, every time.
+WORKDIR /opt/dependencies/
+
+COPY ./Gemfile ./Gemfile.lock /opt/dependencies/
+COPY ./vendor/cache /opt/dependencies/vendor/cache/
+
+RUN bundler config --global silence_root_warning 1 && \
+    bundler install --local --jobs 8 --retry 6
+
+COPY . /code
+WORKDIR /code
+
+# Link previously built dependencies into working directory.
+RUN bundler install
+
+ENTRYPOINT ["/code/run-tests-in-docker.sh"]
+CMD ["all"]

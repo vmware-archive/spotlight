@@ -1,0 +1,41 @@
+---
+resources:
+  - name: spotlight-git
+    type: git
+    source:
+      uri: git@github.com:pivotal-sg/spotlight.git
+      branch: master
+      private_key: {{git-key}}
+
+  - name: spotlight-test-image
+    type: docker-image
+    source:
+      repository: pivotalsingapore/spotlight-tests
+      email: {{docker-email}}
+      username: {{docker-username}}
+      password: {{docker-password}}
+
+jobs:
+  - name: build-image
+    public: false
+    serial: true
+    plan:
+      - get: spotlight-git
+        trigger: true
+      - put: spotlight-test-image
+        params:
+          build: spotlight-git/
+          dockerfile: spotlight-git/Dockerfile.tests
+          cache: true
+
+  - name: tests
+    public: true
+    plan:
+      - get: spotlight-git
+        passed: [build-image]
+      - get: spotlight-test-image
+        passed: [build-image]
+        trigger: true
+      - aggregate:
+        - task: unit-rb
+          file: spotlight-git/ci/unit-rb.yml

@@ -39,7 +39,3 @@ jobs:
       - aggregate:
         - task: unit-rb
           file: spotlight-git/ci/unit-rb.yml
-          params:
-            docker-email: {{docker-email}}
-            docker-username: {{docker-username}}
-            docker-password: {{docker-password}}

@@ -5,9 +5,6 @@ image_resource:
   type: docker-image
   source:
     repository: pivotalsingapore/spotlight-tests
-    email: {{docker-email}}
-    username: {{docker-username}}
-    password: {{docker-password}}
 
 run:
   path: /code/run-tests-in-docker.sh

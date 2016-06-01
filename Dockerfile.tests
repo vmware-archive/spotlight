@@ -16,7 +16,7 @@ COPY . /code
 WORKDIR /code
 
 # Link previously built dependencies into working directory.
-RUN bundler install
+RUN bundler install --local
 
 ENTRYPOINT ["/code/run-tests-in-docker.sh"]
 CMD ["all"]

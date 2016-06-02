@@ -5,6 +5,9 @@ image_resource:
   type: docker-image
   source: {repository: ubuntu}
 
+inputs:
+  - name: spotlight-git
+
 run:
   path: /bin/bash
   args: ["spotlight-git/ci/deploy-spotlight.sh"]

@@ -6,5 +6,5 @@ image_resource:
   source: {repository: ubuntu}
 
 run:
-  path: echo
-  args: ["Hello, world!"]
+  path: /bin/bash
+  args: ["spotlight-git/ci/deploy-spotlight.sh"]

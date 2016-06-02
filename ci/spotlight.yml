@@ -5,7 +5,7 @@ resources:
     source:
       uri: git@github.com:pivotal-sg/spotlight.git
       branch: master
-      private_key: {{git-key}}
+      private_key: {{git-private-key}}
 
   - name: spotlight-test-image
     type: docker-image
@@ -14,10 +14,17 @@ resources:
       email: {{docker-email}}
       username: {{docker-username}}
       password: {{docker-password}}
-      tag: "1.0"
+
+  - name: spotlight-rails-deploy-image
+    type: docker-image
+    source:
+      repository: pivotalsingapore/spotlight-rails
+      email: {{docker-email}}
+      username: {{docker-username}}
+      password: {{docker-password}}
 
 jobs:
-  - name: build-image
+  - name: build-test-image
     public: false
     serial: true
     plan:
@@ -27,17 +34,34 @@ jobs:
         params:
           build: spotlight-git/
           dockerfile: spotlight-git/Dockerfile.tests
-          tag: "1.0"
           cache: true
 
   - name: tests
     public: true
     plan:
       - get: spotlight-git
-        passed: [build-image]
+        passed: [build-test-image]
       - get: spotlight-test-image
-        passed: [build-image]
+        passed: [build-test-image]
         trigger: true
-      - aggregate:
-        - task: unit-rb
-          file: spotlight-git/ci/unit-rb.yml
+      - task: unit-rb
+        file: spotlight-git/ci/unit-rb.yml
+
+  - name: build-deployment-image
+    public: false
+    plan:
+      - get: spotlight-git
+        trigger: true
+        passed: [tests]
+      - put: spotlight-rails-deploy-image
+        params:
+          build: spotlight-git/
+          dockerfile: spotlight-git/Dockerfile
+          cache: true
+
+  - name: deploy-spotlight
+    public: true
+    plan:
+      - task: deploy-spotlight
+        tags: [redhouse]
+        file: spotlight-git/ci/deploy-spotlight-ci

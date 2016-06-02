@@ -13,3 +13,5 @@
 /tmp
 .env
 docker_env
+
+ci/credentials.yml

@@ -1,7 +1,0 @@
-jobs:
-- name: spotlight
-  plan:
-  - task: rspec
-    config:
-      platform: linux
-      image_resource:

@@ -2,7 +2,7 @@ db:
   image: postgres
 api:
   image: pivotalsingapore/spotlight-rails
-  command: bundle exec foreman start
+  command: bin/rails server
   env_file: docker_env
   links:
     - db

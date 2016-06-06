@@ -12,7 +12,7 @@ cp -n config/database-local.yml config/database.yml
 function run-rb() {
     /etc/init.d/postgresql start
     echo -- Sleep 20
-    sleep 20
+    sleep 60
     rake db:setup
 
     echo -- Ruby tests

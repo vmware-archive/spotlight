@@ -45,7 +45,15 @@ jobs:
         passed: [build-test-image]
         trigger: true
       - task: unit-rb
-        file: spotlight-git/ci/unit-rb.yml
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: pivotalsingapore/spotlight-tests
+          run:
+            path: /code/run-tests-in-docker.sh
+            args: [rb]
 
   - name: build-deployment-image
     public: false

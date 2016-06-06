@@ -248,6 +248,13 @@ docker tag ba3dcc9b42b1 pivotalsingapore/spotlight-rails:latest
 docker push pivotalsingapore/spotlight-rails
 ```
 
+## Running in Concourse
+
+```bash
+fly -t aws login -c http://ci
+fly -t aws set-pipeline -p spotlight-tests -c spotlight.yml -l credentials.yml
+```
+
 ## Contributors
 
 - [Divya Bhargov](https://github.com/divyabhargov)

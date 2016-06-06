@@ -58,14 +58,3 @@ jobs:
           build: spotlight-git/
           dockerfile: spotlight-git/Dockerfile
           cache: true
-
-  - name: deploy-spotlight-redhouse
-    public: false
-    plan:
-      - get: spotlight-git
-        trigger: true
-        passed: [build-deployment-image]
-        tags: [redhouse]
-      - task: deploy-spotlight
-        file: spotlight-git/ci/deploy-spotlight-ci.yml
-        tags: [redhouse]

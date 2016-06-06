@@ -31,7 +31,8 @@ RUN apt-get update && \
     apt-get clean && \
     sed -i'' "s/md5/trust/" /etc/postgresql/9.5/main/pg_hba.conf && \
     /etc/init.d/postgresql start && \
-    su -c "createuser root --superuser" postgres
+    su -c "createuser root --superuser" postgres \
+    sudo systemctl enable postgresql
 
 # Setup ruby 2.3
 RUN apt-get install -y software-properties-common && \

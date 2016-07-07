@@ -11,12 +11,4 @@ inputs:
 - name: spotlight-git
 
 run:
-  path: /bin/bash
-  args:
-    - |
-      whoami
-      env
-      pwd
-      gem install bundler
-      bundle install
-      bundle exec rake spec
+  path: spotlight-git/run-test-in-concourse.sh

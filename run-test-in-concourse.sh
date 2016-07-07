@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo `pwd`
+
 gem install bundler
 bundle install
 

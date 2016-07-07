@@ -1,9 +1,8 @@
 #!/bin/bash
 
-echo `pwd`
-ls -al
-
 gem install bundler
+
+cd spotlight-git
 bundle install
 
 # RAILS_ENV=test bundle exec rake db:drop db:create db:migrate

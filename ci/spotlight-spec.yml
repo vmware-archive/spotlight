@@ -1,0 +1,22 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: ruby
+    tag: '2.3.0'
+
+inputs:
+- name: spotlight-git
+
+run:
+  path: /bin/bash
+  args:
+    - |
+      whoami
+      env
+      pwd
+      gem install bundler
+      bundle install
+      bundle exec rake spec

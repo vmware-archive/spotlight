@@ -15,7 +15,6 @@ params:
 
 inputs:
   - name: spotlight-git
-  - name: gem-cache
 
 outputs:
   - name: gem-cache

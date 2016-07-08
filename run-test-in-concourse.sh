@@ -5,7 +5,14 @@ GEMS_FOLDER=$WORK_DIR/gem-bundle
 
 mkdir -p $GEMS_FOLDER
 
-cd spotlight-git
+
+GEMS_CACHE=$WORK_DIR/gem-cache
+OLD_BUNDLE_HASH=`ls $GEMS_CACHE`
+
+mv $GEMS_CACHE/$OLD_BUNDLE_HASH/ruby $GEMS_FOLDER/ruby
+
+
+cd $WORK_DIR/spotlight-git
 cp config/database-docker.yml config/database.yml
 
 gem install bundler

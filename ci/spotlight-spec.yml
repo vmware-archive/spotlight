@@ -7,6 +7,11 @@ image_resource:
     repository: ruby
     tag: '2.3.0'
 
+params:
+  DB_USER: vagrant
+  DB_USER: vagrant
+  DB_HOST: 127.0.0.1
+
 inputs:
 - name: spotlight-git
 

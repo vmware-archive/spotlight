@@ -8,7 +8,7 @@ image_resource:
     tag: '2.3.0'
 
 params:
-  WEB_HOST: /dashboard
+  WEB_HOST: /dashboards
   DB_USER: vagrant
   DB_PASSWORD: vagrant
   DB_HOST: 192.168.100.4

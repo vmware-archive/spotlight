@@ -15,9 +15,10 @@ params:
 
 inputs:
   - name: spotlight-git
+  - name: gem-cache
 
 outputs:
-  - name: gem-cache
+  - name: gem-bundle
 
 run:
   path: spotlight-git/run-test-in-concourse.sh

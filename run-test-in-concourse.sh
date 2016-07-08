@@ -1,7 +1,7 @@
 #!/bin/bash
 
 WORK_DIR=`pwd`
-GEMS_FOLDER=$WORK_DIR/gem-cache
+GEMS_FOLDER=$WORK_DIR/gem-bundle
 
 mkdir -p $GEMS_FOLDER
 

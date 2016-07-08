@@ -9,9 +9,9 @@ mkdir -p $GEMS_FOLDER
 GEMS_CACHE=$WORK_DIR/gem-cache
 OLD_BUNDLE_HASH=`ls $GEMS_CACHE`
 
-if [ -d $GEMS_CACHE/$OLD_BUNDLE_HASH/ruby ]
+if [ -d $GEMS_CACHE/$OLD_BUNDLE_HASH/gem-bundle/ruby ]
 then
-  mv $GEMS_CACHE/$OLD_BUNDLE_HASH/ruby $GEMS_FOLDER/ruby
+  mv $GEMS_CACHE/$OLD_BUNDLE_HASH/gem-bundle/ruby $GEMS_FOLDER/ruby
 fi
 
 cd $WORK_DIR/spotlight-git

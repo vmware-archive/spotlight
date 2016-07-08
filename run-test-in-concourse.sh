@@ -9,8 +9,10 @@ mkdir -p $GEMS_FOLDER
 GEMS_CACHE=$WORK_DIR/gem-cache
 OLD_BUNDLE_HASH=`ls $GEMS_CACHE`
 
-mv $GEMS_CACHE/$OLD_BUNDLE_HASH/ruby $GEMS_FOLDER/ruby
-
+if [ -d $GEMS_CACHE/$OLD_BUNDLE_HASH/ruby ]
+then
+  mv $GEMS_CACHE/$OLD_BUNDLE_HASH/ruby $GEMS_FOLDER/ruby
+fi
 
 cd $WORK_DIR/spotlight-git
 cp config/database-docker.yml config/database.yml

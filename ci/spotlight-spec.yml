@@ -10,7 +10,7 @@ image_resource:
 params:
   DB_USER: vagrant
   DB_USER: vagrant
-  DB_HOST: 127.0.0.1
+  DB_HOST: 192.168.100.4
 
 inputs:
 - name: spotlight-git

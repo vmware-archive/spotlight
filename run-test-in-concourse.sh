@@ -1,7 +1,5 @@
 #!/bin/bash
 
-whoami
-
 cd spotlight-git
 cp config/database-docker.yml config/database.yml
 

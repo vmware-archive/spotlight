@@ -14,7 +14,11 @@ params:
   DB_HOST: 192.168.100.4
 
 inputs:
-- name: spotlight-git
+  - name: spotlight-git
+  - name: gem-cache
+
+outputs:
+  - name: gem-cache
 
 run:
   path: spotlight-git/run-test-in-concourse.sh

@@ -8,17 +8,25 @@ ARCHIVES_FOLDER=$WORK_DIR/archives
 mkdir -p $GEMS_FOLDER
 mkdir -p $ARCHIVES_FOLDER
 
-GEMS_CACHE=$WORK_DIR/build-cache
-PREV_CACHE_HASH=`ls $GEMS_CACHE`
+CACHE_FOLDER=$WORK_DIR/build-cache
+PREV_CACHE_HASH=`ls $CACHE_FOLDER`
 
-if [ -d $GEMS_CACHE/$PREV_CACHE_HASH/bundle/ruby ]
+echo "Checking for [$CACHE_FOLDER/$PREV_CACHE_HASH/bundle/ruby]..."
+if [ -d $CACHE_FOLDER/$PREV_CACHE_HASH/bundle/ruby ]
 then
-  mv $GEMS_CACHE/$PREV_CACHE_HASH/bundle/ruby $GEMS_FOLDER/ruby
+  echo "Found [$CACHE_FOLDER/$PREV_CACHE_HASH/bundle/ruby]. Moving ruby folder."
+  mv $CACHE_FOLDER/$PREV_CACHE_HASH/bundle/ruby $GEMS_FOLDER/ruby
+else
+  echo "Not found ($CACHE_FOLDER/$PREV_CACHE_HASH/bundle/ruby)."
 fi
 
-if [ -d $GEMS_CACHE/$PREV_CACHE_HASH/archives/ruby.tar.gz ]
+echo "Checking for [$CACHE_FOLDER/$PREV_CACHE_HASH/archives/ruby.tar.gz]..."
+if [ -d $CACHE_FOLDER/$PREV_CACHE_HASH/archives/ruby.tar.gz ]
 then
-  tar -xzf $GEMS_CACHE/$PREV_CACHE_HASH/archives/ruby.tar.gz -C $GEMS_FOLDER/
+  echo "Found [$CACHE_FOLDER/$PREV_CACHE_HASH/archives/ruby.tar.gz]. Untarring contents..."
+  tar -xzf $CACHE_FOLDER/$PREV_CACHE_HASH/archives/ruby.tar.gz -C $GEMS_FOLDER/
+else
+  echo "Not found ($CACHE_FOLDER/$PREV_CACHE_HASH/archives/ruby.tar.gz)."
 fi
 
 # Run tests

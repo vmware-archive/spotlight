@@ -15,7 +15,7 @@ params:
 
 inputs:
   - name: spotlight-git
-  # - name: build-cache
+  - name: build-cache
 
 outputs:
   - name: bundle

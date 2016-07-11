@@ -27,5 +27,3 @@ bundle install --path $GEMS_FOLDER
 
 RAILS_ENV=test bundle exec rake db:drop db:create db:migrate
 bundle exec rake spec
-
-exit 0

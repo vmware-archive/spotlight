@@ -9,16 +9,16 @@ mkdir -p $GEMS_FOLDER
 mkdir -p $ARCHIVES_FOLDER
 
 GEMS_CACHE=$WORK_DIR/build-cache
-OLD_BUNDLE_HASH=`ls $GEMS_CACHE`
+PREV_CACHE_HASH=`ls $GEMS_CACHE`
 
-if [ -d $GEMS_CACHE/$OLD_BUNDLE_HASH/bundle/ruby ]
+if [ -d $GEMS_CACHE/$PREV_CACHE_HASH/bundle/ruby ]
 then
-  mv $GEMS_CACHE/$OLD_BUNDLE_HASH/bundle/ruby $GEMS_FOLDER/ruby
+  mv $GEMS_CACHE/$PREV_CACHE_HASH/bundle/ruby $GEMS_FOLDER/ruby
 fi
 
-if [ -d $GEMS_CACHE/$OLD_BUNDLE_HASH/archive/ruby.tar.gz ]
+if [ -d $GEMS_CACHE/$PREV_CACHE_HASH/archive/ruby.tar.gz ]
 then
-  tar -xzvf $GEMS_CACHE/$OLD_BUNDLE_HASH/archive/ruby.tar.gz -C $GEMS_FOLDER/
+  tar -xzvf $GEMS_CACHE/$PREV_CACHE_HASH/archive/ruby.tar.gz -C $GEMS_FOLDER/
 fi
 
 # Run tests

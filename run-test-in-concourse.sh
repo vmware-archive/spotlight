@@ -21,7 +21,7 @@ else
 fi
 
 echo "Checking for [$CACHE_FOLDER/$PREV_CACHE_HASH/archives/ruby.tar.gz]..."
-if [ -d $CACHE_FOLDER/$PREV_CACHE_HASH/archives/ruby.tar.gz ]
+if [ -f $CACHE_FOLDER/$PREV_CACHE_HASH/archives/ruby.tar.gz ]
 then
   echo "Found [$CACHE_FOLDER/$PREV_CACHE_HASH/archives/ruby.tar.gz]. Untarring contents..."
   tar -xzf $CACHE_FOLDER/$PREV_CACHE_HASH/archives/ruby.tar.gz -C $GEMS_FOLDER/

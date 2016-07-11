@@ -1,17 +1,17 @@
 #!/bin/bash
 
 WORK_DIR=`pwd`
-GEMS_FOLDER=$WORK_DIR/gem-bundle
+GEMS_FOLDER=$WORK_DIR/bundle
 
 mkdir -p $GEMS_FOLDER
 
 
-GEMS_CACHE=$WORK_DIR/gem-cache
+GEMS_CACHE=$WORK_DIR/build-cache
 OLD_BUNDLE_HASH=`ls $GEMS_CACHE`
 
-if [ -d $GEMS_CACHE/$OLD_BUNDLE_HASH/gem-bundle/ruby ]
+if [ -d $GEMS_CACHE/$OLD_BUNDLE_HASH/bundle/ruby ]
 then
-  mv $GEMS_CACHE/$OLD_BUNDLE_HASH/gem-bundle/ruby $GEMS_FOLDER/ruby
+  mv $GEMS_CACHE/$OLD_BUNDLE_HASH/bundle/ruby $GEMS_FOLDER/ruby
 fi
 
 cd $WORK_DIR/spotlight-git

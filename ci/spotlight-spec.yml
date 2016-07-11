@@ -19,6 +19,7 @@ inputs:
 
 outputs:
   - name: bundle
+  - name: archives
 
 run:
   path: spotlight-git/run-test-in-concourse.sh

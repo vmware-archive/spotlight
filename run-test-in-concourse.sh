@@ -16,9 +16,9 @@ then
   mv $GEMS_CACHE/$PREV_CACHE_HASH/bundle/ruby $GEMS_FOLDER/ruby
 fi
 
-if [ -d $GEMS_CACHE/$PREV_CACHE_HASH/archive/ruby.tar.gz ]
+if [ -d $GEMS_CACHE/$PREV_CACHE_HASH/archives/ruby.tar.gz ]
 then
-  tar -xzvf $GEMS_CACHE/$PREV_CACHE_HASH/archive/ruby.tar.gz -C $GEMS_FOLDER/
+  tar -xzf $GEMS_CACHE/$PREV_CACHE_HASH/archives/ruby.tar.gz -C $GEMS_FOLDER/
 fi
 
 # Run tests
@@ -32,6 +32,6 @@ RAILS_ENV=test bundle exec rake db:drop db:create db:migrate
 bundle exec rake spec
 
 # Tarball the Rubies / Gems
-tar -cvzf $ARCHIVES_FOLDER/ruby.tar.gz $GEMS_FOLDER/ruby
+tar -czf $ARCHIVES_FOLDER/ruby.tar.gz $GEMS_FOLDER/ruby
 
 exit 0

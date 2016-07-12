@@ -7,15 +7,14 @@ GEMS_FOLDER=$WORK_DIR/bundle
 mkdir -p $GEMS_FOLDER
 
 CACHE_FOLDER=$WORK_DIR/build-cache
-PREV_CACHE_HASH=`ls $CACHE_FOLDER`
 
-echo "Checking for [$CACHE_FOLDER/$PREV_CACHE_HASH/bundle/ruby]..."
-if [ -d $CACHE_FOLDER/$PREV_CACHE_HASH/bundle/ruby ]
+echo "Checking for [$CACHE_FOLDER/bundle/ruby]..."
+if [ -d $CACHE_FOLDER/bundle/ruby ]
 then
-  echo "Found [$CACHE_FOLDER/$PREV_CACHE_HASH/bundle/ruby]. Moving ruby folder."
-  mv $CACHE_FOLDER/$PREV_CACHE_HASH/bundle/ruby $GEMS_FOLDER/ruby
+  echo "Found [$CACHE_FOLDER/bundle/ruby]. Moving ruby folder."
+  mv $CACHE_FOLDER/bundle/ruby $GEMS_FOLDER/ruby
 else
-  echo "Not found ($CACHE_FOLDER/$PREV_CACHE_HASH/bundle/ruby)."
+  echo "Not found ($CACHE_FOLDER/bundle/ruby)."
 fi
 
 # Run tests

@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe GoogleCalendarService do
   let(:calendar_title) { 'BBQ' }
   let(:calendar_id) { 'some_id' }
-  let(:service) { double }
+  let(:fake_google_calendar_api_client) { double }
 
   before do
-    expect_any_instance_of(GoogleCalendarService).to receive(:service).and_return(service)
+    expect_any_instance_of(GoogleCalendarService).to receive(:client).and_return(fake_google_calendar_api_client)
   end
 
   describe '#list_calendars' do
@@ -17,7 +17,7 @@ RSpec.describe GoogleCalendarService do
     end
 
     before do
-      allow(service).to receive_message_chain('list_calendar_lists.items'){ calendars }
+      allow(fake_google_calendar_api_client).to receive_message_chain('list_calendar_lists.items'){ calendars }
     end
 
     it 'returns list of calendars' do
@@ -34,7 +34,7 @@ RSpec.describe GoogleCalendarService do
     end
 
     before do
-      allow(service).to receive_message_chain('list_events.items'){ events }
+      allow(fake_google_calendar_api_client).to receive_message_chain('list_events.items'){ events }
     end
 
     it 'returns list of events' do

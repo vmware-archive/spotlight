@@ -1,5 +1,5 @@
 class Api::GoogleController < Api::BaseController
-  API_SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR_READONLY
+  API_SCOPE = [Google::Apis::CalendarV3::AUTH_CALENDAR_READONLY, AUTH_ADMIN_DIRECTORY_RESOURCE_CALENDAR_READONLY]
 
   def login
     session[:return_url] = params[:return_url]

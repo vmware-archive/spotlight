@@ -18,7 +18,7 @@ gem 'react-rails', '1.4.1'
 gem 'materialize-sass'
 gem 'momentjs-rails'
 gem 'foreman'
-gem 'google-api-client', '~> 0.9', require: 'google/apis/calendar_v3'
+gem 'google-api-client', '~> 0.9', require: ['google/apis/calendar_v3', 'google/apis/admin_directory_v1']
 gem 'xkcd'
 
 group :development do

@@ -26,10 +26,35 @@ class GoogleCalendarService
   end
 
   def list_rooms
-    directory_api_client.list_calendar_resources('my_customer').items.map do |room|
-      [room.room_name, room.room_email]
+    directory_api_client.list_calendar_resources('my_customer').items.map do |resource|
+      [resource.resource_name, resource.resource_email]
     end
   end
 
+  def get_room_availability room_email
+    upcoming_events = list_events(room_email) || []
+
+    if upcoming_events.length == 0
+      available = true
+      next_available_at = nil
+      next_booking_at = nil
+    else
+      event = upcoming_events.first
+      event_start = (event.start.date_time || event.start.date.to_time).utc
+      event_end = (event.end.date_time || event.end.date.to_time).utc
+      time_span = event_start..event_end
+
+      available = ! time_span.include?(Time.now.utc)
+      next_available_at = available ? nil : event_end
+      next_booking_at = available ? event_start : nil
+    end
+
+    {
+      available: available,
+      next_booking_at: next_booking_at,
+      next_available_at: next_available_at
+    }
+  end
 
 end
+

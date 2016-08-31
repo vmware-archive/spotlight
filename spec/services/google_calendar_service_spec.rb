@@ -49,7 +49,7 @@ RSpec.describe GoogleCalendarService do
   describe '#list_rooms' do
     let(:rooms) do
       [
-        OpenStruct.new(room_email: 'example@pivotal.io', room_name: 'fake room name')
+        OpenStruct.new(resource_email: 'example@pivotal.io', resource_name: 'fake room name')
       ]
     end
 
@@ -68,5 +68,72 @@ RSpec.describe GoogleCalendarService do
       expect(expected_room_email).to eq('example@pivotal.io')
       expect(expected_room_name).to eq('fake room name')
     end
+  end
+
+  describe '#get_room_availability' do
+    # TODO
+    let(:event_start) { Google::Apis::CalendarV3::EventDateTime.new(date: 1.day.from_now) }
+    let(:event_end) { Google::Apis::CalendarV3::EventDateTime.new(date: 2.days.from_now) }
+    let(:event) { OpenStruct.new(start: event_start, end: event_end) }
+    let(:events) { [ event ] }
+
+    before do
+      allow(fake_google_calendar_api_client).to \
+        receive_message_chain('list_events.items'){ events }
+    end
+
+    context 'day-long events' do
+      let(:event_start) { Google::Apis::CalendarV3::EventDateTime.new(date: 1.day.from_now.to_date) }
+      let(:event_end) { Google::Apis::CalendarV3::EventDateTime.new(date: 2.days.from_now.to_date) }
+
+      it 'calculates availability correctly' do
+        result = subject.get_room_availability 'example@pivotal.io'
+
+        expect(result[:available]).to be_truthy
+        expect(result[:next_available_at]).to be_nil
+        expect(result[:next_booking_at]).to eq event_start.date.to_time.utc
+      end
+    end
+
+    context 'non day-long events' do
+      context 'when there are no upcoming events for the room' do
+        let(:events) { [ ] }
+
+        it 'is available' do
+          result = subject.get_room_availability 'example@pivotal.io'
+
+          expect(result[:available]).to be_truthy
+          expect(result[:next_available_at]).to be_nil
+          expect(result[:next_booking_at]).to be_nil
+        end
+      end
+
+      context 'when the room is available' do
+        let(:event_start) { Google::Apis::CalendarV3::EventDateTime.new(date_time: 1.day.from_now) }
+        let(:event_end) { Google::Apis::CalendarV3::EventDateTime.new(date_time: 2.days.from_now) }
+
+        it 'is available' do
+          result = subject.get_room_availability 'example@pivotal.io'
+
+          expect(result[:available]).to be_truthy
+          expect(result[:next_available_at]).to be_nil
+          expect(result[:next_booking_at]).to eq event_start.date_time.utc
+        end
+      end
+
+      context "when the room isn't available" do
+        let(:event_start) { Google::Apis::CalendarV3::EventDateTime.new(date_time: 1.second.ago) }
+        let(:event_end) { Google::Apis::CalendarV3::EventDateTime.new(date_time: 2.days.from_now) }
+
+        it 'is available' do
+          result = subject.get_room_availability 'example@pivotal.io'
+
+          expect(result[:available]).to be_falsey
+          expect(result[:next_available_at]).to eq event_end.date_time.utc
+          expect(result[:next_booking_at]).to be_nil
+        end
+      end
+    end
+
   end
 end

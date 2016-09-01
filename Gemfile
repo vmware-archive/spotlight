@@ -50,6 +50,7 @@ group :test do
   gem 'webmock'
   gem 'puffing-billy'
   gem 'rest-client'
+  gem 'vcr'
 end
 
 group :production do

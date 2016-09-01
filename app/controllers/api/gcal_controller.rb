@@ -14,24 +14,8 @@ class Api::GcalController < Api::BaseController
   end
 
   def calendar_service_for(widget)
-    GoogleCalendarServiceFactory.new(widget).client
+    ::GoogleCalendarServiceFactory.new(widget).client
   end
 end
 
-class GoogleCalendarServiceFactory
-  attr_reader :client
-
-  def initialize widget
-    @widget = widget
-  end
-
-  def client
-    authorization = GoogleAuthService.new.client(
-      access_token: @widget.access_token,
-      refresh_token: @widget.refresh_token)
-    authorization.refresh!
-
-    GoogleCalendarService.new(authorization: authorization)
-  end
-end
 

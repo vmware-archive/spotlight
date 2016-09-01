@@ -17,6 +17,9 @@ require 'selenium-webdriver'
 require 'shoulda/matchers'
 require 'database_cleaner'
 require 'webmock/rspec'
+require 'billy/capybara/rspec'
+require 'vcr'
+
 WebMock.disable_net_connect!(:allow_localhost => true)
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
@@ -30,9 +33,68 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
-Capybara.javascript_driver = :selenium
+# Capybara.javascript_driver = :selenium
+Capybara.javascript_driver = :selenium_billy # Uses Firefox
+Capybara.server_port = 8200
+
+# Billy.configure do |c|
+#     c.cache_request_body_methods = ['get', 'post', 'patch', 'put'] # defaults to ['post']
+# end
+
+VCR.configure do |config|
+  config.cassette_library_dir = "spec/fixtures/vcr_cassettes"
+  config.hook_into :webmock
+  config.ignore_localhost = true
+  config.ignore_request do |request|
+    request.headers.include?('Referer')
+  end
+end
+
+def kill_zombie_children(parent_pid)
+  # get a list of processes and children
+  process_output = `ps -eo pid,ppid,args | grep #{parent_pid} | grep -iv grep`
+
+  # break out column output into pid, parent_id, command
+  matches = process_output.scan /^\s*(\d+)\s*(\d+)\s*(.*)$/
+  return nil if matches.nil? || matches.empty?
+
+  matches.each do |match|
+    pid = match[0].to_i
+    Process.kill "KILL", pid
+  end
+end
 
 RSpec.configure do |config|
+  config.around(:each, type: :feature) do |example|
+    WebMock.allow_net_connect!
+    example.run
+    WebMock.disable_net_connect!
+  end
+
+  config.before(:all, type: :feature) do |example|
+    next if $started_frontend_server
+    puts "STARTING FRONTEND SERVER"
+    ENV['WEB_HOST'] = 'http://localhost:8201'
+    $pid = Process.fork do
+      $stdout.reopen("/dev/null")
+      cmd = "cd ../spotlight-dashboard && npm install && API_HOST=http://localhost:8200 SPOTLIGHT_DASHBOARD_PORT=8201 node server.js"
+      exec(cmd)
+      exit! 127
+    end
+    $started_frontend_server = true
+
+    sleep 10
+  end
+
+    # example.run
+
+  config.after(:suite) do |example|
+    if $started_frontend_server
+      puts "KILLING FRONTEND SERVER"
+      kill_zombie_children($pid)
+    end
+  end
+
   config.include FactoryGirl::Syntax::Methods
 
   config.use_transactional_fixtures = false

@@ -9,8 +9,6 @@ RSpec.describe Api::GcalController do
   let(:dashboard) { FactoryGirl.create :dashboard, title:'Default Dashboard' }
   let!(:widget) { FactoryGirl.create :widget, :gcal_widget, dashboard: dashboard }
 
-  let(:authorization) { double }
-
   let(:e1start) { Google::Apis::CalendarV3::EventDateTime.new(date_time: 1.hour.from_now) }
   let(:e1end)   { Google::Apis::CalendarV3::EventDateTime.new(date_time: 2.hours.from_now) }
   let(:e2start) { Google::Apis::CalendarV3::EventDateTime.new(date_time: 3.hours.from_now) }
@@ -23,9 +21,9 @@ RSpec.describe Api::GcalController do
   end
 
   before do
-    allow(authorization).to receive(:refresh!).and_return(true)
-    allow_any_instance_of(GoogleAuthService).to receive(:client).and_return(authorization)
-    allow_any_instance_of(GoogleCalendarService).to receive(:list_events).with(widget.calendar_id).and_return(events)
+    allow_any_instance_of(GoogleCalendarServiceFactory).to receive(:client).and_return(
+      double list_events: events
+    )
   end
 
   describe 'GET #availability' do
@@ -38,13 +36,15 @@ RSpec.describe Api::GcalController do
     end
 
     before do
-      allow_any_instance_of(GoogleCalendarService).to receive(:get_room_availability).and_return(availability)
+      allow_any_instance_of(GoogleCalendarServiceFactory).to receive(:client).and_return(
+        double get_room_availability: availability
+      )
     end
 
     it 'returns the availability' do
       headers = { "ACCEPT" => "application/json" }
 
-      get "/api/gcal/#{widget.uuid}/availability", nil, headers
+      get "/api/gcal/#{widget.uuid}/availability", headers
       parsed = JSON.parse(response.body, symbolize_names: true)
 
       expect(parsed[:available]).to be_truthy
@@ -56,7 +56,7 @@ RSpec.describe Api::GcalController do
   describe 'GET #show' do
     it 'returns the information about the calendar' do
       headers = { "ACCEPT" => "application/json" }
-      get "/api/gcal/#{widget.uuid}", nil, headers
+      get "/api/gcal/#{widget.uuid}", headers
 
       parsed = JSON.parse(response.body, symbolize_names: true)
 

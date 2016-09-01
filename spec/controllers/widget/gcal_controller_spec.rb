@@ -48,7 +48,7 @@ RSpec.describe Widget::GcalController, type: :controller do
       expect(widget.refresh_token).to eq refresh_token
       expect(widget.calendar_id).to eq calendar_id
 
-      expect(response).to redirect_to(dashboards_path)
+      expect(response).to redirect_to(ENV['WEB_HOST'] || dashboards_path)
     end
   end
 end

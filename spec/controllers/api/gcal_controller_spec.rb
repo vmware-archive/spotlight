@@ -4,15 +4,17 @@ RSpec.describe Api::GcalController, type: :controller do
   let(:dashboard) { FactoryGirl.create :dashboard, title:'Default Dashboard' }
   let!(:widget) { FactoryGirl.create :widget, :gcal_widget, dashboard: dashboard }
 
+  let(:events) { double }
+  let(:authorization) { double }
+
+  before do
+    allow(authorization).to receive(:refresh!).and_return(true)
+    allow_any_instance_of(GoogleAuthService).to receive(:client).and_return(authorization)
+    allow_any_instance_of(GoogleCalendarService).to receive(:list_events).with(widget.calendar_id).and_return(events)
+  end
+
   describe 'GET #show' do
-    let(:events) { double }
-    let(:authorization) { double }
-
     before do
-      allow(authorization).to receive(:refresh!).and_return(true)
-      expect_any_instance_of(GoogleAuthService).to receive(:client).and_return(authorization)
-      expect_any_instance_of(GoogleCalendarService).to receive(:list_events).with(widget.calendar_id).and_return(events)
-
       get :show, id: widget.uuid, format: :json
     end
 
@@ -25,3 +27,4 @@ RSpec.describe Api::GcalController, type: :controller do
     end
   end
 end
+

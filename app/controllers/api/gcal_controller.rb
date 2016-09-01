@@ -3,6 +3,10 @@ class Api::GcalController < Api::BaseController
     @events = calendar_service_for(widget).list_events(widget.calendar_id)
   end
 
+  def availability
+    @availability = calendar_service_for(widget).get_room_availability(widget.calendar_id)
+  end
+
   private
 
   def widget

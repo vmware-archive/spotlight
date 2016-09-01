@@ -48,6 +48,8 @@ end
 group :test do
   gem 'shoulda-matchers'
   gem 'webmock'
+  gem 'puffing-billy'
+  gem 'rest-client'
 end
 
 group :production do

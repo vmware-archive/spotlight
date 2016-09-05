@@ -64,6 +64,7 @@ def kill_zombie_children(parent_pid)
   end
 end
 
+require 'socket'
 RSpec.configure do |config|
   config.around(:each, type: :feature) do |example|
     WebMock.allow_net_connect!
@@ -83,7 +84,23 @@ RSpec.configure do |config|
     end
     $started_frontend_server = true
 
-    sleep 10
+    $not_connected = true
+    $connect_timeout = Time.now + 5.seconds
+    puts 'WAITING FOR FRONTEND SERVER...'
+    while $not_connected do
+      if Time.now > $connect_timeout
+        puts "FAILED TO CONNECT"
+        exit 1
+      end
+
+      begin
+         Socket.tcp 'localhost', 8201
+         $not_connected = false
+      rescue Errno::ECONNREFUSED
+        # Socket not able to connect yet, so wait a bit...
+        sleep 0.1
+      end
+    end
   end
 
     # example.run

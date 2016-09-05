@@ -30,7 +30,7 @@ class GoogleAuthService
       client_id: client_id,
       client_secret: client_secret,
       authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
-      token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
+      token_credential_uri: 'https://accounts.google.com/o/oauth2/token'
     }
   end
 end

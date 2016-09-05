@@ -30,5 +30,7 @@ Rails.application.routes.draw do
 
   namespace :widget do
     resources :gcal, only: [:new, :create]
+    get '/gcal_resource/new', to: 'gcal#new_resource'
+    post '/gcal_resource', to: 'gcal#create_resource', as: 'gcal_resource_index'
   end
 end

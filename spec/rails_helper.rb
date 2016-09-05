@@ -85,7 +85,7 @@ RSpec.configure do |config|
     $started_frontend_server = true
 
     $not_connected = true
-    $connect_timeout = Time.now + 5.seconds
+    $connect_timeout = Time.now + 15.seconds
     puts 'WAITING FOR FRONTEND SERVER...'
     while $not_connected do
       if Time.now > $connect_timeout

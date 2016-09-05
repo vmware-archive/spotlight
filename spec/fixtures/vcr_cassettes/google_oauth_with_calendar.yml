@@ -222,7 +222,173 @@ http_interactions:
               }
             ]
         }
-
+    http_version: 
+  recorded_at: Fri, 02 Sep 2016 08:42:08 GMT
+- request:
+    method: get
+    uri: https://www.googleapis.com/admin/directory/v1/customer/my_customer/resources/calendars
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      User-Agent:
+      - |-
+        unknown/0.0.0 google-api-ruby-client/0.9.1 Mac OS X/10.11.2
+         (gzip)
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip,deflate
+      Date:
+      - Mon, 05 Sep 2016 07:31:23 GMT
+      Authorization:
+      - Bearer ya29.Ci9SA0Q0147iRIGGHCx0k_NZ_0MVxVtmB4RaWXfbJn4-BT6Gnhoiv6lIleanWqDaWA
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Vary:
+      - Origin
+      - X-Origin
+      Www-Authenticate:
+      - Bearer realm="https://accounts.google.com/", error=invalid_token
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Encoding:
+      - gzip
+      Date:
+      - Mon, 05 Sep 2016 07:30:47 GMT
+      Expires:
+      - Mon, 05 Sep 2016 07:30:47 GMT
+      Cache-Control:
+      - private, max-age=0
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      Server:
+      - GSE
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="36,35,34,33,32,31,30"
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+         "kind": "admin#directory#resources#calendars#calendarResourcesList",
+         "etag": "\"XGyyUMiAmCo7o31SWwFDDNla4RE/wTueHdfuRFodaj8pVQnJeJZwi64\"",
+         "nextPageToken": "AHmOf6b8q5T01hQC1MHGiaIXIGeApVD4pW1RW1t-qLyJsI_fXJDv4HwPecYh7JRzmdrZ0b2kYqTxN5sYKWnFu5upTFb9uCIf3Kd_wn6Stmoj5-vPZaf4t8BGAIa6HySVLFtJnCFpp9tZQujZX8PLhFRbwkrs1kwCcNITmaNqS6pWDSOi8dKufng",
+         "items": [
+            {
+             "kind": "admin#directory#resources#calendars#CalendarResource",
+             "etags": "\"XGyyUMiAmCo7o31SWwFDDNla4RE/cdgG1knbTO2cIevc7NeJhbe3S00\"",
+             "resourceId": "STUBBED_RESOURCE_ID",
+             "resourceName": "STUBBED RESOURCE NAME",
+             "resourceType": "(unused)",
+             "resourceEmail": "STUBBED RESOURCE EMAIL"
+            }
+          ]
+        }
+    http_version: 
+  recorded_at: Mon, 05 Sep 2016 07:31:23 GMT
+- request:
+    method: get
+    uri: https://www.googleapis.com/calendar/v3/calendars/STUBBED_RESOURCE_ID/events?maxResults=3&orderBy=startTime&singleEvents=true&timeMin=2016-09-02T16:42:08%2B08:00
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      User-Agent:
+      - |-
+        unknown/0.0.0 google-api-ruby-client/0.9.1 Mac OS X/10.11.2
+         (gzip)
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip,deflate
+      Date:
+      - Fri, 02 Sep 2016 08:42:08 GMT
+      Authorization:
+      - Bearer ya29.Ci9SA0Q0147iRIGGHCx0k_NZ_0MVxVtmB4RaWXfbJn4-BT6Gnhoiv6lIleanWqDaWA
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Vary:
+      - Origin
+      - X-Origin
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Encoding:
+      - gzip
+      Date:
+      - Fri, 02 Sep 2016 08:41:36 GMT
+      Expires:
+      - Fri, 02 Sep 2016 08:41:36 GMT
+      Cache-Control:
+      - private, max-age=0
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      Server:
+      - GSE
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="36,35,34,33,32,31,30"
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "kind": "calendar#events",
+            "etag": "\"p32gavsumgvrss0g\"",
+            "summary": "SG Office",
+            "description": "Singapore office calendar",
+            "updated": "2016-09-05T01:20:04.868Z",
+            "timeZone": "Asia/Singapore",
+            "accessRole": "owner",
+            "defaultReminders": [],
+            "nextPageToken": "EiUKGmZlbXJycHJ0OHVkNmJta3NoZnZjNjl2OGgwGICA8OrCiM8C",
+            "items": [
+              {
+                "kind": "calendar#event",
+                "etag": "\"2945075838510000\"",
+                "id": "sgnssaoho4jmlari7gtaqs8t50",
+                "status": "confirmed",
+                "htmlLink": "https://www.google.com/calendar/event?eid=c2duc3Nhb2hvNGptbGFyaTdndGFxczh0NTAgcGl2b3RhbC5pb19tNm9wMjdkbDV1MGZlZDNtcjlsanZpMWdyc0Bn",
+                "created": "2016-08-30T06:18:39.000Z",
+                "updated": "2016-08-30T06:18:39.255Z",
+                "summary": "OUR STUBBED EVENT",
+                "creator": {
+                  "email": "ghollombe@pivotal.io"
+                },
+                "organizer": {
+                  "email": "pivotal.io_m6op27dl5u0fed3mr9ljvi1grs@group.calendar.google.com",
+                  "displayName": "SG Office",
+                  "self": true
+                },
+                "start": {
+                  "dateTime": "2016-09-07T18:30:00+08:00"
+                },
+                "end": {
+                  "dateTime": "2016-09-07T20:50:00+08:00"
+                },
+                "iCalUID": "sgnssaoho4jmlari7gtaqs8t50@google.com",
+                "sequence": 0,
+                "reminders": {
+                  "useDefault": true
+                }
+              }
+            ]
+        }
     http_version: 
   recorded_at: Fri, 02 Sep 2016 08:42:08 GMT
 recorded_with: VCR 3.0.3

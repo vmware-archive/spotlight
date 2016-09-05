@@ -28,7 +28,7 @@ class GoogleCalendarService
   def list_rooms
     directory_api_client.list_calendar_resources('my_customer').items.map do |resource|
       [resource.resource_name, resource.resource_email]
-    end
+    end.sort_by {|pair| pair[0]}
   end
 
   def get_room_availability room_email
@@ -69,7 +69,7 @@ class GoogleCalendarServiceFactory
     authorization = GoogleAuthService.new.client(
       access_token: @widget.access_token,
       refresh_token: @widget.refresh_token)
-    authorization.refresh!
+    authorization.refresh! if @widget.refresh_token.present?
 
     GoogleCalendarService.new(authorization: authorization)
   end

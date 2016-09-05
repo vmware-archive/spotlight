@@ -30,6 +30,17 @@ class Category::GcalWidget < Category
   end
 end
 
+class Category::GcalResourceWidget < Category
+  def fields
+    {
+      authenticate: { type: 'link', text: 'Authenticate with Google', url: '/api/google/login?return_url=/widget/gcal_resource/new' },
+      access_token: { type: 'hidden' },
+      refresh_token: { type: 'hidden' },
+      resource_id: { type: 'hidden' },
+    }
+  end
+end
+
 class Category::CiWidget < Category
   STATUS_PASSED = 'passed'
   STATUS_FAILED = 'failed'

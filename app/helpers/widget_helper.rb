@@ -5,8 +5,9 @@ module WidgetHelper
       ['Continuous Integration Status', 'ci_widget'],
       ['Clock', 'clock_widget'],
       ['Google Calendar', 'gcal_widget'],
+      ['Google Calendar Resource', 'gcal_resource_widget'],
       ['XKCD Comic', 'comic_widget'],
-      ['Render URL', 'url_widget'],
+      ['Render URL', 'url_widget']
     ]
   end
 

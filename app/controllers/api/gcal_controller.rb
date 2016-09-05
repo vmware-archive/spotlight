@@ -1,10 +1,12 @@
+require 'google_calendar_service'
+
 class Api::GcalController < Api::BaseController
   def show
     @events = calendar_service_for(widget).list_events(widget.calendar_id)
   end
 
   def availability
-    @availability = calendar_service_for(widget).get_room_availability(widget.calendar_id)
+    @availability = calendar_service_for(widget).get_room_availability(widget.resource_id)
   end
 
   private

@@ -11,7 +11,7 @@ class GoogleAuthService
   end
 
   def get_authorization_uri(redirect_uri:, scope:)
-    client(redirect_uri: redirect_uri, scope: scope).authorization_uri.to_s
+    client(redirect_uri: redirect_uri, scope: scope).authorization_uri(access_type: 'offline', prompt: 'consent').to_s
   end
 
   def fetch_tokens(redirect_uri:, scope:, code:)

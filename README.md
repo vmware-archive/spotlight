@@ -187,20 +187,12 @@ foreman start
 
 We use the [RSpec](http://rspec.info) testing framework for this app.
 
-To run the test locally, use this command:
+To run the tests locally, use this command:
 
 ```
 bundle exec rspec spec
 
 ```
-
-To run feature tests, use this command
-
-```
-bundle exec rake spotlight:test_features
-
-```
-
 
 To run the Javascript tests, use this command:
 
@@ -262,6 +254,7 @@ fly -t aws set-pipeline -p spotlight-tests -c spotlight.yml -l credentials.yml
 - [Gabe Hollombe](https://github.com/gabehollombe)
 - [Michael Cheng](https://github.com/miccheng)
 - [Rahul Rajeev](https://github.com/rhlrjv)
+- [Carlos Gavino](https://github.com/cgavino)
 
 ## License
 

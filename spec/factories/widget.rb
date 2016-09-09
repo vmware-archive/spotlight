@@ -22,5 +22,13 @@ FactoryGirl.define do
       refresh_token { 'refresh_token' }
       calendar_id { 'office_calendar' }
     end
+
+    trait :gcal_resource_widget do
+      category { 'gcal_resource_widget' }
+      access_token { 'access_token' }
+      refresh_token { 'refresh_token' }
+      resource_id { 'fake-resource-id' }
+    end
+
   end
 end

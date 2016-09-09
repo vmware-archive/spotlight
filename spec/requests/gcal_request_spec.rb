@@ -7,7 +7,6 @@ end
 
 RSpec.describe Api::GcalController do
   let(:dashboard) { FactoryGirl.create :dashboard, title:'Default Dashboard' }
-  let!(:widget) { FactoryGirl.create :widget, :gcal_widget, dashboard: dashboard }
 
   let(:e1start) { Google::Apis::CalendarV3::EventDateTime.new(date_time: 1.hour.from_now) }
   let(:e1end)   { Google::Apis::CalendarV3::EventDateTime.new(date_time: 2.hours.from_now) }
@@ -27,6 +26,8 @@ RSpec.describe Api::GcalController do
   end
 
   describe 'GET #availability' do
+    let!(:widget) { FactoryGirl.create :widget, :gcal_resource_widget, dashboard: dashboard }
+
     let(:availability) do 
       {
         available: true,
@@ -54,6 +55,8 @@ RSpec.describe Api::GcalController do
   end
 
   describe 'GET #show' do
+    let!(:widget) { FactoryGirl.create :widget, :gcal_widget, dashboard: dashboard }
+
     it 'returns the information about the calendar' do
       headers = { "ACCEPT" => "application/json" }
       get "/api/gcal/#{widget.uuid}", headers

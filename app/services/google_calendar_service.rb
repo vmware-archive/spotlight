@@ -40,8 +40,8 @@ class GoogleCalendarService
       next_booking_at = nil
     else
       event = upcoming_events.first
-      event_start = (event.start.date_time || event.start.date.to_time).utc
-      event_end = (event.end.date_time || event.end.date.to_time).utc
+      event_start = (event.start.date_time || event.start.date).to_time.utc
+      event_end = (event.end.date_time || event.end.date).to_time.utc
       time_span = event_start..event_end
 
       available = ! time_span.include?(Time.now.utc)

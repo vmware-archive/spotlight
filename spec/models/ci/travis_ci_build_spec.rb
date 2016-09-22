@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Ci::TravisCiService do
+RSpec.describe TravisCiService do
   describe '#initialize' do
     let(:state) { 'started' }
     let(:start_timestamp) { '2016-01-29T09:43:34Z' }

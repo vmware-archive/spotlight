@@ -142,4 +142,25 @@ describe "travis widget spec", :type => :feature do
     expect(page).to_not have_content 'Ray'
 
   end
+
+  it 'renders the concourse widget and shows the build history', js: true do
+    visit '/api/dashboards'
+
+    expect(page).to_not have_content('Concourse')
+
+    visit '/widgets/new'
+
+    expect(page).to have_css '#qa-new-widget-form'
+
+    select 'Continuous Integration Status', from: 'Category'
+
+    fill_in 'Title', with: 'Concourse'
+    fill_in 'Server url', with: 'A fake server url'
+    fill_in 'Project name', with: 'A fake project name'
+    fill_in 'Auth key', with: 'A fake auth key'
+
+    click_on 'Submit'
+
+    expect(page.body).to match 'Concourse'
+  end
 end

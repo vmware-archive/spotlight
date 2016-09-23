@@ -41,14 +41,6 @@ class Category::GcalResourceWidget < Category
   end
 end
 
-class Category::ConcourseWidget < Category
-  def fields
-    {
-      # Nothing
-    }
-  end
-end
-
 class Category::CiWidget < Category
   STATUS_PASSED = 'passed'
   STATUS_FAILED = 'failed'
@@ -65,6 +57,20 @@ class Category::CiWidget < Category
       server_url: nil,
       project_name: nil,
       auth_key: nil
+    }
+  end
+end
+
+class Category::CiConcourseWidget < Category::CiWidget
+  def fields
+    {
+      server_type: { type: 'hidden', value: 'concourse_ci' },
+      server_url: nil,
+      project_name: nil,
+      job: nil,
+      team_name: nil,
+      username: nil,
+      password: nil
     }
   end
 end

@@ -53,10 +53,24 @@ class Category::CiWidget < Category
 
   def fields
     {
-      server_type: [:travis_ci, :jenkins_ci, :circle_ci],
+      server_type: [:travis_ci, :jenkins_ci, :circle_ci, :concourse_ci],
       server_url: nil,
       project_name: nil,
       auth_key: nil
+    }
+  end
+end
+
+class Category::CiConcourseWidget < Category::CiWidget
+  def fields
+    {
+      server_type: { type: 'hidden', value: 'concourse_ci' },
+      server_url: nil,
+      project_name: nil,
+      job: nil,
+      team_name: nil,
+      username: nil,
+      password: nil
     }
   end
 end

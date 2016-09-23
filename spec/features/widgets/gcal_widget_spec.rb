@@ -75,7 +75,7 @@ describe 'Google calendar widget spec', :type => :feature, foreman_frontend: tru
 
       click_on 'Submit'
 
-      expect(page.body).to match 'STUBBED RESOURCE NAME'
+      expect(page.body).to match 'A Title'
     end
   end
 

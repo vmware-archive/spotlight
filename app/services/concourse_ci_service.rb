@@ -13,7 +13,7 @@ class ConcourseCiService < BaseCiService
   end
 
   def repo_info(repository = @project_name, path = '', options = {})
-    fly = Rails.root.join("fly")
+    sync_command = "#{ fly } -t #{ @project_name } sync"
 
     login_command = "#{ fly } login -c #{ @server_url } -t #{ @project_name } -n #{ @team_name } -u #{ @username } -p #{ @password }"
     Open3.popen3 login_command
@@ -51,5 +51,17 @@ class ConcourseCiService < BaseCiService
       }
     end
   end
+
+  private
+  def fly
+    host_os = RbConfig::CONFIG['host_os']
+    case host_os
+    when /darwin|mac os/
+      Rails.root.join 'fly'
+    else
+      Rails.root.join 'fly_linux_amd64'
+    end
+  end
+
 end
 

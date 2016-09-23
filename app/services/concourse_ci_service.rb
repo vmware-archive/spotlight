@@ -3,10 +3,9 @@ require 'open3'
 class ConcourseCiService < BaseCiService
   def repo_info(repository = @project_name, path = '', options = {})
     fly = Rails.root.join("fly")
-    login_command = "#{ fly } login -c https://ci.pivotal-sg.com/ -t aws"
 
-    stdin, stdout, stderr = Open3.popen3 login_command
-    stdin.puts token
+    login_command = "#{ fly } login -c https://ci.pivotal-sg.com/ -t aws -n foo -u baz -p bar"
+    Open3.popen3 login_command
 
     builds_command = "#{ fly } -t aws builds -j todo-ios/tests -c 5"
     stdin, stdout, stderr = Open3.popen3 builds_command
@@ -23,10 +22,6 @@ class ConcourseCiService < BaseCiService
     end
 
     builds
-
-    # ["664  todo-ios/tests  156  failed     2016-09-16@17:31:43+0800  2016-09-16@17:40:14+0800  8m31s\n",
-    #  "663  todo-ios/tests  155  succeeded  2016-09-16@15:19:31+0800  2016-09-16@15:27:48+0800  8m17s\n",
-    #  "661  todo-ios/tests  154  succeeded  2016-09-16@15:04:02+0800  2016-09-16@15:08:38+0800  4m36s\n"]
   end
 
   def build_info(build_id, repository=@project_name)
@@ -45,11 +40,5 @@ class ConcourseCiService < BaseCiService
       }
     end
   end
-
-  private
-  def token
-    'a-fake-token'
-  end
-
 end
 

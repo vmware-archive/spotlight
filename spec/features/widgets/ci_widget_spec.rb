@@ -152,12 +152,15 @@ describe "travis widget spec", :type => :feature do
 
     expect(page).to have_css '#qa-new-widget-form'
 
-    select 'Continuous Integration Status', from: 'Category'
+    select 'Continuous Integration Status - Concourse', from: 'Category'
 
     fill_in 'Title', with: 'Concourse'
-    fill_in 'Server url', with: 'A fake server url'
-    fill_in 'Project name', with: 'A fake project name'
-    fill_in 'Auth key', with: 'A fake auth key'
+    fill_in 'Server url', with: 'http://example.com'
+    fill_in 'Project name', with: 'A FAKE PROJECT NAME'
+    fill_in 'Job', with: 'A FAKE JOB'
+    fill_in 'Team name', with: 'TEAM NAME'
+    fill_in 'Username', with: 'USERNAME'
+    fill_in 'Password', with: 'PASSWORD'
 
     click_on 'Submit'
 

@@ -67,8 +67,8 @@ class Category::CiConcourseWidget < Category::CiWidget
       server_type: { type: 'hidden', value: 'concourse_ci' },
       server_url: nil,
       project_name: nil,
+      pipeline: nil,
       job: nil,
-      team_name: nil,
       username: nil,
       password: nil
     }

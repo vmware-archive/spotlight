@@ -18,11 +18,11 @@ module Ci
 
       if build['changeSet'].present?
         commit = build['changeSet']['items']
+        @committer = commit.dig(0, 'author', 'fullName') || ''
       elsif build['changeSets'].present?
-        commit = build['changeSets'][0]['items']
+        commit = build['changeSets']
+        @committer = commit.dig(0, 'items', 0, 'author', 'fullName') || ''
       end
-
-      @committer = commit.dig(0, 'author', 'fullName') || ''
     end
 
     def self.parse_timestamp(timestamp_string)

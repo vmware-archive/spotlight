@@ -26,6 +26,24 @@ RSpec.describe Ci::JenkinsCiBuild do
       expect(subject.timestamp).to eq timestamp
     end
 
+    describe 'pipeline build' do
+      let(:build_info) do
+        {
+            "number" => 716,
+            "building" => is_building,
+            "result" => state,
+            "timestamp" => 1453883748620,
+            "changeSets" => [
+                { "items" => items}
+            ]
+        }
+      end
+
+      it 'uses the correct value for authorship' do
+        expect(subject.committer).to eq author_name
+      end
+    end
+
     describe 'changeset item is not present' do
       let(:items) { [] }
       it 'initializes author_name to blank' do

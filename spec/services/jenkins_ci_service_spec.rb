@@ -89,7 +89,7 @@ RSpec.describe JenkinsCiService do
   describe '#build_history' do
     it 'returns build history' do
 
-      builds_request = stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,building,timestamp,result,committer_name,changeSet[items[author[fullName]]]]").
+      builds_request = stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,building,timestamp,result,committer_name,changeSet[items[author[fullName]]],changeSets[items[author[fullName]]]]").
           with(headers: { 'Accept' => 'application/json'}).
           to_return(body: build_history_response_body,
                     headers: {'Content-Type' => 'application/json'})

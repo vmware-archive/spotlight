@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe JenkinsCiService do
-  let(:server_url) { 'http://portsdown.local:8080' }
-  let(:auth_key) { 'auth_key' }
+  let(:basic_auth) { 'user:password' }
+  let(:server_url) { "http://#{basic_auth}@portsdown.local:8080" }
+  let(:auth_key) { Base64.encode64(basic_auth) }
   let(:project_name) { 'Concierge' }
   let(:opts) do
     {
@@ -46,8 +47,7 @@ RSpec.describe JenkinsCiService do
   describe '#repo_info' do
     it 'makes request to repo' do
       mock_request = stub_request(:get, "#{server_url}/job/#{project_name}/api/json").
-          with(headers: { 'Accept' => 'application/json',
-                          'Authorization' => 'Token "' + auth_key + '"' }).
+          with(headers: { 'Accept' => 'application/json'}).
           to_return(body:    '{"foo":"bar"}',
                     headers: {'Content-Type' => 'application/json'})
 
@@ -63,8 +63,7 @@ RSpec.describe JenkinsCiService do
 
     it 'makes request to repo' do
       mock_request = stub_request(:get, "#{server_url}/job/#{project_name}/#{build_id}/api/json").
-          with(headers: { 'Accept' => 'application/json',
-                          'Authorization' => 'Token "' + auth_key + '"' }).
+          with(headers: { 'Accept' => 'application/json'}).
           to_return(body:    '{"foo":"bar"}',
                     headers: {'Content-Type' => 'application/json'})
 
@@ -91,8 +90,7 @@ RSpec.describe JenkinsCiService do
     it 'returns build history' do
 
       builds_request = stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,building,timestamp,result,committer_name,changeSet[items[author[fullName]]]]").
-          with(headers: { 'Accept' => 'application/json',
-                          'Authorization' => 'Token "' + auth_key + '"' }).
+          with(headers: { 'Accept' => 'application/json'}).
           to_return(body: build_history_response_body,
                     headers: {'Content-Type' => 'application/json'})
 

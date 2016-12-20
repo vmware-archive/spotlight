@@ -4,7 +4,7 @@ class JenkinsCiService < BaseCiService
     response = connection.get do |req|
       req.url '/job/' + repository + path + '/api/json' + params
       req.headers['Accept'] = 'application/json'
-      req.headers['Authorization'] = 'Token "' + @auth_key + '"' if @auth_key.present?
+      req.headers['Authorization'] = "Basic #{@auth_key}" if @auth_key.present?
     end
 
     response.success? ? response.body : {}

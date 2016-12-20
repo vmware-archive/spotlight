@@ -2,7 +2,7 @@ class JenkinsCiService < BaseCiService
   def repo_info(repository=@project_name, path='', options={})
     params = options[:params] ? '?' + options[:params] : ''
     response = connection.get do |req|
-      req.url '/job/' + repository + path + '/api/json' + params
+      req.url '/job/' + URI.escape(repository) + path + '/api/json' + params
       req.headers['Accept'] = 'application/json'
       req.headers['Authorization'] = "Basic #{@auth_key}" if @auth_key.present?
     end

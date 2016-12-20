@@ -56,6 +56,22 @@ RSpec.describe JenkinsCiService do
       expect(mock_request).to have_been_made
       expect(result["foo"]).to eq "bar"
     end
+
+    context 'project name has spaces' do
+      let(:project_name) { 'Splunk Pudding' }
+
+      it 'makes request with url encoded name' do
+        mock_request = stub_request(:get, "#{server_url}/job/#{URI.escape(project_name)}/api/json").
+            with(headers: { 'Accept' => 'application/json'}).
+            to_return(body:    '{"foo":"bar"}',
+                      headers: {'Content-Type' => 'application/json'})
+
+        result = subject.repo_info
+
+        expect(mock_request).to have_been_made
+        expect(result["foo"]).to eq "bar"
+      end
+    end
   end
 
   describe '#build_info' do

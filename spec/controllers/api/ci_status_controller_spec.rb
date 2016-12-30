@@ -4,8 +4,9 @@ RSpec.describe Api::CiStatusController, type: :controller do
 
   describe 'GET #show' do
     let(:project_name) { 'spotlight' }
-    let(:server_url) { 'http://portsdown.local:8080' }
-    let(:auth_key) { 'auth_key' }
+    let(:basic_auth) { 'user:password' }
+    let(:server_url) { "http://#{basic_auth}@portsdown.local:8080" }
+    let(:auth_key) { Base64.encode64(basic_auth) }
     let(:dashboard)  { FactoryGirl.create :dashboard, title:'Default Dashboard' }
     let!(:widget) { FactoryGirl.create :widget,
                                        :ci_widget,
@@ -18,14 +19,13 @@ RSpec.describe Api::CiStatusController, type: :controller do
 
     let(:build_history_response_body) do
       { "builds" => [
-          { "number" => 716, 'building' => false, "result" => "SUCCESS", "timestamp" => 1453883748620, "changeSet" => {"items" => [ {"author"=>{'fullName'=>'Rahul Rajeev'}} ]} }
+          { "number" => 716, 'building' => false, "result" => "SUCCESS", "timestamp" => 1453883748620, "changeSets" => [ {"items" => [ {"author"=>{'fullName'=>'Rahul Rajeev'}} ]} ] }
       ]
       }.to_json
     end
     let!(:mock_request) do
-      stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,building,timestamp,result,committer_name,changeSet[items[author[fullName]]]]").
-        with(headers: { 'Accept' => 'application/json',
-                        'Authorization' => 'Token "' + auth_key + '"' }).
+      stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,building,timestamp,result,committer_name,changeSet[items[author[fullName]]],changeSets[items[author[fullName]]]]").
+        with(headers: { 'Accept' => 'application/json'}).
         to_return(body:    build_history_response_body,
                   headers: {'Content-Type' => 'application/json'})
     end

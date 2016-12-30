@@ -3,6 +3,7 @@ ENV["RAILS_ENV"] ||= 'test'
 
 ENV['GOOGLE_API_CLIENT_ID'] = 'fake-api-id'
 ENV['GOOGLE_API_CLIENT_SECRET'] = 'fake-api-secret'
+ENV['WEB_HOST'] = '/dashboards'
 
 require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)

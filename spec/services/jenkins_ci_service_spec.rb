@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe JenkinsCiService do
-  let(:server_url) { 'http://portsdown.local:8080' }
-  let(:auth_key) { 'auth_key' }
+  let(:basic_auth) { 'user:password' }
+  let(:server_url) { "http://#{basic_auth}@portsdown.local:8080" }
+  let(:auth_key) { Base64.encode64(basic_auth) }
   let(:project_name) { 'Concierge' }
   let(:opts) do
     {
@@ -46,8 +47,7 @@ RSpec.describe JenkinsCiService do
   describe '#repo_info' do
     it 'makes request to repo' do
       mock_request = stub_request(:get, "#{server_url}/job/#{project_name}/api/json").
-          with(headers: { 'Accept' => 'application/json',
-                          'Authorization' => 'Token "' + auth_key + '"' }).
+          with(headers: { 'Accept' => 'application/json'}).
           to_return(body:    '{"foo":"bar"}',
                     headers: {'Content-Type' => 'application/json'})
 
@@ -56,6 +56,22 @@ RSpec.describe JenkinsCiService do
       expect(mock_request).to have_been_made
       expect(result["foo"]).to eq "bar"
     end
+
+    context 'project name has spaces' do
+      let(:project_name) { 'Splunk Pudding' }
+
+      it 'makes request with url encoded name' do
+        mock_request = stub_request(:get, "#{server_url}/job/#{URI.escape(project_name)}/api/json").
+            with(headers: { 'Accept' => 'application/json'}).
+            to_return(body:    '{"foo":"bar"}',
+                      headers: {'Content-Type' => 'application/json'})
+
+        result = subject.repo_info
+
+        expect(mock_request).to have_been_made
+        expect(result["foo"]).to eq "bar"
+      end
+    end
   end
 
   describe '#build_info' do
@@ -63,8 +79,7 @@ RSpec.describe JenkinsCiService do
 
     it 'makes request to repo' do
       mock_request = stub_request(:get, "#{server_url}/job/#{project_name}/#{build_id}/api/json").
-          with(headers: { 'Accept' => 'application/json',
-                          'Authorization' => 'Token "' + auth_key + '"' }).
+          with(headers: { 'Accept' => 'application/json'}).
           to_return(body:    '{"foo":"bar"}',
                     headers: {'Content-Type' => 'application/json'})
 
@@ -90,9 +105,8 @@ RSpec.describe JenkinsCiService do
   describe '#build_history' do
     it 'returns build history' do
 
-      builds_request = stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,building,timestamp,result,committer_name,changeSet[items[author[fullName]]]]").
-          with(headers: { 'Accept' => 'application/json',
-                          'Authorization' => 'Token "' + auth_key + '"' }).
+      builds_request = stub_request(:get, "#{server_url}/job/#{project_name}/api/json?tree=builds[number,building,timestamp,result,committer_name,changeSet[items[author[fullName]]],changeSets[items[author[fullName]]]]").
+          with(headers: { 'Accept' => 'application/json'}).
           to_return(body: build_history_response_body,
                     headers: {'Content-Type' => 'application/json'})
 

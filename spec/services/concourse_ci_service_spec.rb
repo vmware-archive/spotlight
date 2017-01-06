@@ -16,7 +16,7 @@ RSpec.describe ConcourseCiService do
                             "661  todo-ios/tests  154  succeeded  2016-09-16@15:04:02+0800  2016-09-16@15:08:38+0800  4m36s\n"]
 
       service = ConcourseCiService.new opts
-      service.stub(:repo_info).and_return(fake_build_history)
+      expect(service).to receive(:repo_info).and_return(fake_build_history)
 
       history = service.build_history
 

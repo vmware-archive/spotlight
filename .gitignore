@@ -15,3 +15,6 @@
 docker_env
 
 ci/credentials.yml
+
+# Ignore Idea files
+.idea/

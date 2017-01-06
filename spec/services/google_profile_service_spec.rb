@@ -12,7 +12,7 @@ describe GoogleProfileService do
   describe '.get_profile' do
     it 'fetches user from google' do
 
-      stub_request(:get, 'http://www.googleapis.com:443/oauth2/v3/userinfo')
+      stub_request(:get, 'https://www.googleapis.com/oauth2/v3/userinfo')
           .with(headers: {'Accept': '*/*',
                           'Accept-Encoding': 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
                           'Authorization': 'Bearer the-access-token',

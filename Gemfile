@@ -20,6 +20,7 @@ gem 'momentjs-rails'
 gem 'foreman'
 gem 'google-api-client', '~> 0.9', require: ['google/apis/calendar_v3', 'google/apis/admin_directory_v1']
 gem 'xkcd'
+gem 'rack-cors', :require => 'rack/cors'
 
 group :development do
   gem 'web-console', '~> 2.0'

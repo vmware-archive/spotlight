@@ -1,6 +1,5 @@
 class AuthController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:login]
-  after_action :set_cors_headers, only: [:login]
 
   def login
     google_user = GoogleProfileService.get_profile user_params.fetch(:access_token)
@@ -22,9 +21,5 @@ class AuthController < ApplicationController
 
   def is_pivotal? user
     user.has_key?(:email) && user.fetch(:email).ends_with?('@pivotal.io')
-  end
-
-  def set_cors_headers
-    headers['Access-Control-Allow-Origin'] = '*'
   end
 end

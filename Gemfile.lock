@@ -211,6 +211,7 @@ GEM
       multi_json
     puma (2.16.0)
     rack (1.6.4)
+    rack-cors (0.4.0)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.5)
@@ -380,6 +381,7 @@ DEPENDENCIES
   pry-rails
   puffing-billy
   puma
+  rack-cors
   rails (= 4.2.5)
   rails_12factor
   react-rails (= 1.4.1)
@@ -402,4 +404,4 @@ RUBY VERSION
    ruby 2.3.0p0
 
 BUNDLED WITH
-   1.12.5
+   1.13.6

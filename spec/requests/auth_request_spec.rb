@@ -38,7 +38,7 @@ describe '/login' do
 
       context 'when user with email address already exists' do
         it 'does not create a new user' do
-          User.create! name: 'spotlight', email: 'spotlight@pivotal.io'
+          User.create! email: 'spotlight@pivotal.io'
 
           expect { post '/login', {id_token: id_token}, as: :json }.not_to change { User.count }
         end

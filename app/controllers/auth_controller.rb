@@ -1,7 +1,7 @@
 class AuthController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:login]
+  skip_before_action :verify_authenticity_token, only: [:get_auth_token]
 
-  def login
+  def get_auth_token
     token_info = get_token_info(auth_params)
 
     if for_spotlight?(token_info) && for_pivotal_email?(token_info)

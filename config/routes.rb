@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root to: 'dashboards#index'
   resources :dashboards, only: [:index]
   resources :widgets, only: [:new, :create, :destroy]
-  post '/login', to: 'auth#login'
+  post '/get_auth_token', to: 'auth#get_auth_token'
   namespace :api, defaults: { format: :json } do
     get '/random_comic', to: 'comics#random'
     get '/url/:id', to: 'urls#url'

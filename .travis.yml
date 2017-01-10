@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-  - 2.3.0
+  - 2.3.2
 addons:
   postgresql: '9.3'
 bundler_args: "--without production --jobs=3"

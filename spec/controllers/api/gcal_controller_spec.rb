@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Api::GcalController, type: :controller do
+  let!(:user) { User.create(email: 'spotlight@pivotal.io', auth_token: 'fake-spotlight-token') }
+
   let(:dashboard) { FactoryGirl.create :dashboard, title:'Default Dashboard' }
   let!(:widget) { FactoryGirl.create :widget, :gcal_widget, dashboard: dashboard }
 
@@ -15,6 +17,7 @@ RSpec.describe Api::GcalController, type: :controller do
 
   describe 'GET #show' do
     before do
+      request.headers['X-Spotlight-Token'] = 'fake-spotlight-token'
       get :show, id: widget.uuid, format: :json
     end
 

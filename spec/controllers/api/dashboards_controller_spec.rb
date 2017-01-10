@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::DashboardsController, type: :controller do
+  let!(:user) { User.create(email: 'spotlight@pivotal.io', auth_token: 'fake-spotlight-token') }
   let(:dashboard) { FactoryGirl.create :dashboard, title:'Default Dashboard' }
   let!(:widget) { FactoryGirl.create :widget,
                     dashboard: dashboard,
@@ -14,6 +15,10 @@ RSpec.describe Api::DashboardsController, type: :controller do
     it 'returns http success' do
       expect(response).to have_http_status(:success)
     end
+  end
+
+  before do
+    request.headers['X-Spotlight-Token'] = 'fake-spotlight-token'
   end
 
   describe 'GET #index' do

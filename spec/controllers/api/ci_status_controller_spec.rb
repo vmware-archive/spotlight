@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::CiStatusController, type: :controller do
+  let!(:user) { User.create(email: 'spotlight@pivotal.io', auth_token: 'fake-spotlight-token') }
 
   describe 'GET #show' do
     let(:project_name) { 'spotlight' }
@@ -31,6 +32,7 @@ RSpec.describe Api::CiStatusController, type: :controller do
     end
 
     before do
+      request.headers['X-Spotlight-Token'] = 'fake-spotlight-token'
       get :show, id: widget.uuid, format: :json
     end
 

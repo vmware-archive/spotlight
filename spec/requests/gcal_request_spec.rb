@@ -6,6 +6,7 @@ def format(d)
 end
 
 RSpec.describe Api::GcalController do
+  let!(:user) { User.create(email: 'spotlight@pivotal.io', auth_token: 'fake-spotlight-token') }
   let(:dashboard) { FactoryGirl.create :dashboard, title:'Default Dashboard' }
 
   let(:e1start) { Google::Apis::CalendarV3::EventDateTime.new(date_time: 1.hour.from_now) }
@@ -43,9 +44,12 @@ RSpec.describe Api::GcalController do
     end
 
     it 'returns the availability' do
-      headers = { "ACCEPT" => "application/json" }
+      headers = {
+          'ACCEPT': 'application/json',
+          'X-Spotlight-Token': 'fake-spotlight-token'
+      }
 
-      get "/api/gcal/#{widget.uuid}/availability", headers
+      get "/api/gcal/#{widget.uuid}/availability", nil, headers
       parsed = JSON.parse(response.body, symbolize_names: true)
 
       expect(parsed[:available]).to be_truthy
@@ -58,9 +62,12 @@ RSpec.describe Api::GcalController do
     let!(:widget) { FactoryGirl.create :widget, :gcal_widget, dashboard: dashboard }
 
     it 'returns the information about the calendar' do
-      headers = { "ACCEPT" => "application/json" }
-      get "/api/gcal/#{widget.uuid}", headers
+      headers = {
+          'ACCEPT': 'application/json',
+          'X-Spotlight-Token': 'fake-spotlight-token'
+      }
 
+      get "/api/gcal/#{widget.uuid}", nil, headers
       parsed = JSON.parse(response.body, symbolize_names: true)
 
       expect(parsed[:events]).to eq [

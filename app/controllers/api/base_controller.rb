@@ -5,6 +5,8 @@ class Api::BaseController < ApplicationController
   before_filter :cors_preflight_check
   after_filter :cors_set_access_control_headers
 
+  before_filter :authenticate_token
+
   def cors_set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
@@ -21,6 +23,10 @@ class Api::BaseController < ApplicationController
 
       render :text => '', :content_type => 'text/plain'
     end
+  end
+
+  def authenticate_token
+    head :forbidden unless User.exists?(auth_token: request.headers['X-Spotlight-Token'])
   end
 
 end

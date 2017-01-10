@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Api::GoogleController, type: :controller do
+  let!(:user) { User.create(email: 'spotlight@pivotal.io', auth_token: 'fake-spotlight-token') }
+
+  before do
+    request.headers['X-Spotlight-Token'] = 'fake-spotlight-token'
+  end
+
   describe 'GET #login' do
     let(:authorization_url) { 'https://accounts.google.com/o/oauth2/auth' }
 

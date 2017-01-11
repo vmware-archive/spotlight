@@ -83,3 +83,4 @@ production:
   database: spotlight_production
   username: spotlight
   password: <%= ENV['SPOTLIGHT_DATABASE_PASSWORD'] %>
+  pool: 2

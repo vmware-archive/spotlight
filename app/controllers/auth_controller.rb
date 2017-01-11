@@ -1,5 +1,6 @@
 class AuthController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:get_auth_token]
+  skip_before_action :authenticate_user, only: [:login, :get_auth_token]
+  skip_before_action :verify_authenticity_token, only: [:login, :get_auth_token]
 
   def get_auth_token
     token_info = get_token_info(auth_params)
@@ -15,7 +16,23 @@ class AuthController < ApplicationController
     render json: {error: 'Invalid token'}, status: :forbidden
   end
 
+  def login
+    redirect_url = login_params.fetch(:redirect_url)
+    auth_token = login_params.fetch(:auth_token)
+
+    if User.exists?(auth_token: auth_token)
+      session[:current_user] = User.find_by(auth_token: auth_token)
+      redirect_to redirect_url
+    else
+      redirect_to ENV.fetch('WEB_HOST')
+    end
+  end
+
   private
+
+  def login_params
+    params.permit(:redirect_url, :auth_token)
+  end
 
   def auth_params
     params.permit(:id_token)

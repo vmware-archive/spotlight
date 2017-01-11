@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
+
   root to: 'dashboards#index'
   resources :dashboards, only: [:index]
   resources :widgets, only: [:new, :create, :destroy]
+
   post '/get_auth_token', to: 'auth#get_auth_token'
+  post '/login', to: 'auth#login'
+
   namespace :api, defaults: { format: :json } do
     get '/random_comic', to: 'comics#random'
     get '/url/:id', to: 'urls#url'

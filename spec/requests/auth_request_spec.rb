@@ -78,3 +78,54 @@ describe 'POST /get_auth_token' do
     end
   end
 end
+
+describe 'POST /login' do
+  let!(:user) { User.create email: 'spotlight@pivotal.io', auth_token: 'fake-auth-token' }
+  let(:auth_token) { 'fake-auth-token' }
+  let(:redirect_url) { new_widget_path }
+
+  context 'when auth_token is included' do
+    context 'when auth_token belongs to a user' do
+
+      context 'when redirect url is specified' do
+
+        it 'redirects the user to the given redirect url' do
+          post '/login', {auth_token: auth_token, redirect_url: redirect_url}
+
+          expect(response).to be_redirect
+          expect(response).to redirect_to redirect_url
+
+          get redirect_url
+          expect(response).to be_ok
+        end
+      end
+
+      context 'when redirect url is not specified' do
+        it 'responds with bad request' do
+          post '/login', {auth_token: auth_token}
+
+          expect(response).to be_bad_request
+        end
+      end
+    end
+
+    context 'when auth_token does not belong to a user' do
+      let(:auth_token) { 'another_auth_token' }
+
+      it 'redirects the user to the dashboard' do
+        post '/login', {auth_token: auth_token, redirect_url: redirect_url}
+
+        expect(response).to be_redirect
+        expect(response).to redirect_to ENV.fetch('WEB_HOST')
+      end
+    end
+  end
+
+  context 'when auth_token is not included' do
+    it 'redirects the user to the dashboard' do
+      post '/login', {redirect_url: redirect_url}
+
+      expect(response).to be_bad_request
+    end
+  end
+end

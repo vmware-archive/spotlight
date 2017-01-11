@@ -1,6 +1,8 @@
 class Api::GoogleController < Api::BaseController
   API_SCOPE = [Google::Apis::CalendarV3::AUTH_CALENDAR_READONLY, Google::Apis::AdminDirectoryV1::AUTH_ADMIN_DIRECTORY_RESOURCE_CALENDAR_READONLY]
 
+  skip_before_action :authenticate_token, only: [:login, :callback]
+
   def login
     session[:return_url] = params[:return_url]
 

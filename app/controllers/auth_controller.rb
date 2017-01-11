@@ -5,12 +5,12 @@ class AuthController < ApplicationController
   def get_auth_token
     token_info = get_token_info(auth_params)
 
-    if for_spotlight?(token_info) && for_pivotal_email?(token_info)
+    if for_spotlight?(token_info) && for_host_domain?(token_info)
       user = User.find_or_create_by(email: token_info.email)
 
       render json: {auth_token: user.auth_token}, status: :created
     else
-      render json: {error: 'This is not a valid Pivotal email.'}, status: :forbidden
+      render json: {error: 'This user is not a member of the host domain.'}, status: :forbidden
     end
   rescue Google::Apis::ClientError
     render json: {error: 'Invalid token'}, status: :forbidden
@@ -46,7 +46,7 @@ class AuthController < ApplicationController
     token_info.audience == ENV.fetch('GOOGLE_API_CLIENT_ID')
   end
 
-  def for_pivotal_email?(token_info)
-    token_info.email.ends_with?('@pivotal.io')
+  def for_host_domain?(token_info)
+    token_info.email.ends_with?("@#{ENV.fetch('GOOGLE_HOST_DOMAIN')}")
   end
 end

@@ -1,12 +1,15 @@
 require 'rails_helper'
 
 describe 'POST /get_auth_token' do
+  let(:host_domain) {'fake-domain.com'}
+
   before do
     ENV['GOOGLE_API_CLIENT_ID'] = 'fake-client-id.apps.googleusercontent.com'
+    ENV['GOOGLE_HOST_DOMAIN'] = host_domain
   end
 
   context 'when the id token is valid' do
-    let(:email) { 'spotlight@pivotal.io' }
+    let(:email) { "spotlight@#{host_domain}" }
     let(:audience) { 'fake-client-id.apps.googleusercontent.com' }
     let(:id_token) { 'fake-id-token' }
     let(:token_info) do
@@ -31,19 +34,19 @@ describe 'POST /get_auth_token' do
       expect(data[:auth_token]).not_to be_nil
 
       user = User.last
-      expect(user.email).to eq('spotlight@pivotal.io')
+      expect(user.email).to eq(email)
       expect(user.auth_token).not_to be_nil
     end
 
     context 'when user with email address already exists' do
       it 'does not create a new user' do
-        User.create! email: 'spotlight@pivotal.io'
+        User.create! email: email
 
         expect { post '/get_auth_token', {id_token: id_token}, as: :json }.not_to change { User.count }
       end
     end
 
-    context 'when token belongs to a non-Pivotal user' do
+    context 'when token belongs to a user outside the host domain' do
       let(:email) { 'spotlight@random.io' }
 
       it 'returns 403 forbidden' do

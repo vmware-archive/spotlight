@@ -37,8 +37,8 @@ class ConcourseCiService < BaseCiService
       {
           id: line[0],
           status: line[3],
-          start: line[4],
-          end: line[5]
+          start: to_iso8601(line[4]),
+          end: to_iso8601(line[5])
       }
     end
   end
@@ -69,5 +69,8 @@ class ConcourseCiService < BaseCiService
     end
   end
 
+  def to_iso8601(timestamp)
+    Time.parse(timestamp).iso8601
+  end
 end
 

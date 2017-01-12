@@ -70,7 +70,7 @@ class ConcourseCiService < BaseCiService
   end
 
   def to_iso8601(timestamp)
-    Time.parse(timestamp).iso8601
+    Time.parse(timestamp).iso8601 rescue ''
   end
 end
 

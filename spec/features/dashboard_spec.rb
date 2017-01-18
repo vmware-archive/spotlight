@@ -7,6 +7,7 @@ def get_offset(node)
 end
 
 describe "the dashboard widget creation", :type => :feature do
+  let!(:user) { User.create email: 'spotlight@pivotal.io', auth_token: 'fake-auth-token' }
   let(:widget_title) {'new widget'}
 
   before do
@@ -15,6 +16,8 @@ describe "the dashboard widget creation", :type => :feature do
 
   it "must create a widget", js: true do
     visit home_page
+    login_to_dashboard
+
     click_link 'edit'
     click_link 'add'
     expect(page).to have_css '#qa-new-widget-form'
@@ -29,7 +32,6 @@ describe "the dashboard widget creation", :type => :feature do
 
     click_button 'Submit'
 
-    visit home_page
     expect(page).to have_content widget_title
     expect(page).to have_selector('.widget', count: 1)
   end

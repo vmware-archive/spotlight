@@ -102,6 +102,15 @@ RSpec.configure do |config|
     end
   end
 
+  def login_to_dashboard
+    page.execute_script 'localStorage.setItem("authToken", "fake-auth-token"); window.location.reload();'
+  end
+
+  def click_add_widget
+    click_link 'edit'
+    click_link 'add'
+  end
+
   config.after(:suite) do |example|
     if $started_frontend_server
       puts "KILLING FRONTEND SERVER"

@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe "travis widget spec", :type => :feature do
+  let!(:user) { User.create email: 'spotlight@pivotal.io', auth_token: 'fake-auth-token'}
   let(:server_url) { 'https://api.travis-ci.com' }
   let(:auth_key) { 'auth_key' }
   let(:project_name) { 'the_resistance/x_wing' }
@@ -103,6 +104,8 @@ describe "travis widget spec", :type => :feature do
 
   it "must create a widget", js: true do
     visit home_page
+    login_to_dashboard
+
     expect(page.find(('.inner-ci-widget') , wait: 10)).to be
 
     # expect(page.find(('.inner-ci-widget.' + Category::CiWidget::STATUS_FAILED) , wait: 10)).to be
@@ -113,6 +116,8 @@ describe "travis widget spec", :type => :feature do
   #TODO: Need to use mountebank-ish mock or just make contract tests 
   xit 'must show the build history', js: true do
     visit home_page
+    login_to_dashboard
+
     expect(page.find_all(('.build-block.' + Category::CiWidget::STATUS_FAILED) , wait: 10).count).to eq 3
     expect(page.find_all(('.build-block.' + Category::CiWidget::STATUS_PASSED) , wait: 10).count).to eq 1
   end
@@ -144,12 +149,12 @@ describe "travis widget spec", :type => :feature do
   end
 
   it 'renders the concourse widget and shows the build history', js: true do
-    visit '/api/dashboards'
+    visit home_page
+    login_to_dashboard
 
     expect(page).to_not have_content('Concourse')
 
-    visit '/widgets/new'
-
+    click_add_widget
     expect(page).to have_css '#qa-new-widget-form'
 
     select 'Continuous Integration Status - Concourse', from: 'Category'
@@ -158,7 +163,6 @@ describe "travis widget spec", :type => :feature do
     fill_in 'Server url', with: 'http://example.com'
     fill_in 'Project name', with: 'A FAKE PROJECT NAME'
     fill_in 'Job', with: 'A FAKE JOB'
-    fill_in 'Team name', with: 'TEAM NAME'
     fill_in 'Username', with: 'USERNAME'
     fill_in 'Password', with: 'PASSWORD'
 

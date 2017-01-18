@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe "clock widget spec", :type => :feature do
+  let!(:user) { User.create email: 'spotlight@pivotal.io', auth_token: 'fake-auth-token'}
   let(:widget_title) { 'Clock' }
 
   before do
@@ -9,6 +10,8 @@ describe "clock widget spec", :type => :feature do
 
   it "must create a widget", js: true do
     visit home_page
+    login_to_dashboard
+
     click_link 'edit'
     click_link 'add'
     expect(page).to have_css '#qa-new-widget-form'

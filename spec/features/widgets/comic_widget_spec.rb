@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe "comic widget spec", :type => :feature do
   let(:widget_title) { 'Comic' }
+  let!(:user) { User.create email: 'spotlight@pivotal.io', auth_token: 'fake-auth-token'}
 
   before do
     FactoryGirl.create :dashboard, title: 'Default Dashboard'
@@ -9,6 +10,8 @@ describe "comic widget spec", :type => :feature do
 
   it "must create a widget", js: true do
     visit home_page
+    login_to_dashboard
+
     click_link 'edit'
     click_link 'add'
     expect(page).to have_css '#qa-new-widget-form'

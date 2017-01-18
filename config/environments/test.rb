@@ -40,4 +40,6 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   config.react.variant = :development
+
+  ENV['WEB_HOST'] = 'http://localhost:8201'
 end

@@ -3,7 +3,6 @@ ENV["RAILS_ENV"] ||= 'test'
 
 ENV['GOOGLE_API_CLIENT_ID'] = 'fake-api-id'
 ENV['GOOGLE_API_CLIENT_SECRET'] = 'fake-api-secret'
-ENV['WEB_HOST'] = '/dashboards'
 
 require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
@@ -76,10 +75,9 @@ RSpec.configure do |config|
   config.before(:all, type: :feature) do |example|
     next if $started_frontend_server
     puts "STARTING FRONTEND SERVER"
-    ENV['WEB_HOST'] = 'http://localhost:8201'
     $pid = Process.fork do
       $stdout.reopen("/dev/null")
-      cmd = "cd ../spotlight-dashboard && npm install && API_HOST=http://localhost:8200 SPOTLIGHT_DASHBOARD_PORT=8201 node server.js"
+      cmd = "cd ../spotlight-dashboard && npm install && API_HOST=http://localhost:#{Capybara.server_port} SPOTLIGHT_DASHBOARD_PORT=8201 node server.js"
       exec(cmd)
       exit! 127
     end

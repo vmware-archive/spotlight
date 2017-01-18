@@ -21,6 +21,7 @@ gem 'foreman'
 gem 'google-api-client', '~> 0.9', require: ['google/apis/calendar_v3', 'google/apis/admin_directory_v1', 'google/apis/oauth2_v2']
 gem 'xkcd'
 gem 'rack-cors', :require => 'rack/cors'
+gem 'sinclair', github: 'pivotal/sinclair'
 
 group :development do
   gem 'web-console', '~> 2.0'
@@ -52,6 +53,7 @@ group :test do
   gem 'puffing-billy'
   gem 'rest-client'
   gem 'vcr'
+  gem 'timecop'
 end
 
 group :production do

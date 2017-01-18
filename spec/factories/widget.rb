@@ -30,5 +30,13 @@ FactoryGirl.define do
       resource_id { 'fake-resource-id' }
     end
 
+    trait :openair_widget do
+      category { 'openair_widget' }
+      username { 'username' }
+      password { 'password' }
+      company { 'company' }
+      client { 'client' }
+      key { 'key' }
+    end
   end
 end

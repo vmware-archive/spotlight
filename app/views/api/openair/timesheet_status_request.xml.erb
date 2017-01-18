@@ -1,0 +1,21 @@
+<% user_ids.each do |user_id|%>
+<Read type='Timesheet' filter='newer-than,older-than' field='ends,starts' method='equal to' limit='1'>
+  <Date>
+    <year><%= start_date.year %></year>
+    <month><%= start_date.month %></month>
+    <day><%= start_date.day %></day>
+  </Date>
+  <Date>
+    <year><%= end_date.year %></year>
+    <month><%= end_date.month %></month>
+    <day><%= end_date.day %></day>
+  </Date>
+  <Timesheet>
+    <userid><%= user_id %></userid>
+  </Timesheet>
+  <_Return>
+    <userid/>
+    <status/>
+  </_Return>
+</Read>
+<% end %>

@@ -74,3 +74,17 @@ class Category::CiConcourseWidget < Category::CiWidget
     }
   end
 end
+
+class Category::OpenairWidget < Category
+  def fields
+    {
+        username: nil,
+        password: nil,
+        company: nil,
+        client: nil,
+        key: nil,
+        url: nil,
+        user_ids: nil
+    }
+  end
+end

@@ -31,6 +31,8 @@ Rails.application.routes.draw do
         get '/callback', to: 'google#callback'
       end
     end
+
+    resources :openair, only: [:show]
   end
 
   namespace :widget do

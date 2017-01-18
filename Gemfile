@@ -32,7 +32,7 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'rspec-rails'
   gem 'capybara'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '~> 2.53.4'
   gem 'database_cleaner'
   gem 'byebug'
   gem 'pry'

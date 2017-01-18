@@ -104,8 +104,6 @@ RSpec.configure do |config|
     end
   end
 
-    # example.run
-
   config.after(:suite) do |example|
     if $started_frontend_server
       puts "KILLING FRONTEND SERVER"

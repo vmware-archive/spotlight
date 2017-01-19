@@ -249,12 +249,15 @@ fly -t aws set-pipeline -p spotlight-tests -c spotlight.yml -l credentials.yml
 
 ## Contributors
 
+- [Carlos Gavino](https://github.com/cgavino)
 - [Divya Bhargov](https://github.com/divyabhargov)
 - Erika Buenaventura
 - [Gabe Hollombe](https://github.com/gabehollombe)
+- [Liza Ng](https://github.com/lizanys)
 - [Michael Cheng](https://github.com/miccheng)
 - [Rahul Rajeev](https://github.com/rhlrjv)
-- [Carlos Gavino](https://github.com/cgavino)
+- [Swayam Narain](https://github.com/swayam18)
+- [Yifeng Hou](https://github.com/mapleinspring)
 
 ## License
 

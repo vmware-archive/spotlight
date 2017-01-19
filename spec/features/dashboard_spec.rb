@@ -19,18 +19,7 @@ describe "the dashboard widget creation", :type => :feature do
     login_to_dashboard
 
     click_link 'edit'
-    puts '>>>>>>>>> INIT PAGE SOURCE >>>>>>>>>'
-
-    puts page.html
-
-    puts '<<<<<<<<< STOP PAGE SOURCE <<<<<<<<<'
     click_link 'add'
-    sleep(5)
-    puts '>>>>>>>>> INIT PAGE SOURCE >>>>>>>>>'
-
-    puts page.html
-
-    puts '<<<<<<<<< STOP PAGE SOURCE <<<<<<<<<'
     expect(page).to have_css '#qa-new-widget-form'
 
     select 'Continuous Integration Status', from: 'Category'

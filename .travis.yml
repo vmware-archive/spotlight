@@ -3,6 +3,7 @@ rvm:
   - 2.3.2
 addons:
   postgresql: '9.3'
+  firefox: '45.6.0esr'
 bundler_args: "--without production --jobs=3"
 cache: bundler
 before_script:

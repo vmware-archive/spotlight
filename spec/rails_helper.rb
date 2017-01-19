@@ -73,6 +73,7 @@ RSpec.configure do |config|
   end
 
   config.before(:all, type: :feature) do |example|
+    puts "#{Capybara.server_host}:#{Capybara.server_port}"
     next if $started_frontend_server
     puts "STARTING FRONTEND SERVER"
     $pid = Process.fork do
@@ -100,6 +101,11 @@ RSpec.configure do |config|
         sleep 0.1
       end
     end
+  end
+
+  config.after(:each, type: :feature) do
+    errors = page.driver.browser.manage.logs.get(:browser)
+    puts errors.map(&:message).join("\n") if errors.present?
   end
 
   def login_to_dashboard

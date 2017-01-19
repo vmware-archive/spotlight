@@ -77,14 +77,14 @@ RSpec.configure do |config|
     puts "STARTING FRONTEND SERVER"
     $pid = Process.fork do
       $stdout.reopen("/dev/null")
-      cmd = "cd ../spotlight-dashboard && npm install && API_HOST=http://localhost:#{Capybara.server_port} SPOTLIGHT_DASHBOARD_PORT=8201 node server.js"
+      cmd = 'cd ../spotlight-dashboard && npm install --only=production && API_HOST=http://localhost:8200 webpack -p && NODE_ENV=production PORT=8201 node server.js'
       exec(cmd)
       exit! 127
     end
     $started_frontend_server = true
 
     $not_connected = true
-    $connect_timeout = Time.now + 15.seconds
+    $connect_timeout = Time.now + 120.seconds
     puts 'WAITING FOR FRONTEND SERVER...'
     while $not_connected do
       if Time.now > $connect_timeout

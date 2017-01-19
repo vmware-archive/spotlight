@@ -10,7 +10,7 @@ before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - cp config/database-travis.yml config/database.yml
   - bundle exec rake db:schema:load RAILS_ENV=test
-  - git clone https://github.com/pivotal-sg/spotlight-dashboard.git ../spotlight-dashboard
+  - git clone https://github.com/pivotal-sg/spotlight-dashboard.git --branch master ../spotlight-dashboard
   - nvm install 5.12.0 && nvm use 5.12.0
   - npm install webpack -g
 before_install:

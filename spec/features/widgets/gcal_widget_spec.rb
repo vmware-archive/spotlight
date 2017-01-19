@@ -27,7 +27,7 @@ describe 'Google calendar widget spec', :type => :feature, foreman_frontend: tru
 
       google_auth_url = "https://accounts.google.com:443/o/oauth2/auth"
       query_params = "?grant_type=authorization_code&code=4%2F0eadCm5saT2_PNcIjKRlOg4x9cAG8cXR7ySP--QG9x4&redirect_uri=http%3A%2F%2F127.0.0.1%3A8200%2Fapi%2Fgoogle%2Fcallback&client_id=207948129196-i2m0i0a5rf5p8ats5148smvdpl33rtse.apps.googleusercontent.com&client_secret=LN6ejsYaA05w4zmLrlIwBRBn"
-      callback_url = "http://localhost:#{Capybara.server_port}/api/google/callback#{query_params}"
+      callback_url = "http://#{Capybara.server_host}:#{Capybara.server_port}/api/google/callback#{query_params}"
       proxy.stub(google_auth_url).and_return(redirect_to: callback_url)
 
       click_on 'Authenticate with Google'
@@ -61,7 +61,7 @@ describe 'Google calendar widget spec', :type => :feature, foreman_frontend: tru
 
       google_auth_url = "https://accounts.google.com:443/o/oauth2/auth"
       query_params = "?grant_type=authorization_code&code=4%2F0eadCm5saT2_PNcIjKRlOg4x9cAG8cXR7ySP--QG9x4&redirect_uri=http%3A%2F%2F127.0.0.1%3A8200%2Fapi%2Fgoogle%2Fcallback&client_id=207948129196-i2m0i0a5rf5p8ats5148smvdpl33rtse.apps.googleusercontent.com&client_secret=LN6ejsYaA05w4zmLrlIwBRBn"
-      callback_url = "http://localhost:#{Capybara.server_port}/api/google/callback#{query_params}"
+      callback_url = "http://#{Capybara.server_host}:#{Capybara.server_port}/api/google/callback#{query_params}"
       proxy.stub(google_auth_url).and_return(redirect_to: callback_url)
 
       click_on 'Authenticate with Google'

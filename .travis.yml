@@ -23,6 +23,8 @@ script:
   - bundle exec rspec spec/features
 deploy:
   edge: true
+  on:
+    branch: develop
   provider: cloudfoundry
   api:
     secure: YOTMhsAF5VP+LgPL61gQ08B/Cpf7oy2/Pl66EogBmGwXr36mLuAxVxKTy9D3wKWRARa6J/Y4S7Ee8d7gnvqxGzpaOp/1ftlngNJbDZ1eyvAeTmbtP/nqDYPeszGZUrw8AYjXoaAu5ZMBn7ZXqSB9Vu7rEiI5RqAO6VJ1eM3nr4+/pNzDXqsxGTQdAmWmOnJgOtU13lNWm+xbUCROLs+/W82RYdYSA/KraR7wUc+O6AEcgcE2WZ43bO513VMvlsaUzpJ9pNQeUaimHO8vfs+VDEY8hBkNRp61hE12oMaDaPEJqoEYXU/VBr++XNJgnYVKDofWwEzoN5QK5K7Kx+lwZaE2ZESNmei6J54VV8Db7lRTrFUM4Vyc71yBBos+mst3UH8zesW7gcqd5a+FcCd6arLJUMY+5ch1Sih5e3WLGdTr4ZaMrXxtFiNTPqa4HoBfjMUiiuRtTpOLtgfMssSqJ/tppvQL8SP8SFVAovFez9O86vxZphctYjN3tvIz235+lJhcw/McVo/gZV/XL44m370F7f0QmA03TxPOrsHch+9VyKovDM9PuNFNeSf7SIm3s77RBwj/sj7qJlisF8CEdROARgSDlqwdti1hpChXdgGogrL19BUCrQxgpgB7CJ/r+KXGMOfhER1B27eRfpHFMVgKW1iugblYFtMrcoG5HpI=

@@ -1,0 +1,19 @@
+---
+applications:
+- name: spotlight-backend-staging
+  instances: 1
+  memory: 512M
+  disk_quota: 512M
+  routes:
+  - route: spotlight-backend-staging.cfapps.io
+  stack: cflinuxfs2
+  buildpack: ruby_buildpack
+  command: bin/rake db:migrate && exec bundle exec puma -C config/puma.rb
+  services:
+    - spotlight-staging-db
+  env:
+    RACK_ENV: production
+    #GOOGLE_API_CLIENT_ID: <GOOGLE_API_CLIENT_ID>
+    #GOOGLE_API_CLIENT_SECRET: <GOOGLE_API_CLIENT_SECRET>
+    #GOOGLE_HOST_DOMAIN: <GOOGLE_HOST_DOMAIN>
+    WEB_HOST: https://spotlight-staging.cfapps.io

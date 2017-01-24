@@ -87,7 +87,7 @@ class Category::OpenairWidget < Category
         client: { field_type: 'text' },
         key: { field_type: 'text' },
         url: { field_type: 'text' },
-        user_emails: { field_type: 'text' }
+        user_emails: { field_type: 'text', format: 'csv' }
     }
   end
 end

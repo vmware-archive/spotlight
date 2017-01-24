@@ -8,7 +8,8 @@ class WidgetsController < ApplicationController
   def create
     @widget = Widget.new(widget_params)
     @widget.dashboard = default_dashboard
-    @widget.assign_attributes(config_params_for(@widget))
+    processed_widget_params = process_fields(config_params_for(@widget))
+    @widget.assign_attributes(processed_widget_params)
 
     if @widget.save
       return redirect_to ENV['WEB_HOST'], notice: 'Widget was successfully created.'
@@ -28,6 +29,15 @@ class WidgetsController < ApplicationController
   end
 
   private
+
+  def process_fields(fields)
+    fields.map do |field, value|
+      field_format = @widget.category.fields[field.to_sym][:format]
+      processed_value = field_format == 'csv' ? FieldParserService.new.csv_to_array(value) : value
+
+      [field, processed_value]
+    end.to_h
+  end
 
   def set_widget
     @widget = Widget.find(params[:id])

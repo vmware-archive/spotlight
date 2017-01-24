@@ -71,6 +71,21 @@ RSpec.describe WidgetsController, type: :controller do
           expect(new_widget.height).to eq 2
           expect(new_widget.width).to eq 2
         end
+
+        context 'with a field in csv format' do
+          let(:valid_attributes) do
+            {
+                category: 'openair_widget',
+                user_emails: 'user1@example.com, user2@example.com'
+            }
+          end
+
+          it 'saves the widget with the processed field' do
+            post :create, widget: valid_attributes
+
+            expect(assigns(:widget).user_emails).to eq %w(user1@example.com user2@example.com)
+          end
+        end
       end
 
       context 'with invalid params' do

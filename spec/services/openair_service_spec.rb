@@ -70,20 +70,28 @@ RSpec.describe OpenairService do
   end
 
   describe '.overall_submission_status' do
+    context 'when there are no timesheets' do
+      let(:statuses) { [] }
+
+      specify do
+        expect(OpenairService.overall_submission_status(statuses)).to eq 'pending'
+      end
+    end
+
     context 'when all timesheets have been submitted' do
       let(:statuses) do
         [
             {
-                user_id: '1',
-                status: 'S'
+                'user_id' => '1',
+                'status' => 'S'
             },
             {
-                user_id: '2',
-                status: 'S'
+                'user_id' => '2',
+                'status' => 'S'
             },
             {
-                user_id: '3',
-                status: 'S'
+                'user_id' => '3',
+                'status' => 'S'
             }
         ]
       end
@@ -96,16 +104,16 @@ RSpec.describe OpenairService do
         let(:statuses) do
           [
               {
-                  user_id: '1',
-                  status: 'S'
+                  'user_id' => '1',
+                  'status' => 'S'
               },
               {
-                  user_id: '2',
-                  status: 'A'
+                  'user_id' => '2',
+                  'status' => 'A'
               },
               {
-                  user_id: '3',
-                  status: 'A'
+                  'user_id' => '3',
+                  'status' => 'A'
               }
           ]
         end
@@ -119,16 +127,16 @@ RSpec.describe OpenairService do
         let(:statuses) do
           [
               {
-                  user_id: '1',
-                  status: 'S'
+                  'user_id' => '1',
+                  'status' => 'S'
               },
               {
-                  user_id: '2',
-                  status: 'R'
+                  'user_id' => '2',
+                  'status' => 'R'
               },
               {
-                  user_id: '3',
-                  status: 'A'
+                  'user_id' => '3',
+                  'status' => 'A'
               }
           ]
         end
@@ -143,16 +151,16 @@ RSpec.describe OpenairService do
       let(:statuses) do
         [
             {
-                user_id: '1',
-                status: 'O'
+                'user_id' => '1',
+                'status' => 'O'
             },
             {
-                user_id: '2',
-                status: 'S'
+                'user_id' => '2',
+                'status' => 'S'
             },
             {
-                user_id: '3',
-                status: 'S'
+                'user_id' => '3',
+                'status' => 'S'
             }
         ]
       end

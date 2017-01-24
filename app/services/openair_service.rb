@@ -23,7 +23,9 @@ class OpenairService
   end
 
   def self.overall_submission_status(statuses)
-    statuses.all? { |s| %w(S A).include? s[:status] } ? 'submitted' : 'pending'
+    return 'pending' if statuses.empty?
+
+    statuses.all? { |s| %w(S A).include? s['status'] } ? 'submitted' : 'pending'
   end
 end
 

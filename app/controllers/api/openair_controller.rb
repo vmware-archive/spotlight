@@ -2,8 +2,10 @@ require 'openair_service'
 
 class Api::OpenairController < Api::BaseController
   def show
-    timesheet_statuses = openair_service_for(widget)
-                             .timesheet_statuses_for_previous_week(widget.user_ids)
+    openair_service = openair_service_for(widget)
+
+    user_ids = openair_service.user_ids_for_emails(widget.user_emails)
+    timesheet_statuses = openair_service.timesheet_statuses_for_previous_week(user_ids)
 
     @submission_status = OpenairService.overall_submission_status(timesheet_statuses)
   end

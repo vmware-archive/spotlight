@@ -8,7 +8,8 @@ module WidgetHelper
       ['Google Calendar', 'gcal_widget'],
       ['Google Calendar Resource', 'gcal_resource_widget'],
       ['XKCD Comic', 'comic_widget'],
-      ['Render URL', 'url_widget']
+      ['Render URL', 'url_widget'],
+      ['OpenAir Timesheet Status', 'openair_widget']
     ]
   end
 

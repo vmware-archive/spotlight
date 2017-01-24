@@ -22,10 +22,24 @@ class OpenairService
     response['Timesheet']
   end
 
-  def self.overall_submission_status(statuses)
-    return 'pending' if statuses.empty?
+  def user_ids_for_emails(user_emails)
+    request_template = File.read('app/views/api/openair/user_ids_request.xml.erb')
 
-    statuses.all? { |s| %w(S A).include? s['status'] } ? 'submitted' : 'pending'
+    response = @api_client.send_request(
+        template: request_template.squish,
+        model: 'User',
+        locals: {
+            user_emails: user_emails
+        }
+    )
+
+    response['User'].map { |u| u['id'] }
+  end
+
+  def self.overall_submission_status(statuses)
+    return Category::OpenairWidget::STATUS_PENDING if statuses.empty?
+
+    statuses.all? { |s| %w(S A).include? s['status'] } ? Category::OpenairWidget::STATUS_SUBMITTED : Category::OpenairWidget::STATUS_PENDING
   end
 end
 

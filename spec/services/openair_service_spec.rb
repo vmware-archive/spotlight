@@ -2,6 +2,39 @@ RSpec.describe OpenairService do
   subject { OpenairService.new(api_client: mock_sinclair_client) }
   let(:mock_sinclair_client) { double('Sinclair::OpenAirApiClient') }
 
+  describe '#user_ids_for_emails' do
+    let(:user1) { 'user1@example.com' }
+    let(:user2) { 'user2@example.com' }
+    let(:user3) { 'user3@example.com' }
+
+    let(:user_emails) { [user1, user2, user3] }
+
+    it 'returns the ids for the OpenAir users with the emails given' do
+      expect(mock_sinclair_client)
+          .to receive(:send_request)
+                  .with(
+                      template: instance_of(String),
+                      model: 'User',
+                      locals: {
+                          user_emails: user_emails
+                      }
+                  )
+                  .and_return(
+                      {
+                          'User' => [
+                              { 'id' => '1', 'email' => user1 },
+                              { 'id' => '2', 'email' => user2 },
+                              { 'id' => '3', 'email' => user3 }
+                          ]
+                      }
+                  )
+
+      user_ids = subject.user_ids_for_emails(user_emails)
+
+      expect(user_ids).to eq %w(1 2 3)
+    end
+  end
+
   describe '#timesheet_status_for_previous_week' do
     let(:target_date) { Date.new(2017, 1, 16) }
 

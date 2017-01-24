@@ -7,7 +7,7 @@ describe 'GET #show' do
                        :openair_widget,
                        :with_default_dashboard,
                        url: 'https://sandbox.openair.com',
-                       user_ids: [1, 2]
+                       user_emails: %w(user1@example.com user2@example.com)
   end
   let(:headers) do
     {

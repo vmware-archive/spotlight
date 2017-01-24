@@ -76,15 +76,18 @@ class Category::CiConcourseWidget < Category::CiWidget
 end
 
 class Category::OpenairWidget < Category
+  STATUS_SUBMITTED = 'submitted'
+  STATUS_PENDING = 'pending'
+
   def fields
     {
-        username: nil,
-        password: nil,
-        company: nil,
-        client: nil,
-        key: nil,
-        url: nil,
-        user_ids: nil
+        username: { field_type: 'text' },
+        password: { field_type: 'text' },
+        company: { field_type: 'text' },
+        client: { field_type: 'text' },
+        key: { field_type: 'text' },
+        url: { field_type: 'text' },
+        user_emails: { field_type: 'text' }
     }
   end
 end

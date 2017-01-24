@@ -1,0 +1,14 @@
+<% user_emails.each do |user_email| %>
+<Read type='User' method='equal to' limit='1'>
+  <User>
+    <addr>
+      <Address>
+        <email><%= user_email %></email>
+      </Address>
+    </addr>
+  </User>
+  <_Return>
+    <id/>
+  </_Return>
+</Read>
+<% end %>

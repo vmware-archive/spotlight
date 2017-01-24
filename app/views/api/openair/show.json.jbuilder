@@ -1,1 +1,1 @@
-json.status 'submitted'
+json.status @submission_status

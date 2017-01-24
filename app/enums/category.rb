@@ -13,7 +13,7 @@ end
 class Category::UrlWidget < Category
   def fields
     {
-      url: nil
+      url: { field_type: 'text' }
     }
 
   end
@@ -22,10 +22,10 @@ end
 class Category::GcalWidget < Category
   def fields
     {
-      authenticate: { type: 'link', text: 'Authenticate with Google', url: '/api/google/login?return_url=/widget/gcal/new' },
-      access_token: { type: 'hidden' },
-      refresh_token: { type: 'hidden' },
-      calendar_id: { type: 'hidden' },
+      authenticate: { field_type: 'link', text: 'Authenticate with Google', url: '/api/google/login?return_url=/widget/gcal/new' },
+      access_token: { field_type: 'hidden' },
+      refresh_token: { field_type: 'hidden' },
+      calendar_id: { field_type: 'hidden' },
     }
   end
 end
@@ -33,10 +33,10 @@ end
 class Category::GcalResourceWidget < Category
   def fields
     {
-      authenticate: { type: 'link', text: 'Authenticate with Google', url: '/api/google/login?return_url=/widget/gcal_resource/new' },
-      access_token: { type: 'hidden' },
-      refresh_token: { type: 'hidden' },
-      resource_id: { type: 'hidden' },
+      authenticate: { field_type: 'link', text: 'Authenticate with Google', url: '/api/google/login?return_url=/widget/gcal_resource/new' },
+      access_token: { field_type: 'hidden' },
+      refresh_token: { field_type: 'hidden' },
+      resource_id: { field_type: 'hidden' },
     }
   end
 end
@@ -53,10 +53,10 @@ class Category::CiWidget < Category
 
   def fields
     {
-      server_type: [:travis_ci, :jenkins_ci, :circle_ci, :concourse_ci],
-      server_url: nil,
-      project_name: nil,
-      auth_key: nil
+      server_type: { field_type: 'select', options: [:travis_ci, :jenkins_ci, :circle_ci, :concourse_ci]},
+      server_url: { field_type: 'text' },
+      project_name: { field_type: 'text' },
+      auth_key: { field_type: 'text' }
     }
   end
 end
@@ -64,13 +64,13 @@ end
 class Category::CiConcourseWidget < Category::CiWidget
   def fields
     {
-      server_type: { type: 'hidden', value: 'concourse_ci' },
-      server_url: nil,
-      project_name: nil,
-      pipeline: nil,
-      job: nil,
-      username: nil,
-      password: nil
+      server_type: { field_type: 'hidden', value: 'concourse_ci' },
+      server_url: { field_type: 'text' },
+      project_name: { field_type: 'text' },
+      pipeline: { field_type: 'text' },
+      job: { field_type: 'text' },
+      username: { field_type: 'text' },
+      password: { field_type: 'text' }
     }
   end
 end

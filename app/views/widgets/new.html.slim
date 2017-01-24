@@ -36,21 +36,20 @@
           .col.s12
             h4 Widget Configuration
 
-          - @widget.category.fields.each do |key, defaults|
-            - if defaults.nil?
+          - @widget.category.fields.each do |key, config|
+            - if config[:field_type] == 'text'
               .input-field.col.s12
                 = f.text_field key
                 = f.label key
-            - elsif defaults.is_a? Array
+            - elsif config[:field_type] == 'select'
               .col.s12
                 = f.label key
-                = f.select key, defaults, {}, class: 'browser-default'
-            - elsif defaults.is_a? Hash
-              - if defaults[:type] == 'link'
-                .col.s12
-                  = link_to defaults[:text], defaults[:url], class: 'waves-effect waves-light btn blue lighten-1', id: "widget_link_#{key}"
-              - elsif defaults[:type] == 'hidden' && defaults[:value].present?
-                = f.hidden_field key, value: defaults[:value]
+                = f.select key, config[:options], {}, class: 'browser-default'
+            - elsif config[:field_type] == 'link'
+              .col.s12
+                = link_to config[:text], config[:url], class: 'waves-effect waves-light btn blue lighten-1', id: "widget_link_#{key}"
+            - elsif config[:field_type] == 'hidden' && config[:value].present?
+              = f.hidden_field key, value: config[:value]
 
       .row
         .actions.col.s12

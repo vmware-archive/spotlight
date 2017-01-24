@@ -37,15 +37,11 @@ class Widget < ActiveRecord::Base
     raise 'Unknown field'
   end
 
-  def travis_url
-    server_url + '/repos/' + project_name
-  end
-
   private
+
   def setup_local_configurations
     @local_configuration = self.configuration.try(:with_indifferent_access) || {}
   end
-
 
   def update_configuration
     self.configuration = @local_configuration

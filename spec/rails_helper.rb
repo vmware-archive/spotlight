@@ -77,7 +77,7 @@ RSpec.configure do |config|
     puts "STARTING FRONTEND SERVER"
     $pid = Process.fork do
       $stdout.reopen("/dev/null")
-      cmd = "cd ../spotlight-dashboard && npm install --only=production && API_HOST=http://#{Capybara.server_host}:#{Capybara.server_port} webpack -p && NODE_ENV=production PORT=8201 node server.js"
+      cmd = "cd ../spotlight-dashboard && npm install --only=production && API_HOST=http://#{Capybara.server_host}:#{Capybara.server_port} webpack -p && NODE_ENV=production FORCE_SSL=false PORT=8201 node server.js"
       exec(cmd)
       exit! 127
     end

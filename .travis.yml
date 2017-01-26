@@ -5,7 +5,10 @@ addons:
   postgresql: '9.3'
   firefox: '45.6.0esr'
 bundler_args: "--without production --jobs=3"
-cache: bundler
+cache:
+  bundler: true
+  directories:
+    - node_modules
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - cp config/database-travis.yml config/database.yml

@@ -23,7 +23,7 @@ describe 'GET #show' do
 
         parsed_response = JSON.parse(response.body, symbolize_names: true)
 
-        expect(parsed_response).to eq({status: 'submitted'})
+        expect(parsed_response).to eq({status: Category::OpenairWidget::STATUS_SUBMITTED})
       end
     end
   end

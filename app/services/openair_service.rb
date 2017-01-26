@@ -19,7 +19,9 @@ class OpenairService
         }
     )
 
-    response['Timesheet']
+    default_statuses = default_user_id_status_map(user_ids)
+    statuses = user_id_status_map(response['Timesheet'])
+    default_statuses.merge(statuses)
   end
 
   def user_ids_for_emails(user_emails)
@@ -39,7 +41,21 @@ class OpenairService
   def self.overall_submission_status(statuses)
     return Category::OpenairWidget::STATUS_PENDING if statuses.empty?
 
-    statuses.all? { |s| %w(S A).include? s['status'] } ? Category::OpenairWidget::STATUS_SUBMITTED : Category::OpenairWidget::STATUS_PENDING
+    statuses.all? do |_, status|
+      %w(S A).include? status
+    end ? Category::OpenairWidget::STATUS_SUBMITTED : Category::OpenairWidget::STATUS_PENDING
+  end
+
+  private
+
+  def default_user_id_status_map(user_ids)
+    user_ids.map { |id| [id, 'M'] }.to_h
+  end
+
+  def user_id_status_map(response)
+    response.map do |data|
+      [data['userid'], data['status']]
+    end.to_h
   end
 end
 

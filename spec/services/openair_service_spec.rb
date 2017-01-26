@@ -1,3 +1,5 @@
+require_relative '../../app/services/openair_service'
+
 RSpec.describe OpenairService do
   subject { OpenairService.new(api_client: mock_sinclair_client) }
   let(:mock_sinclair_client) { double('Sinclair::OpenAirApiClient') }
@@ -22,9 +24,9 @@ RSpec.describe OpenairService do
                   .and_return(
                       {
                           'User' => [
-                              { 'id' => '1', 'email' => user1 },
-                              { 'id' => '2', 'email' => user2 },
-                              { 'id' => '3', 'email' => user3 }
+                              {'id' => '1', 'email' => user1},
+                              {'id' => '2', 'email' => user2},
+                              {'id' => '3', 'email' => user3}
                           ]
                       }
                   )
@@ -38,10 +40,29 @@ RSpec.describe OpenairService do
   describe '#timesheet_status_for_previous_week' do
     let(:target_date) { Date.new(2017, 1, 16) }
 
+    let(:timesheet_data) do
+      {'Timesheet' => [{'userid' => '1', 'status' => 'S'},
+                       {'userid' => '2', 'status' => 'O'},
+                       {'userid' => '3', 'status' => 'X'}]
+      }
+    end
+
     around do |example|
       Timecop.travel(target_date) do
         example.run
       end
+    end
+
+    it 'returns the timesheet status of every user as a hash' do
+      expect(mock_sinclair_client).to receive(:send_request).and_return(timesheet_data)
+
+      statuses = subject.timesheet_statuses_for_previous_week(%w(1 2 3))
+      expect(statuses).to eq({
+                                 '1' => 'S',
+                                 '2' => 'O',
+                                 '3' => 'X'
+                             })
+
     end
 
     context 'on Monday, 16 Jan' do
@@ -53,13 +74,13 @@ RSpec.describe OpenairService do
                     .with(template: instance_of(String),
                           model: 'Timesheet',
                           locals: {
-                              user_ids: [1, 2],
+                              user_ids: %w(1 2 3),
                               start_date: Date.new(2017, 1, 9),
                               end_date: Date.new(2017, 1, 15)
                           }
-                    ).and_return({})
+                    ).and_return(timesheet_data)
 
-        subject.timesheet_statuses_for_previous_week([1, 2])
+        subject.timesheet_statuses_for_previous_week(%w(1 2 3))
       end
     end
 
@@ -72,13 +93,13 @@ RSpec.describe OpenairService do
                     .with(template: instance_of(String),
                           model: 'Timesheet',
                           locals: {
-                              user_ids: [3, 4],
+                              user_ids: %w(3 4),
                               start_date: Date.new(2017, 1, 9),
                               end_date: Date.new(2017, 1, 15)
                           }
-                    ).and_return({})
+                    ).and_return(timesheet_data)
 
-        subject.timesheet_statuses_for_previous_week([3, 4])
+        subject.timesheet_statuses_for_previous_week(%w(3 4))
       end
     end
 
@@ -91,115 +112,82 @@ RSpec.describe OpenairService do
                     .with(template: instance_of(String),
                           model: 'Timesheet',
                           locals: {
-                              user_ids: [5, 6],
+                              user_ids: %w(5 6),
                               start_date: Date.new(2017, 1, 16),
                               end_date: Date.new(2017, 1, 22)
                           }
-                    ).and_return({})
+                    ).and_return(timesheet_data)
 
-        subject.timesheet_statuses_for_previous_week([5, 6])
+        subject.timesheet_statuses_for_previous_week(%w(5 6))
+      end
+    end
+
+    context 'when any user has not created a timesheet' do
+      it 'adds a default value of M for that user' do
+        expect(mock_sinclair_client).to receive(:send_request).and_return({'Timesheet' => []})
+
+        timesheet_statuses = subject.timesheet_statuses_for_previous_week(%w(1 2 3))
+
+        expect(timesheet_statuses).to eq({'1' => 'M', '2' => 'M', '3' => 'M'})
+      end
+
+      it 'overrides the default value after the user creates their timesheet' do
+        expect(mock_sinclair_client).to receive(:send_request)
+                                            .and_return({'Timesheet' => [{'userid' => '1', 'status' => 'S'}]})
+
+        timesheet_statuses = subject.timesheet_statuses_for_previous_week(%w(1 2))
+
+        expect(timesheet_statuses).to eq({'1' => 'S', '2' => 'M'})
       end
     end
   end
 
   describe '.overall_submission_status' do
     context 'when there are no timesheets' do
-      let(:statuses) { [] }
+      let(:statuses) { {} }
 
       specify do
-        expect(OpenairService.overall_submission_status(statuses)).to eq 'pending'
+        expect(OpenairService.overall_submission_status(statuses)).to eq Category::OpenairWidget::STATUS_PENDING
       end
     end
 
     context 'when all timesheets have been submitted' do
       let(:statuses) do
-        [
-            {
-                'user_id' => '1',
-                'status' => 'S'
-            },
-            {
-                'user_id' => '2',
-                'status' => 'S'
-            },
-            {
-                'user_id' => '3',
-                'status' => 'S'
-            }
-        ]
+        { '1' => 'S', '2' => 'S', '3' => 'S' }
       end
 
       specify do
-        expect(OpenairService.overall_submission_status(statuses)).to eq 'submitted'
+        expect(OpenairService.overall_submission_status(statuses)).to eq Category::OpenairWidget::STATUS_SUBMITTED
       end
 
       context 'when any timesheet has been accepted' do
         let(:statuses) do
-          [
-              {
-                  'user_id' => '1',
-                  'status' => 'S'
-              },
-              {
-                  'user_id' => '2',
-                  'status' => 'A'
-              },
-              {
-                  'user_id' => '3',
-                  'status' => 'A'
-              }
-          ]
+          { '1' => 'S', '2' => 'A', '3' => 'A' }
         end
 
         specify do
-          expect(OpenairService.overall_submission_status(statuses)).to eq 'submitted'
+          expect(OpenairService.overall_submission_status(statuses)).to eq Category::OpenairWidget::STATUS_SUBMITTED
         end
       end
 
       context 'when any timesheet has been rejected' do
         let(:statuses) do
-          [
-              {
-                  'user_id' => '1',
-                  'status' => 'S'
-              },
-              {
-                  'user_id' => '2',
-                  'status' => 'R'
-              },
-              {
-                  'user_id' => '3',
-                  'status' => 'A'
-              }
-          ]
+          { '1' => 'S', '2' => 'R', '3' => 'A' }
         end
 
         specify do
-          expect(OpenairService.overall_submission_status(statuses)).to eq 'pending'
+          expect(OpenairService.overall_submission_status(statuses)).to eq Category::OpenairWidget::STATUS_PENDING
         end
       end
     end
 
     context 'when any timesheet has not been submitted' do
       let(:statuses) do
-        [
-            {
-                'user_id' => '1',
-                'status' => 'O'
-            },
-            {
-                'user_id' => '2',
-                'status' => 'S'
-            },
-            {
-                'user_id' => '3',
-                'status' => 'S'
-            }
-        ]
+        { '1' => 'O', '2' => 'S', '3' => 'S' }
       end
 
       specify do
-        expect(OpenairService.overall_submission_status(statuses)).to eq 'pending'
+        expect(OpenairService.overall_submission_status(statuses)).to eq Category::OpenairWidget::STATUS_PENDING
       end
     end
   end

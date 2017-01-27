@@ -9,6 +9,7 @@ cache:
   bundler: true
   directories:
     - node_modules
+    - $HOME/.nvm/versions/node/v5.12.0
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - cp config/database-travis.yml config/database.yml

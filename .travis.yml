@@ -1,6 +1,8 @@
 language: ruby
 rvm:
   - 2.3.2
+node_js:
+  - 5.12.0
 addons:
   postgresql: '9.3'
   firefox: '45.6.0esr'
@@ -10,14 +12,11 @@ cache:
   directories:
     - node_modules
     - $HOME/.rvm/gems/ruby-2.3.2
-    - $HOME/.nvm/versions/node/v5.12.0/lib
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - cp config/database-travis.yml config/database.yml
   - bundle exec rake db:schema:load RAILS_ENV=test
   - git clone https://github.com/pivotal-sg/spotlight-dashboard.git --branch master ../spotlight-dashboard
-  - nvm install 5.12.0
-  - nvm use 5.12.0
   - npm install webpack -g
 before_install:
   - export DISPLAY=:99.0

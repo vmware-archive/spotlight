@@ -17,6 +17,8 @@ before_script:
   - cp config/database-travis.yml config/database.yml
   - bundle exec rake db:schema:load RAILS_ENV=test
   - git clone https://github.com/pivotal-sg/spotlight-dashboard.git --branch master ../spotlight-dashboard
+  - nvm ls
+  - nvm use 6.1
   - npm install webpack -g
 before_install:
   - export DISPLAY=:99.0

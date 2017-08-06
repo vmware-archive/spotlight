@@ -34,31 +34,31 @@ We recommend installing the Spotlight dashboard as a Docker instance on the targ
 2. In your working folder, create a new file: `docker-compose.yml`
 
     ```yaml
-db:
-  image: postgres
-api:
-  image: pivotalsingapore/spotlight-rails
-  command: bin/rails server
-  env_file: docker_env
-  links:
-    - db
-web:
-  image: pivotalsingapore/spotlight-dashboard
-  env_file: docker_env
-  ports:
-    - "3030:80"
-  links:
-    - api
-  ```
+	db:
+	  image: postgres
+	api:
+	  image: pivotalsingapore/spotlight-rails
+	  command: bin/rails server
+	  env_file: docker_env
+	  links:
+	    - db
+	web:
+	  image: pivotalsingapore/spotlight-dashboard
+	  env_file: docker_env
+	  ports:
+	    - "3030:80"
+	  links:
+	    - api
+	```
 
 3. Rename `docker_env.sample` to `docker_env` and edit your configuration as necessary:
 
 	```yaml
-SECRET_KEY_BASE=<change_me!>
-WEB_HOST=/
-GOOGLE_API_CLIENT_ID=<change_me!>
-GOOGLE_API_CLIENT_SECRET=<change_me!>
-```
+	SECRET_KEY_BASE=<change_me!>
+	WEB_HOST=/
+	GOOGLE_API_CLIENT_ID=<change_me!>
+	GOOGLE_API_CLIENT_SECRET=<change_me!>
+	```
 
 ***Remember to add your own `SECRET_KEY_BASE`.***
 
@@ -67,9 +67,9 @@ GOOGLE_API_CLIENT_SECRET=<change_me!>
 1. Run the following command:
 
 	```
-docker-compose run --rm api rake db:create db:migrate
-docker-compose up -d
-```
+	docker-compose run --rm api rake db:create db:migrate
+	docker-compose up -d
+	```
 
 2. You can now access the dashboard via the container IP address (e.g. `http://192.168.99.100:3030`).
 

@@ -33,37 +33,50 @@ We recommend installing the Spotlight dashboard as a Docker instance on the targ
 
 2. In your working folder, create a new file: `docker-compose.yml`
 
-	```yaml
+    ```yaml
 	db:
 	  image: postgres
 	api:
 	  image: pivotalsingapore/spotlight-rails
-	  command: bundle exec foreman start
-	  environment:
-	    - SECRET_KEY_BASE=<change_me!>
-	    - WEB_HOST=/
-	    - GOOGLE_API_CLIENT_ID=<change_me!>
-	    - GOOGLE_API_CLIENT_SECRET=<change_me!>
+	  command: bin/rails server
+	  env_file: docker_env
 	  links:
 	    - db
 	web:
 	  image: pivotalsingapore/spotlight-dashboard
+	  env_file: docker_env
 	  ports:
 	    - "3030:80"
 	  links:
 	    - api
-```
+	```
 
-	***Remember to add your own `SECRET_KEY_BASE`.***
+3. Rename `docker_env.sample` to `docker_env` and edit your configuration as necessary:
 
+	```yaml
+	SECRET_KEY_BASE=<change_me!>
+	WEB_HOST=/
+	GOOGLE_API_CLIENT_ID=<change_me!>
+	GOOGLE_API_CLIENT_SECRET=<change_me!>
+	```
+
+***Remember to add your own `SECRET_KEY_BASE`.***
+
+### Initial setup
+
+1. Run this command to prepare the db:
+
+	```
+	docker-compose run --rm api rake db:create db:migrate
+	```
+	
 ### Starting the Spotlight Docker instance
 
 1. Run the following command:
 
 	```
-docker-compose up -d
-docker-compose run --rm web rake db:create db:migrate
-```
+	docker-compose up -d
+	```
 
 2. You can now access the dashboard via the container IP address (e.g. `http://192.168.99.100:3030`).
 
@@ -94,35 +107,35 @@ To contribute code to this project, you will need to setup your local developmen
 2. Install [rbenv](https://github.com/rbenv/rbenv):
 
 	```
-brew update
-brew install rbenv ruby-build
-```
+	brew update
+	brew install rbenv ruby-build
+	```
 
 3. Add `rbenv` support to your local profile:
 
 	```
-echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
-echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
-```
+	echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+	echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+	```
 
 	If you are using `zsh`:
 
 	```
-echo 'eval "$(rbenv init -)"' >> ~/.zshrc
-```
+	echo 'eval "$(rbenv init -)"' >> ~/.zshrc
+	```
 
 3. Install the current Ruby version:
 
 	```
-rbenv install -l
-rbenv install 2.3.0
-```
+	rbenv install -l
+	rbenv install 2.3.0
+	```
 
 4. Use it globally:
 
 	```
-rbenv global 2.3.0
-```
+	rbenv global 2.3.0
+	```
 
 ### B. Install PostgreSQL database server
 
@@ -135,48 +148,48 @@ rbenv global 2.3.0
 1. Install [Bundler](http://bundler.io/), the Ruby dependency management software:
 
 	```
-gem install bundler
-```
+	gem install bundler
+	```
 
 2. Install the rest of the Ruby Gems needed for the app (including Ruby on Rails):
 
 	```
-bundle install
-```
+	bundle install
+	```
 
 ### D. Prepare the Database
 
 1. Create the database:
 
 	```
-bundle exec rake db:create
-```
+	bundle exec rake db:create
+	```
 
 2. Create the database tables:
 
 	```
-bundle exec rake db:migrate
-```
+	bundle exec rake db:migrate
+	```
 
 3. Prepare sample data:
 
 	```
-bundle exec rake db:seed
-```
+	bundle exec rake db:seed
+	```
 
 ### E. Start the development web server
 
 1. Prepare the environment file (one time exercise):
 
-  ```
-cp env.sample .env
-```
+ 	```
+	cp env.sample .env
+	```
 
 2. You can start the local development web server with the following command:
 
 	```
-foreman start
-```
+	foreman start
+	```
 
 3. You can now visit the local development site at [http://localhost:3000](http://localhost:3000).
 
@@ -208,37 +221,37 @@ or open your browser to [http://localhost:3000/specs](http://localhost:3000/spec
 1. Rebuild the local Docker image
 
 	```
-docker build -t spotlight-rails .
-```
+	docker build -t spotlight-rails .
+	```
 
 2. Check for the image ID
 
 	```
-➜  spotlight git:(docker) ✗ docker images
-REPOSITORY                       TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
-spotlight-rails                  latest              ba3dcc9b42b1        16 seconds ago      954.3 MB
-```
+	➜  spotlight git:(docker) ✗ docker images
+	REPOSITORY                       TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+	spotlight-rails                  latest              ba3dcc9b42b1        16 seconds ago      954.3 MB
+	```
 
 3. Login to your Docker account (one time exercise) with `docker login`:
 
 	```
-➜  spotlight git:(docker) ✗ docker login
-Username (miccheng):
-WARNING: login credentials saved in /Users/miccheng/.docker/config.json
-Login Succeeded
-```
+	➜  spotlight git:(docker) ✗ docker login
+	Username (miccheng):
+	WARNING: login credentials saved in /Users/miccheng/.docker/config.json
+	Login Succeeded
+	```
 
 4. Tag the image (assuming `ba3dcc9b42b1` is the latest image ID)
 
 	```
-docker tag ba3dcc9b42b1 pivotalsingapore/spotlight-rails:latest
-```
+	docker tag ba3dcc9b42b1 pivotalsingapore/spotlight-rails:latest
+	```
 
 5. Push to Docker Hub
 
 	```
-docker push pivotalsingapore/spotlight-rails
-```
+	docker push pivotalsingapore/spotlight-rails
+	```
 
 ## Running in Concourse
 
